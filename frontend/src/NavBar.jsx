@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown } from "lucide-react"; // modern icon
 
 import logo from './assets/logo.png';
+// import login from "./Login.jsx";
+import {Link} from "react-router-dom";
+import Carview from './Carview.jsx';
 
 function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -57,12 +60,10 @@ function NavBar() {
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
-          <a
-            href="https://frankieegodwin.github.io/Portfolio-Website/"
-            className="text-gray-700 hover:text-blue-600 font-medium"
-          >
-            Login
-          </a>
+          <Link to="login">
+            <button className="text-gray-700 hover:text-blue-600 font-medium">Login</button>
+          </Link>
+            
           <span className="text-gray-400">/</span>
           <a
             href="https://frankieegodwin.github.io/Portfolio-Website/"
@@ -91,6 +92,7 @@ function NavBar() {
           </div>
         </div>
       </div>
+      <Carview/>
     </div>
   );
 }
