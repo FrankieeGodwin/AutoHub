@@ -12,3 +12,16 @@ export const createUserDetails = async (userId) => {
     throw err;
   }
 };
+
+export const getAllUserDetails = async (req, res) => {
+  try {
+    const details = await UserDetails.find()
+      .populate('userId')        
+      .populate('carsBought')     
+      .populate('carsSold');      
+
+    res.status(200).json(details);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
