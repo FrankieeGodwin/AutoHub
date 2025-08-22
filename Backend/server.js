@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './db.js';
 import userRouter from './routes/userRouter.js'; 
-
+import carRouter from './routes/carRouter.js'
 dotenv.config();
 
 const app = express();
@@ -12,6 +12,7 @@ app.use(express.json());
 connectDB();
 
 app.use('/users', userRouter);
+app.use('/cars', carRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message });
