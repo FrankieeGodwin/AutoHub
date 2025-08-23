@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -59,12 +60,9 @@ export default function Login() {
         {/* Extra Links */}
         <p className="text-center text-gray-600 mt-6">
           Don’t have an account?{" "}
-          <a
-            href="#"
-            className="text-purple-600 font-semibold hover:underline"
-          >
-            Register
-          </a>
+          <Link to="/Register">
+          <button className="text-purple-600 font-semibold hover:underline">Register</button>
+          </Link>
         </p>
       </div>
     </div>

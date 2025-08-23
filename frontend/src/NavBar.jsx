@@ -61,16 +61,13 @@ function NavBar() {
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
           <Link to="login">
-            <button className="text-gray-700 hover:text-blue-600 font-medium">Login</button>
+            <button className="text-gray-700 hover:text-purple-700 font-medium">Login</button>
           </Link>
-            
           <span className="text-gray-400">/</span>
-          <a
-            href="https://frankieegodwin.github.io/Portfolio-Website/"
-            className="text-gray-700 hover:text-blue-600 font-medium"
-          >
-            Register
-          </a>
+          <Link to="Register">
+            <button className="text-gray-700 hover:text-purple-700 font-medium">Register</button>
+          </Link> 
+         
 
           <div className="relative dropdown-container">
             <button
