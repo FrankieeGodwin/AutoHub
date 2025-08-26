@@ -3,7 +3,7 @@ import { addImage } from "./ImagesController.js";
 import { addLocation } from "./LocationController.js";
 import { addCarDetails } from "./CarDetailsController.js";
 import { addFeatures } from "./FeaturesController.js";
-
+import {addCarToBought} from "./userController.js"
 export const createCar = async (req, res) => {
   try {
     const { userId, make, model, price, status, images, location, carDetails, features } = req.body;
@@ -30,7 +30,7 @@ export const createCar = async (req, res) => {
     if (features) {
         await addFeatures({ body: { ...features, carId } }, { status: () => ({ json: () => {} }) });
     }
-
+    
     res.status(201).json({ message: "Car and related details created successfully", car: savedCar });
   } catch (error) {
     res.status(500).json({ message: "Error creating car", error: error.message });
