@@ -3,7 +3,7 @@ import { addImage } from "./ImagesController.js";
 import { addLocation } from "./LocationController.js";
 import { addCarDetails } from "./CarDetailsController.js";
 import { addFeatures } from "./FeaturesController.js";
-import {addCarToBought} from "./userController.js"
+import {addCarToBought} from "./userDetailsController.js"
 export const createCar = async (req, res) => {
   try {
     const { userId, make, model, price, status, images, location, carDetails, features } = req.body;
