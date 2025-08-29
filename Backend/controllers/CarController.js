@@ -3,7 +3,7 @@ import { addImage } from "./ImagesController.js";
 import { addLocation } from "./LocationController.js";
 import { addCarDetails } from "./CarDetailsController.js";
 import { addFeatures } from "./FeaturesController.js";
-import {addCarToBought} from "./userDetailsController.js"
+import {addCarToBought} from "./userDetailsController.js"; 
 export const createCar = async (req, res) => {
   try {
     const { userId, make, model, price, status, images, location, carDetails, features } = req.body;
@@ -54,16 +54,6 @@ export const getCarById = async (req, res) => {
     res.status(200).json(car);
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
-};
-
-export const updateCar = async (req, res) => {
-  try {
-    const car = await Car.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!car) return res.status(404).json({ message: "Car not found" });
-    res.status(200).json(car);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
   }
 };
 

@@ -14,6 +14,26 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const login = async (req, res) => {
+  try {
+    const {emailId, passwordHash}=req.body;
+    const user = await User.findOne({ emailId : emailId });
+    if(!user)
+      {
+        res.status(404).json({message:"User Not Found"});
+      }
+      else{
+        if(user.passwordHash==passwordHash)
+        {
+          res.status(200).json(user);
+        }
+      } 
+  }
+  catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find(); 
