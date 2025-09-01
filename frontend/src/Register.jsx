@@ -10,14 +10,20 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
     if (!phone || phone.length !== 10) {
       alert("Please enter a valid 10-digit phone number.");
       return;
     }
-    // Navigate and pass the phone number as state
-    navigate("/otppage", { state: { phone } });
+
+    if (!email) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    // ✅ Navigate and pass only email
+    navigate("/Otp", { state: { email } });
   };
 
   return (
@@ -68,16 +74,12 @@ export default function Register() {
             />
           </div>
 
-          <Link to="/Otp" className="w-full py-3 bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-700 transition duration-300">
-            Submit
-          </Link>
-
-          {/* <button
+          <button
             type="submit"
             className="w-full py-3 bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-700 transition duration-300"
           >
             Submit
-          </button> */}
+          </button>
         </form>
 
         <p className="text-center text-gray-600 mt-6">
