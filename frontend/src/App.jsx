@@ -6,8 +6,6 @@ import NavBar from "./NavBar.jsx";
 import CarView from "./Carview.jsx";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
-import Otppage from "./otppage.jsx";
-import H from "./h.jsx"
 import SendOtp  from "./SendOtp.jsx";
 
 function App() {
@@ -26,4 +24,3 @@ function App() {
 }
 
 export default App;
-// buga exnr mozv pfkv

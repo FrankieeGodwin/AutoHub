@@ -10,19 +10,19 @@ export default function SendOtp() {
       const response = await axios.post("http://localhost:5000/otp/send", { email });
 
       if (response.data.success) {
-        setMessage("✅ OTP sent to your email!");
+        setMessage(" OTP sent to your email!");
       } else {
-        setMessage("❌ Failed: " + (response.data.error || "Unknown error"));
+        setMessage(" Failed: " + (response.data.error || "Unknown error"));
       }
     } catch (error) {
       console.error("OTP Error:", error);
 
       if (error.response) {
-        setMessage(`⚠️ Server Error: ${error.response.data.error || error.response.statusText}`);
+        setMessage(` Server Error: ${error.response.data.error || error.response.statusText}`);
       } else if (error.request) {
-        setMessage("⚠️ No response from backend. Is it running?");
+        setMessage(" No response from backend. Is it running?");
       } else {
-        setMessage(`⚠️ Error: ${error.message}`);
+        setMessage(` Error: ${error.message}`);
       }
     }
   };
