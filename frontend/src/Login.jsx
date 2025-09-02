@@ -14,7 +14,7 @@ export default function Login() {
         });
         if(response.status === 200)
         {
-          navigate("/",{state : {username}});
+          navigate("/",{state : {email : username}});
         }
         else{
           alert("Invalid Email or Password");

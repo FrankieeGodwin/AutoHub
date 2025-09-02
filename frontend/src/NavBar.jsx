@@ -11,8 +11,8 @@ function NavBar() {
   const [category, setCategory] = useState("All"); // category filter
 
   const location = useLocation();
-  const username = location.state?.username;
-  
+  const username = location.state?.email;
+  console.log(username);
   const handleClickOutside = (e) => {
     if (
       !e.target.closest('.dropdown-container') && 
