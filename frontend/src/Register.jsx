@@ -23,7 +23,7 @@ export default function Register() {
     }
 
     // ✅ Navigate and pass only email
-    navigate("/Otp", { state: { email } });
+    navigate("/Otp", { state: { username,email,phone,password } });
   };
 
   return (
