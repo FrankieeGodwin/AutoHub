@@ -1,16 +1,28 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
+import axios from "axios";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = () => {
-    if (username === "Sathish" && password === "3718") {
-      alert("Login Successful ✅");
-    } else {
-      alert("Invalid username or password ❌");
-    }
+  const navigate=useNavigate();
+  const handleSubmit = async () => {
+    try{
+      const response = await axios.post("http://localhost:5000/users/login", {
+          emailId: username,
+          passwordHash: password
+        });
+        if(response.status === 200)
+        {
+          navigate("/",{state : {username}});
+        }
+        else{
+          alert("Invalid Email or Password");
+        }
+      }
+      catch{
+        alert("Some Internal Server Error");
+      }
   };
 
   return (

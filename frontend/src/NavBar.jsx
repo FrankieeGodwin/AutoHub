@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown } from "lucide-react"; // modern icon
-
+import {useLocation} from "react-router-dom";
 import logo from './assets/logo.png';
 // import login from "./Login.jsx";
 import {Link} from "react-router-dom";
@@ -10,6 +10,9 @@ function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("All"); // category filter
 
+  const location = useLocation();
+  const username = location.state?.username;
+  
   const handleClickOutside = (e) => {
     if (
       !e.target.closest('.dropdown-container') && 
@@ -60,13 +63,18 @@ function NavBar() {
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
+          {username ? (
+          // Show username instead of Login/Register
+          <span className="text-gray-700 font-medium">Hello, {username}</span>
+        ) : (
+          <>
           <Link to="login">
             <button className="text-gray-700 hover:text-purple-700 font-medium">Login</button>
           </Link>
           <span className="text-gray-400">/</span>
           <Link to="Register">
             <button className="text-gray-700 hover:text-purple-700 font-medium">Register</button>
-          </Link> 
+          </Link> </>)}
          
 
           <div className="relative dropdown-container">
@@ -89,7 +97,6 @@ function NavBar() {
           </div>
         </div>
       </div>
-      <Carview/>
     </div>
   );
 }
