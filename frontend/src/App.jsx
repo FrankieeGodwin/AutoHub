@@ -1,10 +1,10 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
-import CarView from "./Carview.jsx";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import SendOtp  from "./SendOtp.jsx";
+import AddCar from "./Form.jsx"
 
 import Home from "./Home";
 function App() {
@@ -19,6 +19,7 @@ function App() {
         <Route path="/Register" element={<Register/>}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/Otp" element={<SendOtp/>}/>
+        <Route path="/Form" element={<AddCar/>}/>
       </Routes>
     </Router>
   );

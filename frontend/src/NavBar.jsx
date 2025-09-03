@@ -91,7 +91,9 @@ function NavBar() {
           />
         </div>
         <div className='w-[10%]'>
-          <button className='bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]'>Add Car</button>
+          <Link to="form">
+              <button className='bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]'>Add Car</button>
+          </Link>
         </div>
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
