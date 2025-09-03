@@ -31,12 +31,10 @@ function NavBar() {
     <div className="fixed top-0 left-0 w-full h-[10%] bg-[#FAFAFA] border-b border-gray-200 z-50">
       <div className="flex justify-between items-center w-[90%] mx-auto h-full">
         
-        {/* Logo */}
         <div className="flex items-center">
           <img className="h-12 w-auto" src={logo} alt="logoimg" />
         </div>
 
-        {/* Unified Search Box */}
         <div className="flex items-center w-[40%] border border-gray-300 rounded-full overflow-hidden bg-white shadow-sm">
           
           {/* Custom Styled Category Dropdown */}
@@ -60,7 +58,9 @@ function NavBar() {
             className="flex-1 h-10 px-4 focus:outline-none text-gray-700"
           />
         </div>
-
+        <div className='w-[10%]'>
+          <button className='bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]'>Add Car</button>
+        </div>
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
           {username ? (

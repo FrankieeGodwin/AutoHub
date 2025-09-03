@@ -9,7 +9,8 @@ const carSchema = new mongoose.Schema({
   make: { type: String, required: true },
   model: { type: String, required: true },
   price: { type: Number, required: true },
-  status: { type: String, default: "Available" }
+  status: { type: String, default: "Available" },
+  regno: {type: String, required: true}
 }, { timestamps: true });
 
 carSchema.pre("findOneAndDelete", async function (next) {
