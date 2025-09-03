@@ -6,9 +6,10 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate=useNavigate();
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const handleSubmit = async () => {
     try{
-      const response = await axios.post("http://localhost:5000/users/login", {
+      const response = await axios.post(`${API_BASE}/users/login`, {
           emailId: username,
           passwordHash: password
         });

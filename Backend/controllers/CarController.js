@@ -6,9 +6,9 @@ import { addFeatures } from "./FeaturesController.js";
 import {addCarToBought} from "./userDetailsController.js"; 
 export const createCar = async (req, res) => {
   try {
-    const { userId, make, model, price, status, images, location, carDetails, features } = req.body;
+    const { userId, make, model, price, status, regno, images, location, carDetails, features } = req.body;
 
-    const newCar = new Car({ userId, make, model, price, status });
+    const newCar = new Car({ userId, make, model, price, status, regno});
     const savedCar = await newCar.save();
 
     const carId = savedCar._id;

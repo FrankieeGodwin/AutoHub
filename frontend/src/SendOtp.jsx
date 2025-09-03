@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+const API_BASE = import.meta.env.VITE_API_BASE;
 export default function SendOtp() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function SendOtp() {
   const [canResend, setCanResend] = useState(false);
   const didRun = useRef(false);
 
-  // Send OTP
+
   const sendOtp = async () => {
     if (!email) {
       setMessage("No email found. Please go back and register again.");
@@ -21,20 +21,20 @@ export default function SendOtp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/otp/send", { email });
+      const response = await axios.post(`${API_BASE}/otp/send`, { email });
 
       if (response.data.success) {
-        const expiresAt = Date.now() + 60 * 1000; // 1 min
+        const expiresAt = Date.now() + 60 * 1000; 
         localStorage.setItem(
           `otp_${email}`,
           JSON.stringify({ otp: response.data.otp, expires: expiresAt })
         );
 
-        setMessage("✅ OTP sent to your email!");
+        setMessage("OTP sent to your email!");
         setTimeLeft(60);
         setCanResend(false);
       } else {
-        setMessage("❌ Failed: " + (response.data.error || "Unknown error"));
+        setMessage("Failed: " + (response.data.error || "Unknown error"));
       }
     } catch (error) {
       console.error("OTP Error:", error);
@@ -42,7 +42,6 @@ export default function SendOtp() {
     }
   };
 
-  // Send OTP on mount
   useEffect(() => {
     if (!didRun.current) {
       sendOtp();
@@ -50,7 +49,6 @@ export default function SendOtp() {
     }
   }, [email]);
 
-  // Countdown timer
   useEffect(() => {
     if (timeLeft <= 0) {
       setCanResend(true);
@@ -68,11 +66,10 @@ export default function SendOtp() {
     return () => clearTimeout(timer);
   }, [timeLeft, email]);
 
-  // Verify OTP
   const handleVerify = async () => {
     const stored = localStorage.getItem(`otp_${email}`);
     if (!stored) {
-      setMessage("❌ OTP expired. Please resend.");
+      setMessage("OTP expired. Please resend.");
       setCanResend(true);
       return;
     }
@@ -81,39 +78,36 @@ export default function SendOtp() {
 
     if (Date.now() > parsed.expires) {
       localStorage.removeItem(`otp_${email}`);
-      setMessage("❌ OTP expired. Please resend.");
+      setMessage("OTP expired. Please resend.");
       setCanResend(true);
       return;
     }
 
     if (otpInput === parsed.otp.toString()) {
       try {
-        // Send user details to backend
-        const response = await axios.post("http://localhost:5000/users/", {
+        const response = await axios.post(`${API_BASE}/users/`, {
           fullName: username,
           emailId: email,
           phoneNo: phone,
           passwordHash: password
         });
 
-        setMessage("✅ OTP verified and user created successfully!");
+        setMessage("OTP verified and user created successfully!");
         localStorage.removeItem(`otp_${email}`);
         setCanResend(false);
 
-        // Redirect user to login page after 2 seconds
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       } catch (error) {
         console.error("User creation error:", error);
-        setMessage("❌ OTP verified but failed to create user.");
+        setMessage("OTP verified but failed to create user.");
       }
     } else {
-      setMessage("❌ Incorrect OTP. Please try again.");
+      setMessage("Incorrect OTP. Please try again.");
     }
   };
 
-  // Resend OTP
   const handleResend = () => {
     setOtpInput("");
     sendOtp();
