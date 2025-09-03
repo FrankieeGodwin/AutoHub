@@ -11,13 +11,13 @@ function App() {
 
   return (
     <Router>
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/Register" element={<Register/>}/>
-  <Route path="/login" element={<Login />}/>
-  <Route path="/Otp" element={<SendOtp/>}/>
-</Routes>
-</Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Register" element={<Register/>}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/Otp" element={<SendOtp/>}/>
+      </Routes>
+    </Router>
   );
 }
 
