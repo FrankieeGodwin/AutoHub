@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+const API_BASE = import.meta.env.VITE_API_BASE;
 export default function SendOtp() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function SendOtp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/otp/send", { email });
+      const response = await axios.post(`${API_BASE}/otp/send`, { email });
 
       if (response.data.success) {
         const expiresAt = Date.now() + 60 * 1000; 
@@ -85,7 +85,7 @@ export default function SendOtp() {
 
     if (otpInput === parsed.otp.toString()) {
       try {
-        const response = await axios.post("http://localhost:5000/users/", {
+        const response = await axios.post(`${API_BASE}/users/`, {
           fullName: username,
           emailId: email,
           phoneNo: phone,
