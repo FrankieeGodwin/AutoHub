@@ -3,13 +3,13 @@ import { ChevronDown } from "lucide-react"; // modern icon
 import {useLocation} from "react-router-dom";
 import logo from './assets/logo.png';
 // import login from "./Login.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Carview from './Carview.jsx';
 
 function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("All"); // category filter
-
+  const navigate=useNavigate();
   const location = useLocation();
   const username = location.state?.email;
   console.log(username);
@@ -59,8 +59,14 @@ function NavBar() {
           />
         </div>
         <div className='w-[10%]'>
-          <button className='bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]'>Add Car</button>
+          <button
+            onClick={() => navigate("/addCar", { state: { id: userId } })}
+            className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
+          >
+            Add Car
+          </button>      
         </div>
+
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
           {username ? (

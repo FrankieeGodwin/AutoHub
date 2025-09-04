@@ -15,15 +15,25 @@ export default function Login() {
         });
         if(response.status === 200)
         {
-          navigate("/",{state : {email : username}});
-        }
-        else{
-          alert("Invalid Email or Password");
+          const { userId, emailId } = response.data;
+          navigate("/", { state: { id : userId, email : emailId } });
         }
       }
-      catch{
-        alert("Some Internal Server Error");
+ catch (err) {
+    if (err.response) {
+      // Backend responded with an error code
+      if (err.response.status === 401) {
+        alert("Invalid Email or Password");
+      } else if (err.response.status === 404) {
+        alert("User not found");
+      } else {
+        alert("Unexpected error: " + err.response.data.message);
       }
+    } else {
+      // Network or other issue
+      alert("Some Internal Server Error");
+    }
+  }
   };
 
   return (

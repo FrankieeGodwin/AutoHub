@@ -20,14 +20,20 @@ export const login = async (req, res) => {
     const user = await User.findOne({ emailId : emailId });
     if(!user)
       {
-        res.status(404).json({message:"User Not Found"});
+        return res.status(404).json({message:"User Not Found"});
       }
-      else{
-        if(user.passwordHash==passwordHash)
+      
+        if(user.passwordHash===passwordHash)
         {
-          res.status(200).json(user);
+          return res.status(200).json({
+          userId: user._id,
+          emailId: user.emailId,
+          fullName: user.fullName
+          });
         }
-      } 
+        else{
+          return res.status(401).json({message: "Wrong Password"});
+        }
   }
   catch (err) {
     res.status(500).json({ error: err.message });
