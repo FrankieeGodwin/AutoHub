@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 export default function CarUploadForm() {
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;
   const location = useLocation();
-  const userId=location.state?.id;
+  const userId = location.state?.id;
   const [formData, setFormData] = useState({
     userId: userId,
     status: "available",
@@ -65,45 +65,66 @@ export default function CarUploadForm() {
   };
 
   // Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  // Submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      let uploadedImages = [];
+  try {
+    let uploadedImages = [];
 
-      if (selectedFiles.length > 0) {
-        const uploadData = new FormData();
-        selectedFiles.forEach((file) => uploadData.append("images", file));
+    if (selectedFiles.length > 0) {
+      const uploadData = new FormData();
+      selectedFiles.forEach((file) => uploadData.append("images", file));
 
-        const uploadRes = await axios.post(
-          `${API_BASE}/uploadApi/upload-images`,
-          uploadData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+      const uploadRes = await axios.post(
+        `${API_BASE}/uploadApi/upload-images`,
+        uploadData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-        uploadedImages = uploadRes.data.urls.map((url) => ({ imageURL: url }));
+      // ✅ Check response status
+      if (uploadRes.status !== 200) {
+        console.error("Image upload failed:", uploadRes);
+        alert("Image upload failed. Please try again.");
+        setLoading(false);
+        return; // stop execution here
       }
 
-      const finalData = { ...formData, images: uploadedImages };
+      // ✅ Log all URLs from API
+      console.log("Uploaded image URLs:", uploadRes.data.urls);
 
-      await axios.post(`${API_BASE}/cars`, finalData);
-
-      alert("Car uploaded successfully!");
-      navigate("/");
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert("Failed to upload car.");
-    } finally {
-      setLoading(false);
+      uploadedImages = uploadRes.data.urls; 
     }
-  };
+
+    const finalData = { ...formData, images: uploadedImages };
+
+    const carRes = await axios.post(`${API_BASE}/cars`, finalData);
+
+    // ✅ Stop if car upload failed
+    if (carRes.status !== 201) {
+      console.error("Car save failed:", carRes);
+      alert("Car save failed. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    alert("Car uploaded successfully!");
+    navigate("/");
+  } catch (err) {
+    console.error("Upload error:", err);
+    alert("Failed to upload car.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="w-full min-h-screen bg-[#FAFAFA] flex items-center justify-center py-10">
       <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
         <h2 className="text-3xl font-bold text-purple-700 mb-8 text-center">
-          Add New Car {userId}
+          Add New Car 
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">

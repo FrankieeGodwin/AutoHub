@@ -22,6 +22,7 @@ function NavBar() {
   const navigate=useNavigate();
   const location = useLocation();
   const username = location.state?.email;
+  const userId = location.state?.id;
   console.log(username);
   const handleClickOutside = (e) => {
     if (
@@ -31,7 +32,9 @@ function NavBar() {
       setDropdownOpen(false);
     }
   };
-
+  const handleAddCar = ()=>{
+    navigate("/addCar", {state : {id : userId}})
+  }
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
@@ -90,12 +93,11 @@ function NavBar() {
           />
         </div>
         <div className='w-[10%]'>
-          <button
-            onClick={() => navigate("/addCar", { state: { id: userId } })}
+          <button onClick={handleAddCar}
             className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
           >
             Add Car
-          </button>      
+          </button>     
         </div>
 
         {/* Links + More Dropdown */}

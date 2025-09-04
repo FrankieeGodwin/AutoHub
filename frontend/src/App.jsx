@@ -13,7 +13,7 @@ function App() {
 }, []);
 
   return (
-      <Router>
+  <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Register" element={<Register/>}/>
@@ -21,7 +21,7 @@ function App() {
         <Route path="/Otp" element={<SendOtp/>}/>
         <Route path="/addCar" element={<AddCar/>}/>
       </Routes>
-      </Router>
+  </Router>
   );
 }
 
