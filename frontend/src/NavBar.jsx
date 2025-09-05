@@ -15,6 +15,7 @@ function NavBar() {
   const location = useLocation();
   const username = location.state?.email;
   const userId = location.state?.id;
+  const API_BASE = import.meta.env.VITE_API_BASE;
   console.log(username);
   const handleClickOutside = (e) => {
     if (
@@ -27,8 +28,8 @@ function NavBar() {
   const handleAddCar = ()=>{
     navigate("/addCar", {state : {id : userId}})
   }
-  const handleClickCar = (carId)=>{
-    navigate("/carView", { state: { userId: userId, carId: {carId} } })
+  const handleClickCar = (carId,model)=>{
+    navigate("/carView", { state: { userId, carId, model} })
   }
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
@@ -64,7 +65,7 @@ function NavBar() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/cars/");
+        const res = await axios.get(`${API_BASE}/cars/`);
         setCars(res.data);   // store all cars
         setFilteredCars(res.data); // default view
       } catch (error) {
@@ -237,7 +238,7 @@ function NavBar() {
               {filteredCars.map((car) => (
                 <div
                   key={car._id}
-                  onClick={()=>handleClickCar(car.carId)}
+                  onClick={()=>handleClickCar(car.carId,car.model)}
                   className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
                 >
                   <h3 className="text-lg font-semibold mb-1">

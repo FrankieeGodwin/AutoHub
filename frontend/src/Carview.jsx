@@ -12,109 +12,142 @@ function CarView() {
   const [details, setDetails] = useState(null);
   const [images, setImages] = useState([]);
   const [locationData, setLocationData] = useState(null);
-  console.log(userId,carId);
-  // useEffect(() => {
-  //   if (!carId) return;
 
-  //   const fetchCarData = async () => {
-  //     try {
-  //       const [mainRes, featuresRes, detailsRes, imagesRes, locationRes] =
-  //         await Promise.all([
-  //           axios.get(`http://localhost:5000/main/${carId}`),
-  //           axios.get(`http://localhost:5000/features/${carId}`),
-  //           axios.get(`http://localhost:5000/details/${carId}`),
-  //           axios.get(`http://localhost:5000/images/${carId}`),
-  //           axios.get(`http://localhost:5000/location/${carId}`),
-  //         ]);
+  const API_BASE = import.meta.env.VITE_API_BASE;
 
-  //       setCar(mainRes.data);
-  //       setFeatures(featuresRes.data);
-  //       setDetails(detailsRes.data);
-  //       setImages(imagesRes.data);
-  //       setLocationData(locationRes.data);
-  //     } catch (err) {
-  //       console.error("Error fetching car data:", err);
-  //     }
-  //   };
+  useEffect(() => {
+    if (!carId) return;
 
-  //   fetchCarData();
-  // }, [carId]);
+    const fetchCarData = async () => {
+      try {
+        const [mainRes, featuresRes, detailsRes, imagesRes, locationRes] =
+          await Promise.all([
+            axios.get(`${API_BASE}/cars/main/${carId}`),
+            axios.get(`${API_BASE}/cars/features/${carId}`),
+            axios.get(`${API_BASE}/cars/details/${carId}`),
+            axios.get(`${API_BASE}/cars/images/${carId}`),
+            axios.get(`${API_BASE}/cars/location/${carId}`),
+          ]);
 
-  // if (!car) return <p className="text-center mt-10">Loading car details...</p>;
+        setCar(mainRes.data);
+        setFeatures(featuresRes.data);
+        setDetails(detailsRes.data);
+        setImages(imagesRes.data);
+        setLocationData(locationRes.data);
+      } catch (err) {
+        console.error("Error fetching car data:", err);
+      }
+    };
+
+    fetchCarData();
+  }, [carId]);
+
+  if (!car) return <p className="text-center mt-10">Loading car details...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">
+    <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold mb-6">
         {car.make} {car.model}
       </h1>
 
-      {/* Car Images */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        {images.length > 0 ? (
-          images.map((img, index) => (
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        {/* LEFT SIDE: Images + Details */}
+        <div>
+          {/* Main Image */}
+          {images.length > 0 ? (
             <img
-              key={index}
-              src={img.imageURL}
-              alt={`Car ${index}`}
-              className="w-full h-48 object-cover rounded-md shadow-md"
+              src={images[0].imageURL}
+              alt="Main Car"
+              className="w-full h-72 object-cover rounded-lg shadow-md mb-4"
             />
-          ))
-        ) : (
-          <p>No images available</p>
-        )}
+          ) : (
+            <p>No images available</p>
+          )}
+
+          {/* Thumbnails */}
+          {images.length > 1 && (
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {images.slice(1).map((img, index) => (
+                <img
+                  key={index}
+                  src={img.imageURL}
+                  alt={`Car ${index + 1}`}
+                  className="w-full h-24 object-cover rounded-md shadow-sm hover:scale-105 transition"
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Main Car Info */}
+          <div className="mb-4">
+            <p className="text-gray-700">
+              <strong>Price:</strong> ₹{car.price}
+            </p>
+            <p className="text-gray-700">
+              <strong>Status:</strong> {car.status}
+            </p>
+            <p className="text-gray-700">
+              <strong>Registration No:</strong> {car.regno}
+            </p>
+          </div>
+
+          {/* Features */}
+          {features && (
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Features</h2>
+              <ul className="space-y-1 text-gray-700">
+                <li>Engine: {features.engine}</li>
+                <li>Mileage: {features.mileage}</li>
+                <li>Fuel Type: {features.fuelType}</li>
+                <li>Transmission: {features.transmission}</li>
+                <li>Seating Capacity: {features.seatingCapacity}</li>
+                <li>Body Type: {features.bodyType}</li>
+                <li>Color: {features.color}</li>
+                <li>Year: {features.yearOfManufacture}</li>
+                <li>Drive Type: {features.driveType}</li>
+              </ul>
+            </div>
+          )}
+
+          {/* Car Details */}
+          {details && (
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Car Details</h2>
+              <ul className="space-y-1 text-gray-700">
+                <li>Age: {details.age} years</li>
+                <li>Distance Travelled: {details.distanceTravelled} km</li>
+                <li>Number of Owners: {details.numberOfOwners}</li>
+              </ul>
+            </div>
+          )}
+
+          {/* Location */}
+          {locationData && (
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Location</h2>
+              <ul className="space-y-1 text-gray-700">
+                <li>Country: {locationData.country}</li>
+                <li>State: {locationData.state}</li>
+                <li>City: {locationData.city}</li>
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT SIDE: Reserved for future (Seller Info, Contact, Loan, etc.) */}
+        <div className="p-6 bg-gray-50 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-4">Seller Information</h2>
+          <p className="text-gray-600 mb-2">Contact the seller for more details.</p>
+          <button className="bg-purple-700 text-white px-6 py-2 rounded-lg hover:bg-purple-800">
+            Contact Seller
+          </button>
+
+          {/* Hidden User ID */}
+          <p className="text-sm text-gray-400 mt-6">User ID: {userId}</p>
+        </div>
       </div>
-
-      {/* Main Car Info */}
-      <div className="mb-4">
-        <p className="text-gray-700">
-          <strong>Price:</strong> ₹{car.price}
-        </p>
-        <p className="text-gray-700">
-          <strong>Status:</strong> {car.status}
-        </p>
-        <p className="text-gray-700">
-          <strong>Registration No:</strong> {car.regno}
-        </p>
-      </div>
-
-      {/* Features */}
-      {features && (
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">Features</h2>
-          <p>Engine: {features.engine}</p>
-          <p>Mileage: {features.mileage}</p>
-          <p>Fuel Type: {features.fuelType}</p>
-          <p>Transmission: {features.transmission}</p>
-          <p>Seating Capacity: {features.seatingCapacity}</p>
-          <p>Body Type: {features.bodyType}</p>
-          <p>Color: {features.color}</p>
-          <p>Year: {features.yearOfManufacture}</p>
-          <p>Drive Type: {features.driveType}</p>
-        </div>
-      )}
-
-      {/* Car Details */}
-      {details && (
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">Car Details</h2>
-          <p>Age: {details.age} years</p>
-          <p>Distance Travelled: {details.distanceTravelled} km</p>
-          <p>Number of Owners: {details.numberOfOwners}</p>
-        </div>
-      )}
-
-      {/* Location */}
-      {locationData && (
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">Location</h2>
-          <p>Country: {locationData.country}</p>
-          <p>State: {locationData.state}</p>
-          <p>City: {locationData.city}</p>
-        </div>
-      )}
-
-      {/* Hidden User ID */}
-      <p className="text-sm text-gray-400">User ID: {userId}</p>
     </div>
   );
 }
