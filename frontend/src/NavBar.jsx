@@ -132,13 +132,16 @@ function NavBar() {
             className="flex-1 h-10 px-4 focus:outline-none text-gray-700"
           />
         </div>
-        <div className='w-[10%]'>
-          <button onClick={handleAddCar}
-            className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
-          >
-            Add Car
-          </button>     
-        </div>
+        {username && (
+          <div className="w-[10%]">
+            <button
+              onClick={handleAddCar}
+              className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
+            >
+              Add Car
+            </button>
+          </div>
+        )}
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
@@ -156,7 +159,7 @@ function NavBar() {
           </Link> </>)}
          
 
-          <div className="relative dropdown-container">
+          {username &&(<div className="relative dropdown-container">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 font-medium"
@@ -174,6 +177,7 @@ function NavBar() {
               </div>
             )}
           </div>
+            )}
         </div>
       </div>
 
@@ -230,12 +234,12 @@ function NavBar() {
               {filteredCars.map((car) => (
                 <div
                   key={car._id}
-                  className="p-6 bg-white rounded-lg shadow-md text-center"
+                  className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
                 >
                   <h3 className="text-lg font-semibold mb-1">
                     {car.make} {car.model}
                   </h3>
-                  <p className="text-gray-600">Color: {car.color || "N/A"}</p>
+                  <img src="https://res.cloudinary.com/dbdcej4y3/image/upload/v1757005510/AutoHubCars/oxisqo8f6xx1uvdmgvd7.jpg" alt="image" />
                   <p className="text-gray-600">Price: ₹{car.price}</p>
                   <p className="text-gray-600">Status: {car.status}</p>
                   <p className="text-gray-600">Reg No: {car.regno}</p>
