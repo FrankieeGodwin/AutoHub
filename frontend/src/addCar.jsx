@@ -62,8 +62,8 @@ export default function CarUploadForm() {
     }
 
     if (section === "features") {
-      if (name === "mileage" && value && !/^[0-9]+$/.test(value))
-        error = "Mileage must be a number";
+      // if (name === "mileage" && value && !/^[0-9]+$/.test(value))
+      //   error = "Mileage must be a number";
       if (name === "seatingCapacity" && value && !/^[0-9]+$/.test(value))
         error = "Seating Capacity must be a number";
       if (name === "yearOfManufacture" && value && !/^\d{4}$/.test(value))
@@ -71,9 +71,17 @@ export default function CarUploadForm() {
     }
 
     if (section === "carDetails") {
-      if (name === "age" && value && isNaN(value)) error = "Age must be a number";
-      if (name === "distanceTravelled" && value && isNaN(value))
-        error = "Distance must be a number";
+      if (name === "age" && value) {
+        const ageNum = Number(value);
+        if (isNaN(ageNum)) error = "Age must be a number";
+        else if (ageNum < 18 || ageNum > 80) error = "Age must be between 18 and 80";
+      }
+      if (name === "distanceTravelled" && value) {
+        const distance = Number(value);
+        if (isNaN(distance)) error = "Distance must be a number";
+        else if (distance < 0) error = "Distance cannot be negative";
+      }
+
       if (name === "numberOfOwners" && value && !/^[0-9]+$/.test(value))
         error = "Enter valid number of owners";
     }
@@ -274,7 +282,73 @@ export default function CarUploadForm() {
           </div>
 
           {/* ---------------- FEATURES ---------------- */}
-          <h3 className="text-xl font-semibold text-gray-800">Features</h3>
+          {/* ---------------- FEATURES ---------------- */}
+<h3 className="text-xl font-semibold text-gray-800">Features</h3>
+<div className="grid grid-cols-1 gap-4">
+  {featureFields.map((f) => {
+    let options = [];
+    switch (f.name) {
+      case "engine":
+        options = ["800 cc","1000 cc","1200 cc","1400 cc","1500 cc","1600 cc","1800 cc","2000 cc","2200 cc","2500 cc+"];
+        break;
+      case "mileage":
+        options = ["10 km/l","12 km/l","15 km/l","16 km/l","18 km/l","20 km/l","22 km/l","25 km/l","30 km/l"];
+        break;
+      case "fuelType":
+        options = ["Petrol","Diesel","CNG","Electric","Hybrid"];
+        break;
+      case "transmission":
+        options = ["Manual","Automatic","CVT","Semi-Automatic"];
+        break;
+      case "seatingCapacity":
+        options = ["2","4","5","6","7","8","9+"];
+        break;
+      case "bodyType":
+        options = ["Hatchback","Sedan","SUV","MUV","Coupe","Convertible","Pickup Truck","Van"];
+        break;
+      case "color":
+        options = ["White","Black","Silver / Grey","Blue","Red","Green","Brown","Yellow / Gold","Orange","Maroon","Custom / Other"];
+        break;
+      case "yearOfManufacture":
+        options = Array.from({ length: 26 }, (_, i) => (2000 + i).toString());
+        break;
+      case "driveType":
+        options = ["Front Wheel Drive (FWD)","Rear Wheel Drive (RWD)","All Wheel Drive (AWD)","Four Wheel Drive (4WD)"];
+        break;
+    }
+
+    return (
+      <div key={f.name} className="flex flex-col gap-1 relative">
+        <label className="text-base font-semibold text-gray-800 text-left px-5">
+          {f.label}
+        </label>
+        <select
+          value={formData.features[f.name]}
+          onChange={(e) => handleChange(e, "features", f.name)}
+          className="px-4 py-3 border border-gray-300 rounded-md w-full appearance-none bg-white pr-10"
+        >
+          <option value="">{`Select ${f.label}`}</option>
+          {options.map((val) => (
+            <option key={val} value={val}>
+              {val}
+            </option>
+          ))}
+        </select>
+        {/* Custom arrow */}
+        <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-gray-400">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        {errors[`features.${f.name}`] && (
+          <p className="text-red-500 text-sm px-5">{errors[`features.${f.name}`]}</p>
+        )}
+      </div>
+    );
+  })}
+</div>
+
+          {/* <h3 className="text-xl font-semibold text-gray-800">Features</h3>
           <div className="grid grid-cols-1 gap-4">
             {featureFields.map((f) => (
               <div key={f.name} className="flex flex-col gap-1">
@@ -294,7 +368,7 @@ export default function CarUploadForm() {
                 )}
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* ---------------- CAR DETAILS ---------------- */}
           <h3 className="text-xl font-semibold text-gray-800">Car Details</h3>
