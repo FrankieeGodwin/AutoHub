@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
+    "country-state-city": "^3.2.1",
     "firebase": "^12.1.0",
     "list-of-cars": "^0.0.142",
     "lucide-react": "^0.541.0",
