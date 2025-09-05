@@ -4,17 +4,9 @@ import {useLocation} from "react-router-dom";
 import logo from './assets/logo.png';
 // import login from "./Login.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import Carview from './Carview.jsx';
+import axios from "axios";
+// import Carview from './Carview.jsx';
 
-const allCars = [
-  { id: 1, make: 'Toyota', model: 'Camry', color: 'red' },
-  { id: 2, make: 'Honda', model: 'Accord', color: 'blue' },
-  { id: 3, make: 'Ford', model: 'Fusion', color: 'black' },
-  { id: 4, make: 'Toyota', model: 'Corolla', color: 'white' },
-  { id: 5, make: 'Ford', model: 'Mustang', color: 'red' },
-  { id: 6, make: 'Honda', model: 'Civic', color: 'blue' },
-  { id: 7, make: 'Tesla', model: 'Model 3', color: 'white' },
-];
 
 function NavBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,24 +33,72 @@ function NavBar() {
   }, []);
 
 
-  const [filters, setFilters] = useState({
-    make: '',
-    color: '',
-  });
+  // const [filters, setFilters] = useState({
+  //   make: '',
+  //   color: '',
+  // });
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
+  const { name, value } = e.target;
+  setFilters((prev) => ({ ...prev, [name]: value }));
+};
 
-  const filteredCars = allCars.filter(car => {
-    const makeMatch = filters.make === '' || car.make.toLowerCase().includes(filters.make.toLowerCase());
-    const colorMatch = filters.color === '' || car.color.toLowerCase().includes(filters.color.toLowerCase());
-    return makeMatch && colorMatch;
-  });
+
+  // const filteredCars = allCars.filter(car => {
+  //   const makeMatch = filters.make === '' || car.make.toLowerCase().includes(filters.make.toLowerCase());
+  //   const colorMatch = filters.color === '' || car.color.toLowerCase().includes(filters.color.toLowerCase());
+  //   return makeMatch && colorMatch;
+  // });
+
+
+  //sathish
+
+  const [cars, setCars] = useState([]);
+  const [filters, setFilters] = useState({ make: "", color: "" });
+  const [filteredCars, setFilteredCars] = useState([]);
+
+  // Fetch cars from backend API
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/cars/");
+        setCars(res.data);   // store all cars
+        setFilteredCars(res.data); // default view
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+    fetchCars();
+  }, []);
+
+  // Handle filter input changes
+  // const handleFilterChanges = (e) => {
+  //   const { name, value } = e.target;
+  //   setFilters((prev) => ({ ...prev, [name]: value }));
+  // };
+
+  // Filter cars when filters or cars change
+  useEffect(() => {
+    if (!filters.make && !filters.color) {
+      setFilteredCars(cars);
+      return;
+    }
+    let updatedCars = cars;
+
+    if (filters.make) {
+      updatedCars = updatedCars.filter((car) =>
+        car.make.toLowerCase().includes(filters.make.toLowerCase())
+      );
+    }
+
+    if (filters.color) {
+      updatedCars = updatedCars.filter((car) =>
+        car.color?.toLowerCase().includes(filters.color.toLowerCase())
+      );
+    }
+
+    setFilteredCars(updatedCars);
+  }, [filters, cars]);
 
 
   return (
@@ -148,7 +188,12 @@ function NavBar() {
         <div className="w-full lg:w-1/4 p-6 bg-gray-100 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
           <div className="mb-4">
-            <label htmlFor="make" className="block text-gray-700 font-medium mb-1">Make</label>
+            <label
+              htmlFor="make"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Make
+            </label>
             <input
               type="text"
               id="make"
@@ -160,7 +205,12 @@ function NavBar() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="color" className="block text-gray-700 font-medium mb-1">Color</label>
+            <label
+              htmlFor="color"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Color
+            </label>
             <input
               type="text"
               id="color"
@@ -177,15 +227,25 @@ function NavBar() {
         <div className="w-full lg:w-3/4">
           {filteredCars.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {filteredCars.map(car => (
-                <div key={car.id} className="p-6 bg-white rounded-lg shadow-md text-center">
-                  <h3 className="text-lg font-semibold mb-1">{car.make} {car.model}</h3>
-                  <p className="text-gray-600">Color: {car.color}</p>
+              {filteredCars.map((car) => (
+                <div
+                  key={car._id}
+                  className="p-6 bg-white rounded-lg shadow-md text-center"
+                >
+                  <h3 className="text-lg font-semibold mb-1">
+                    {car.make} {car.model}
+                  </h3>
+                  <p className="text-gray-600">Color: {car.color || "N/A"}</p>
+                  <p className="text-gray-600">Price: ₹{car.price}</p>
+                  <p className="text-gray-600">Status: {car.status}</p>
+                  <p className="text-gray-600">Reg No: {car.regno}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-500 text-lg">No cars found matching your filters.</p>
+            <p className="text-center text-gray-500 text-lg">
+              No cars found matching your filters.
+            </p>
           )}
         </div>
       </div>
