@@ -5,7 +5,7 @@ import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import SendOtp  from "./SendOtp.jsx";
 import AddCar from "./addCar.jsx";
-
+import CarView from "./Carview.jsx";
 import Home from "./Home";
 function App() {
   useEffect(() => {
@@ -20,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/Otp" element={<SendOtp/>}/>
         <Route path="/addCar" element={<AddCar/>}/>
+        <Route path="/carView" element={<CarView/>}/>
       </Routes>
   </Router>
   );

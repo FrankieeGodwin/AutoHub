@@ -12,7 +12,7 @@ export const addImage = async (req, res) => {
 
 export const getImagesByCarId = async (req, res) => {
   try {
-    const images = await Images.find({ carId: req.params.carId });
+    const images = await Images.find({ carId: req.params.id });
     res.status(200).json(images);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -12,7 +12,7 @@ export const addCarDetails = async (req, res) => {
 
 export const getCarDetailsByCarId = async (req, res) => {
   try {
-    const details = await CarDetails.findOne({ carId: req.params.carId });
+    const details = await CarDetails.findOne({ carId: req.params.id });
     res.status(200).json(details);
   } catch (err) {
     res.status(500).json({ error: err.message });

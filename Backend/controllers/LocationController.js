@@ -12,7 +12,7 @@ export const addLocation = async (req, res) => {
 
 export const getLocationByCarId = async (req, res) => {
   try {
-    const location = await Location.findOne({ carId: req.params.carId });
+    const location = await Location.findOne({ carId: req.params.id });
     res.status(200).json(location);
   } catch (err) {
     res.status(500).json({ error: err.message });

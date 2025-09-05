@@ -27,6 +27,9 @@ function NavBar() {
   const handleAddCar = ()=>{
     navigate("/addCar", {state : {id : userId}})
   }
+  const handleClickCar = (carId)=>{
+    navigate("/carView", { state: { userId: userId, carId: {carId} } })
+  }
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
@@ -234,12 +237,18 @@ function NavBar() {
               {filteredCars.map((car) => (
                 <div
                   key={car._id}
+                  onClick={()=>handleClickCar(car.carId)}
                   className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
                 >
                   <h3 className="text-lg font-semibold mb-1">
                     {car.make} {car.model}
                   </h3>
-                  <img src="https://res.cloudinary.com/dbdcej4y3/image/upload/v1757005510/AutoHubCars/oxisqo8f6xx1uvdmgvd7.jpg" alt="image" />
+                  <img 
+                  src={car.images && car.images.length > 0 ? car.images[0].imageURL : "/placeholder.jpg"} 
+                  alt="Car" 
+                  className="w-full h-48 object-cover rounded-md"
+                  />
+                  <p className="text-gray-600">Color: {car.features.color}</p>
                   <p className="text-gray-600">Price: ₹{car.price}</p>
                   <p className="text-gray-600">Status: {car.status}</p>
                   <p className="text-gray-600">Reg No: {car.regno}</p>

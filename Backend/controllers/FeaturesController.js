@@ -12,7 +12,7 @@ export const addFeatures = async (req, res) => {
 
 export const getFeaturesByCarId = async (req, res) => {
   try {
-    const features = await Features.findOne({ carId: req.params.carId });
+    const features = await Features.findOne({ carId: req.params.id });
     res.status(200).json(features);
   } catch (err) {
     res.status(500).json({ error: err.message });
