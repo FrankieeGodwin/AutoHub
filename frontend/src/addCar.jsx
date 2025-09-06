@@ -123,28 +123,6 @@ export default function CarUploadForm() {
     e.preventDefault();
     setLoading(true);
 
-    let tempErrors = {};
-    Object.keys(formData).forEach((key) => {
-      if (typeof formData[key] === "string") {
-        tempErrors[key] = validateField(null, key, formData[key]);
-      } else if (typeof formData[key] === "object") {
-        Object.keys(formData[key]).forEach((subKey) => {
-          tempErrors[`${key}.${subKey}`] = validateField(
-            key,
-            subKey,
-            formData[key][subKey]
-          );
-        });
-      }
-    });
-    setErrors(tempErrors);
-
-    if (Object.values(tempErrors).some((err) => err)) {
-      alert("Please fix validation errors before submitting");
-      setLoading(false);
-      return;
-    }
-
     try {
       let uploadedImages = [];
 
