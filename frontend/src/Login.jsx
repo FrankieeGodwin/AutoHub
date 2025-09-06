@@ -47,12 +47,12 @@ export default function Login() {
 
         {/* Username */}
         <div className="mb-6">
-          <label className="block text-lg text-gray-700 mb-2">Username</label>
+          <label className="block text-lg text-gray-700 mb-2">Email</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter username"
+            placeholder="Enter email"
             className="w-full px-4 py-3 rounded-xl border border-gray-300 
                        focus:outline-none focus:ring-2 focus:ring-purple-400"
           />

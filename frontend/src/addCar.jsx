@@ -74,7 +74,7 @@ export default function CarUploadForm() {
       if (name === "age" && value) {
         const ageNum = Number(value);
         if (isNaN(ageNum)) error = "Age must be a number";
-        else if (ageNum < 18 || ageNum > 80) error = "Age must be between 18 and 80";
+        else if (ageNum < 0) error = "Age must be greater than 0";
       }
       if (name === "distanceTravelled" && value) {
         const distance = Number(value);
