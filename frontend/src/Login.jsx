@@ -47,7 +47,6 @@ export default function Login() {
 
         {/* Username */}
         <div className="mb-6">
-          <label className="block text-lg text-gray-700 mb-2">Email</label>
           <input
             type="text"
             value={username}
@@ -60,7 +59,6 @@ export default function Login() {
 
         {/* Password */}
         <div className="mb-6">
-          <label className="block text-lg text-gray-700 mb-2">Password</label>
           <input
             type="password"
             value={password}

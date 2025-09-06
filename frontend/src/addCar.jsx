@@ -8,7 +8,7 @@ export default function CarUploadForm() {
   const API_BASE = import.meta.env.VITE_API_BASE;
   const location = useLocation();
   const userId = location.state?.id;
-
+  const email = location.state?.emailId;
   const [formData, setFormData] = useState({
     userId: userId,
     status: "available",
@@ -156,7 +156,7 @@ export default function CarUploadForm() {
       }
 
       alert("Car uploaded successfully!");
-      navigate("/");
+      navigate("/", { state: { id : userId , email : email} });
     } catch (err) {
       console.error("Upload error:", err);
       alert("Failed to upload car.");
