@@ -7,6 +7,8 @@ import SendOtp  from "./SendOtp.jsx";
 import AddCar from "./addCar.jsx";
 import CarView from "./Carview.jsx";
 import Home from "./Home";
+import Profile from "./Profile.jsx";
+
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -21,6 +23,7 @@ function App() {
         <Route path="/Otp" element={<SendOtp/>}/>
         <Route path="/addCar" element={<AddCar/>}/>
         <Route path="/carView" element={<CarView/>}/>
+        <Route path="/Profile" element={<Profile/>}/>
       </Routes>
   </Router>
   );

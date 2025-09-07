@@ -15,8 +15,8 @@ export default function Login() {
         });
         if(response.status === 200)
         {
-          const { userId, emailId } = response.data;
-          navigate("/", { state: { id : userId, email : emailId } });
+          const { _id, emailId } = response.data;
+          navigate("/", { state: { userId:_id, email : emailId } });
         }
       }
  catch (err) {
