@@ -13,6 +13,8 @@ function CarView() {
   const [images, setImages] = useState([]);
   const [locationData, setLocationData] = useState(null);
 
+  const [user,setUser] = useState(null);
+  const [showDetails,setShowDetails] = useState(false);
   const API_BASE = import.meta.env.VITE_API_BASE;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,6 +59,23 @@ function CarView() {
 
     return () => clearInterval(interval);
   }, [images]);
+
+  useEffect(() => {
+    if(!userId){
+      alert("User id not found");
+      return;
+    }
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/users/${car.userId}`)
+        setUser(res.data);
+      }
+      catch (err) {
+        console.error("Error fetching user data :",err);
+      }
+    };
+    fetchUser();
+  },[car,API_BASE]);
 
   if (!car)
     return (
@@ -214,12 +233,28 @@ function CarView() {
               <p className="text-gray-600 mb-6">
                 Contact the seller for more details about this car.
               </p>
-              <button className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800">
-                Contact Seller
-              </button>
+
+
+              {showDetails && (
+                <div className="mt-6 bg-white rounded-xl shadow-md p-5 border border-purple-200 transition-all duration-300">
+                  <h3 className="text-lg font-semibold text-purple-700 mb-3">
+                    Seller Contact Details
+                  </h3>
+                  <p className="text-gray-800 mb-2">
+                    <span className="font-medium">Name:</span> {user.fullName}
+                  </p>
+                  <p className="text-gray-800 mb-2">
+                    <span className="font-medium">Phone:</span> {user.phoneNo}
+                  </p>
+                  <p className="text-gray-800">
+                    <span className="font-medium">Email:</span> {user.emailId}
+                  </p>
+                </div>
+              )}
+
             </div>
             <p className="text-sm text-gray-400 mt-8 text-center">
-              User ID: {userId}
+              User ID: {car.userId}
             </p>
           </div>
         </div>
