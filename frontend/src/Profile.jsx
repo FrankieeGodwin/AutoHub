@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Profile() {
@@ -7,23 +7,10 @@ export default function Profile() {
   const userId = location.state?.id;
   const emailId = location.state?.email; // take from state or params
   console.log(userId,emailId);
+  const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;
 
-//   import { useLocation } from "react-router-dom";
 
-// export default function Profile() {
-  
-
-// const location = useLocation();
-//   const userId = location.state?.id;
-//   const emailId = location.state?.email; 
-//   return (
-//     <div>
-//       <h1>Profile Page</h1>
-//       <p>User ID: {userId}</p>
-//     </div>
-//   );
-// }
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -74,6 +61,14 @@ export default function Profile() {
         <div className="mt-6 text-center">
           <button className="px-6 py-2 bg-purple-700 text-white rounded-lg shadow hover:bg-purple-800 transition">
             Edit Profile
+          </button>
+        </div>
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => navigate("/YourCars", { state: { userId } })}
+            className="px-6 py-2 bg-purple-700 text-white rounded-lg shadow hover:bg-purple-800 transition"
+          >
+            Your Cars
           </button>
         </div>
       </div>
