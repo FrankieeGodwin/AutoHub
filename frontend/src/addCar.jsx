@@ -9,6 +9,7 @@ export default function CarUploadForm() {
   const location = useLocation();
   const userId = location.state?.id;
   const email = location.state?.emailId;
+  console.log(userId);
   const [formData, setFormData] = useState({
     userId: userId,
     status: "available",

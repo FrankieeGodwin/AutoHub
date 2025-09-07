@@ -4,9 +4,9 @@ import axios from "axios";
 
 export default function Profile() {
   const location = useLocation();// if URL has /Profile/:id
-  const userId = location.state?.userId;
-  const emailId = location.state?.emailId; // take from state or params
-
+  const userId = location.state?.id;
+  const emailId = location.state?.email; // take from state or params
+  console.log(userId,emailId);
   const API_BASE = import.meta.env.VITE_API_BASE;
 
 //   import { useLocation } from "react-router-dom";
