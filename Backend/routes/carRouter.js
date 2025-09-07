@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCar , deleteCar , getAllCars, getCarById } from '../controllers/CarController.js';
+import { createCar , deleteCar , getAllCars, getCarById ,getCarsByUserId } from '../controllers/CarController.js';
 import { getFeaturesByCarId } from '../controllers/FeaturesController.js';
 import { getCarDetailsByCarId } from '../controllers/CarDetailsController.js';
 import { getImagesByCarId } from '../controllers/ImagesController.js';
@@ -13,6 +13,7 @@ router.get('/features/:id',getFeaturesByCarId);
 router.get('/details/:id',getCarDetailsByCarId);
 router.get('/images/:id',getImagesByCarId);
 router.get('/location/:id',getLocationByCarId);
-router.delete('/:id',deleteCar);
+router.delete('/:id', deleteCar);
+router.get('/getByUserId/:userId',getCarsByUserId);
 
 export default router;

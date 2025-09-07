@@ -122,3 +122,65 @@ export const deleteCar = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getCarsByUserId = async (req , res) => {
+  try{
+    const cars = await Car.find({userId : req.params.userId});
+    if(!cars) return res.status(404).json({message : "No cars found for the user"});
+        const carRecords = await Promise.all(
+      cars.map(async (car) => {
+        const features = await Features.findOne({ carId: car._id });
+        const carDetails = await CarDetails.findOne({ carId: car._id });
+        const images = await Images.find({ carId: car._id });
+        const location = await Location.findOne({ carId: car._id });
+
+        return {
+          carId: car._id, 
+          userId: car.userId,
+          status: car.status,
+          make: car.make,
+          model: car.model,
+          price: car.price,
+          regno: car.regno,
+
+          images: images.map((img) => ({ imageURL: img.imageURL })),
+
+          features: features
+            ? {
+                engine: features.engine,
+                mileage: features.mileage,
+                fuelType: features.fuelType,
+                transmission: features.transmission,
+                seatingCapacity: features.seatingCapacity,
+                bodyType: features.bodyType,
+                color: features.color,
+                yearOfManufacture: features.yearOfManufacture,
+                driveType: features.driveType,
+              }
+            : null,
+
+          carDetails: carDetails
+            ? {
+                age: carDetails.age,
+                distanceTravelled: carDetails.distanceTravelled,
+                numberOfOwners: carDetails.numberOfOwners,
+              }
+            : null,
+
+          location: location
+            ? {
+                country: location.country,
+                state: location.state,
+                city: location.city,
+              }
+            : null,
+        };
+      })
+    );
+
+    res.status(200).json(carRecords);
+  }
+  catch(err){
+    res.status(500).json({ error: err.message });
+  }
+}

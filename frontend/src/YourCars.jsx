@@ -16,32 +16,8 @@ export default function YourCars() {
 
     const fetchUserCars = async () => {
       try {
-        // 1. Get all cars
-        const allCarsRes = await axios.get(`${API_BASE}/cars/all`);
-        const userCars = allCarsRes.data.filter((car) => car.userId == userId);
-
-        // 2. For each car, fetch features, details, images, location
-        const carsWithData = await Promise.all(
-          userCars.map(async (car) => {
-            const [featuresRes, detailsRes, imagesRes, locationRes] =
-              await Promise.all([
-                axios.get(`${API_BASE}/cars/features/${car._id}`),
-                axios.get(`${API_BASE}/cars/details/${car._id}`),
-                axios.get(`${API_BASE}/cars/images/${car._id}`),
-                axios.get(`${API_BASE}/cars/location/${car._id}`),
-              ]);
-
-            return {
-              ...car,
-              features: featuresRes.data,
-              details: detailsRes.data,
-              images: imagesRes.data,
-              locationData: locationRes.data,
-            };
-          })
-        );
-
-        setCars(carsWithData);
+        const allCarsRes = await axios.get(`${API_BASE}/cars/getByUserId/${userId}`);
+        setCars(allCarsRes.data);
       } catch (err) {
         console.error("Error fetching user's cars:", err);
       } finally {
@@ -114,8 +90,8 @@ export default function YourCars() {
                 {/* Button to view car details */}
                 <button
                   onClick={() =>
-                    navigate("/carview", {
-                      state: { userId, carId: car._id },
+                    navigate("/carView", {
+                      state: { userId, carId: car.carId },
                     })
                   }
                   className="mt-4 w-full bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-800 transition"

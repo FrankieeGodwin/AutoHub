@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { State, City } from "country-state-city";
-
+import NavBar from "./NavBar";
 export default function CarUploadForm() {
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;

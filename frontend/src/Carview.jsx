@@ -215,7 +215,7 @@ function CarView() {
                 Contact the seller for more details about this car.
               </p>
               <button className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800">
-                📞 Contact Seller
+                Contact Seller
               </button>
             </div>
             <p className="text-sm text-gray-400 mt-8 text-center">
