@@ -234,6 +234,11 @@ function CarView() {
                 Contact the seller for more details about this car.
               </p>
 
+          
+              <button onClick={() => {setShowDetails(!showDetails)}}
+                className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800">
+                Contact Seller
+              </button>
 
               {showDetails && (
                 <div className="mt-6 bg-white rounded-xl shadow-md p-5 border border-purple-200 transition-all duration-300">
