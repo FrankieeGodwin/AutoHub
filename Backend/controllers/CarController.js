@@ -60,6 +60,7 @@ export const getAllCars = async (req, res) => {
           make: car.make,
           model: car.model,
           price: car.price,
+          type: car.type,
           regno: car.regno,
 
           images: images.map((img) => ({ imageURL: img.imageURL })),
@@ -141,6 +142,7 @@ export const getCarsByUserId = async (req , res) => {
           make: car.make,
           model: car.model,
           price: car.price,
+          type: car.type,
           regno: car.regno,
 
           images: images.map((img) => ({ imageURL: img.imageURL })),

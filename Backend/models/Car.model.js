@@ -10,6 +10,7 @@ const carSchema = new mongoose.Schema({
   model: { type: String, required: true },
   price: { type: Number, required: true },
   status: { type: String, default: "Available" },
+  type: { type: String, enum: ["new", "used"], default: "used" },
   regno: {type: String, required: true}
 }, { timestamps: true });
 
