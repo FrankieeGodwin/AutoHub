@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CarView() {
   const location = useLocation();
+  const navigate = useNavigate();
   const userId = location.state?.userId;
   const carId = location.state?.carId;
+  const paymentId = location.state?.paymentId;
 
   const [car, setCar] = useState(null);
   const [features, setFeatures] = useState(null);
@@ -14,10 +16,21 @@ function CarView() {
   const [locationData, setLocationData] = useState(null);
 
   const [user,setUser] = useState(null);
+  const [paymentDone, setPaymentDone] = useState(false);
   const [showDetails,setShowDetails] = useState(false);
   const API_BASE = import.meta.env.VITE_API_BASE;
 
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  function handlepayment(){
+    navigate("/Payment", { state: { userId:userId, carId:carId} })
+  }
+
+  useEffect(() => {
+    if(paymentId){
+    setPaymentDone(true);
+    }
+  },[paymentId])
 
   useEffect(() => {
     if (!carId) return;
@@ -234,13 +247,20 @@ function CarView() {
                 Contact the seller for more details about this car.
               </p>
 
+              <button onClick={() => handlepayment()}
+                className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800 mb-4">
+                Payment
+              </button>
           
-              <button onClick={() => {setShowDetails(!showDetails)}}
+
+              {paymentDone &&  ( 
+                <button onClick={() => {setShowDetails(!showDetails)}}
                 className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800">
                 Contact Seller
               </button>
+              )}
 
-              {showDetails && (
+              {showDetails && user && (
                 <div className="mt-6 bg-white rounded-xl shadow-md p-5 border border-purple-200 transition-all duration-300">
                   <h3 className="text-lg font-semibold text-purple-700 mb-3">
                     Seller Contact Details

@@ -9,6 +9,7 @@ import CarView from "./Carview.jsx";
 import Home from "./Home";
 import Profile from "./Profile.jsx";
 import YourCars from "./YourCars.jsx";
+import Payment from "./Payment.jsx";
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/carView" element={<CarView/>}/>
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/YourCars" element={<YourCars/>}/>
+        <Route path="/Payment" element={<Payment/>}/>
       </Routes>
   </Router>
   );
