@@ -55,12 +55,12 @@ export default function CarList(){
       setFilteredCars(updatedCars);
     }, [filters, cars]);
     return(
-      <div className="mx-auto p-4 mt-[5%] z-50">
+      <div className="mx-auto p-4 mt-[5%] z-50 bg-[#FAFAFA]">
       <h1 className="text-center text-black-500 text-2xl font-bold mb-6">Cars</h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Filter Panel */}
-        <div className="w-full lg:w-1/4 p-6 bg-gray-100 rounded-lg shadow-md">
+        <div className="w-1/4 p-6 bg-white mt-[5%] rounded-lg shadow-md h-screen fixed top-[5%] left-0">
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
           <div className="mb-4">
             <label
@@ -99,7 +99,7 @@ export default function CarList(){
         </div>
 
         {/* Right Side: Car View */}
-        <div className="w-full lg:w-3/4">
+        <div className="w-full lg:w-3/4 ml-[25%]">
           {filteredCars.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filteredCars.map((car) => (

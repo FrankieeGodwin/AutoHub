@@ -169,7 +169,7 @@ function NavBar() {
 
           {dropdownOpen && (
   <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
-    <ul className="py-2 text-center">
+    <ul className="py-2 mx-5">
       <li
         onClick={() => navigate("/Profile", { state: { id:userId, email:username } })}
         className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
