@@ -103,24 +103,26 @@ export default function CarList(){
           {filteredCars.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filteredCars.map((car) => (
-                <div
-                  key={car._id}
-                  onClick={()=>handleClickCar(car.carId,car.model)}
-                  className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
-                >
-                  <h3 className="text-lg font-semibold mb-1">
-                    {car.make} {car.model}
-                  </h3>
-                  <img 
-                  src={car.images && car.images.length > 0 ? car.images[0].imageURL : "/placeholder.jpg"} 
-                  alt="Car" 
-                  className="w-full h-48 object-cover rounded-md"
-                  />
-                  <p className="text-gray-600">Color: {car.features.color}</p>
-                  <p className="text-gray-600">Price: ₹{car.price}</p>
-                  <p className="text-gray-600">Status: {car.status}</p>
-                  <p className="text-gray-600">Reg No: {car.regno}</p>
-                </div>
+                car.userId !== userId ? (
+                  <div
+                    key={car._id}
+                    onClick={() => handleClickCar(car.carId, car.model)}
+                    className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
+                  >
+                    <h3 className="text-lg font-semibold mb-1">
+                      {car.make} {car.model}
+                    </h3>
+                    <img 
+                      src={car.images && car.images.length > 0 ? car.images[0].imageURL : "/placeholder.jpg"} 
+                      alt="Car" 
+                      className="w-full h-48 object-cover rounded-md"
+                    />
+                    <p className="text-gray-600">Color: {car.features.color}</p>
+                    <p className="text-gray-600">Price: ₹{car.price}</p>
+                    <p className="text-gray-600">Status: {car.status}</p>
+                    <p className="text-gray-600">Reg No: {car.regno}</p>
+                  </div>
+                ) : null
               ))}
             </div>
           ) : (
