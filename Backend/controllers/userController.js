@@ -36,11 +36,9 @@ export const login = async (req, res) => {
 
       return res.status(200).json({
         token,
-        user: {
-          userId: user._id,
-          emailId: user.emailId,
-          fullName: user.fullName,
-        }
+        userId: user._id,
+        emailId: user.emailId,
+        fullName: user.fullName,
       });
     } else {
       return res.status(401).json({ message: "Wrong Password" });

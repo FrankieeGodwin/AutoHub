@@ -14,11 +14,32 @@ function NavBar() {
   const navigate=useNavigate();
   const location = useLocation();
   const user=JSON.parse(localStorage.getItem("user"));
-  const username = user?.emailId;
   const userId = user?.userId;
+  const username = user?.emailId;
+  const fullName = user?.fullName;
+  const token = user?.token;
   const API_BASE = import.meta.env.VITE_API_BASE;
-  console.log(username);
-  console.log(userId);
+
+  useEffect(() => {
+    if (user && token) {
+      axios
+        .get(`${API_BASE}/users/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+            console.log(username);
+            console.log(userId);
+          // valid token → set user info
+        })
+        .catch(() => {
+          // token invalid/expired → clear local storage
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setUser(null);
+        });
+    }
+  }, []);
+
   const handleClickOutside = (e) => {
     if (
       !e.target.closest('.dropdown-container') && 
@@ -148,7 +169,7 @@ function NavBar() {
         <div className="flex items-center space-x-4">
           {username ? (
           // Show username instead of Login/Register
-          <span className="text-gray-700 font-medium">Hello, {username}</span>
+          <span className="text-gray-700 font-medium">Hello, {fullName}</span>
         ) : (
           <>
           <Link to="login">

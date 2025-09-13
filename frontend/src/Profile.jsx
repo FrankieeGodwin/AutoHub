@@ -6,7 +6,8 @@ export default function Profile() {
   const location = useLocation();// if URL has /Profile/:id
   const users = JSON.parse(localStorage.getItem("user"));
   const userId = users?.userId;
-  const emailId = users?.emailId; // take from state or params
+  const emailId = users?.emailId; 
+  const token=users?.token;// take from state or params
   console.log(userId,emailId);
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;
@@ -23,7 +24,11 @@ export default function Profile() {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/users/${userId}`);
+        const res = await axios.get(`${API_BASE}/users/${userId}`,{
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
         setUser(res.data);
       } catch (err) {
         console.error("Error fetching user data:", err);
