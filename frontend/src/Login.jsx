@@ -8,21 +8,28 @@ export default function Login() {
   const navigate=useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;
   const handleSubmit = async () => {
-    try{
-      const response = await axios.post(`${API_BASE}/users/login`, {
-          emailId: username,
-          passwordHash: password
-        });
-        if(response.status === 200)
-        {
-          const { userId, emailId } = response.data;
-          localStorage.setItem("user",JSON.stringify({userId,emailId}));
-          navigate("/");
-        }
-      }
- catch (err) {
+  try {
+    const response = await axios.post(`${API_BASE}/users/login`, {
+      emailId: username,
+      passwordHash: password,
+    });
+
+    if (response.status === 200) {
+      const { token, userId, emailId } = response.data;
+
+      // Save both token and user info
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ userId, emailId, token })
+      );
+
+      // Optionally save token separately for quick access
+      localStorage.setItem("token", token);
+
+      navigate("/");
+    }
+  } catch (err) {
     if (err.response) {
-      // Backend responded with an error code
       if (err.response.status === 401) {
         alert("Invalid Email or Password");
       } else if (err.response.status === 404) {
@@ -31,11 +38,11 @@ export default function Login() {
         alert("Unexpected error: " + err.response.data.message);
       }
     } else {
-      // Network or other issue
       alert("Some Internal Server Error");
     }
   }
-  };
+};
+
 
   return (
     <div className="w-full h-screen bg-[#FAFAFA] flex items-center justify-center">
