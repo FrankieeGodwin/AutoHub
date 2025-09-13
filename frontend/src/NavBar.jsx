@@ -13,8 +13,9 @@ function NavBar() {
   const [category, setCategory] = useState("All"); // category filter
   const navigate=useNavigate();
   const location = useLocation();
-  const username = location.state?.email;
-  const userId = location.state?.userId;
+  const user=JSON.parse(localStorage.getItem("user"));
+  const username = user?.emailId;
+  const userId = user?.userId;
   const API_BASE = import.meta.env.VITE_API_BASE;
   console.log(username);
   console.log(userId);
@@ -27,7 +28,7 @@ function NavBar() {
     }
   };
   const handleAddCar = ()=>{
-    navigate("/addCar", {state : {id : userId , emailId : username}})
+    navigate("/addCar");
   }
 
   useEffect(() => {
@@ -171,7 +172,7 @@ function NavBar() {
   <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
     <ul className="py-2 mx-5">
       <li
-        onClick={() => navigate("/Profile", { state: { id:userId, email:username } })}
+        onClick={() => navigate("/Profile")}
         className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
       >
         Profile
@@ -184,8 +185,8 @@ function NavBar() {
       </li>
       <li
         onClick={() => {
-          // optional: clear state/localStorage if you use login persistence
-          navigate("/Login");
+          localStorage.removeItem("user");
+          navigate("/");
         }}
         className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
       >

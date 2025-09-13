@@ -16,7 +16,8 @@ export default function Login() {
         if(response.status === 200)
         {
           const { userId, emailId } = response.data;
-          navigate("/", { state: { userId : userId , email : emailId } });
+          localStorage.setItem("user",JSON.stringify({userId,emailId}));
+          navigate("/");
         }
       }
  catch (err) {

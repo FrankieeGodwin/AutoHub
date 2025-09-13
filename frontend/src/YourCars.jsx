@@ -5,7 +5,8 @@ import axios from "axios";
 export default function YourCars() {
   const location = useLocation();
   const navigate = useNavigate();
-  const userId = location.state?.userId;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.userId;
 
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);

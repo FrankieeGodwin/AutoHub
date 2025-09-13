@@ -5,7 +5,9 @@ import axios from "axios";
 function CarView() {
   const location = useLocation();
   const navigate = useNavigate();
-  const userId = location.state?.userId;
+  const users = JSON.parse(localStorage.getItem("user")||{});  
+  const userId = users?.userId;
+  const email = users?.emailId;
   const carId = location.state?.carId;
   const paymentId = location.state?.paymentId;
 
@@ -23,7 +25,7 @@ function CarView() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   function handlepayment(){
-    navigate("/Payment", { state: { userId:userId, carId:carId} })
+    navigate("/Payment", { state: { carId:carId} })
   }
 
   useEffect(() => {
@@ -74,8 +76,7 @@ function CarView() {
   }, [images]);
 
   useEffect(() => {
-    if(!userId){
-      alert("User id not found");
+    if(!car){
       return;
     }
     const fetchUser = async () => {
@@ -95,8 +96,16 @@ function CarView() {
       <p className="text-center mt-10 text-lg">Loading car details...</p>
     );
 
+    function handleBack(){
+      navigate("/");
+    }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-purple-50 py-10 px-4">
+      <button onClick={handleBack}
+        className="absolute top-6 left-6 px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow hover:bg-gray-300 transition">
+        ← Back to Home
+      </button>
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden p-6 md:p-10">
         {/* Title */}
         <h1 className="text-3xl font-extrabold text-purple-800 mb-8 text-center">

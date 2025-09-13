@@ -6,11 +6,12 @@ import axios from "axios";
 export default function CarList(){
     const navigate=useNavigate();
     const location = useLocation();
-    const username = location.state?.email;
-    const userId = location.state?.userId;
+    const user=JSON.parse(localStorage.getItem("user"));
+    const email =user?.emailId;
+    const userId = user?.userId;
     const API_BASE = import.meta.env.VITE_API_BASE;
     const handleClickCar = (carId,model)=>{
-    navigate("/carView", { state: { userId:userId, carId:carId, model:model} })
+    navigate("/carView", { state: {carId:carId, model:model}});
   }
   const handleFilterChange = (e) => {
   const { name, value } = e.target;

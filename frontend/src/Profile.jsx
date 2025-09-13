@@ -4,8 +4,9 @@ import axios from "axios";
 
 export default function Profile() {
   const location = useLocation();// if URL has /Profile/:id
-  const userId = location.state?.id;
-  const emailId = location.state?.email; // take from state or params
+  const users = JSON.parse(localStorage.getItem("user"));
+  const userId = users?.userId;
+  const emailId = users?.emailId; // take from state or params
   console.log(userId,emailId);
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE;
@@ -65,7 +66,7 @@ export default function Profile() {
         </div>
         <div className="mt-6 text-center">
           <button
-            onClick={() => navigate("/YourCars", { state: { userId } })}
+            onClick={() => navigate("/YourCars")}
             className="px-6 py-2 bg-purple-700 text-white rounded-lg shadow hover:bg-purple-800 transition"
           >
             Your Cars

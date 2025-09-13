@@ -6,7 +6,8 @@ import { useNavigate,useLocation } from "react-router-dom";
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = location.state?.userId;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.userId;
   const carId = location.state?.carId;
   const API_BASE = import.meta.env.VITE_API_BASE;
 
