@@ -8,6 +8,7 @@ function CarView() {
   const users = JSON.parse(localStorage.getItem("user")||{});  
   const userId = users?.userId;
   const email = users?.emailId;
+  const token = users?.token;
   const carId = location.state?.carId;
   const paymentId = location.state?.paymentId;
 
@@ -81,7 +82,11 @@ function CarView() {
     }
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/users/${car.userId}`)
+        const res = await axios.get(`${API_BASE}/users/${car.userId}`,{
+          headers: {
+    Authorization: `Bearer ${token}`
+  }
+        })
         setUser(res.data);
       }
       catch (err) {
