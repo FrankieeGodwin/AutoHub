@@ -11,6 +11,10 @@ import Profile from "./Profile.jsx";
 import YourCars from "./YourCars.jsx";
 import Payment from "./Payment.jsx";
 import EditProfile from "./EditProfile.jsx";
+import PrivacyPolicy from "./PrivacyPolicy.jsx"
+import About from "./About.jsx";
+import Contact from "./Contact.jsx";
+import TermsConditions from "./TermsConditions.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -29,6 +33,10 @@ function App() {
         <Route path="/YourCars" element={<YourCars/>}/>
         <Route path="/Payment" element={<Payment/>}/>
         <Route path="EditProfile" element={<EditProfile/>}/>
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>}/>
+        <Route path="/About" element={<About />}/>
+        <Route path="/Contact" element={<Contact />}/>
+        <Route path="TermsConditions" element={<TermsConditions />}/>
       </Routes>
   </Router>
   );
