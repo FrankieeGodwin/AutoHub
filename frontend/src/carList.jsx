@@ -61,7 +61,7 @@ export default function CarList(){
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Filter Panel */}
-        <div className="w-1/4 p-6 bg-white mt-[5%] rounded-lg shadow-md h-screen fixed top-[5%] left-0">
+        <div className="w-1/4 p-6 bg-white mt-[5%] rounded-lg shadow-md fixed top-[5%] left-0 max-h-[85vh] overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
           <div className="mb-4">
             <label
