@@ -10,7 +10,7 @@ import Home from "./Home";
 import Profile from "./Profile.jsx";
 import YourCars from "./YourCars.jsx";
 import Payment from "./Payment.jsx";
-
+import EditProfile from "./EditProfile.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -28,6 +28,7 @@ function App() {
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/YourCars" element={<YourCars/>}/>
         <Route path="/Payment" element={<Payment/>}/>
+        <Route path="EditProfile" element={<EditProfile/>}/>
       </Routes>
   </Router>
   );
