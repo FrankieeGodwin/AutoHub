@@ -1,18 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import NavBarBasic from "./NavBarBasic";
+import Footer from "./Footer";
 function Contact() {
   return (
+    <div>
+      <NavBarBasic/>
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-12 px-6 relative">
-      
-      {/* Back to Home Button - Top Left */}
-      <div className="absolute top-6 left-6">
-        <Link to="/">
-          <button className="px-5 py-2 bg-purple-700 text-white rounded-lg shadow-md hover:bg-purple-800 transition">
-            ⬅ Home
-          </button>
-        </Link>
-      </div>
 
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-10 mt-12">
         <h1 className="text-3xl font-bold mb-6 text-purple-700">Contact Us</h1>
@@ -52,6 +46,8 @@ function Contact() {
           </button>
         </form>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 }

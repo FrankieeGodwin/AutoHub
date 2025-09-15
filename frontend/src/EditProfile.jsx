@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 const API_BASE = "http://localhost:5000"; // replace with your backend URL
-
+import NavBarBasic from "./NavBarBasic";
+import Footer from "./Footer";
 export default function EditProfile() {
   const storedUser = JSON.parse(localStorage.getItem("user"));
-  const { userId, emailId, fullName, token } = storedUser || {};
+  const { userId, emailId, fullName, phoneNo , token } = storedUser || {};
   const navigate=useNavigate();
   const [formData, setFormData] = useState({
     fullName: fullName || "",
     emailId: emailId || "",
-    phoneNo: "",
+    phoneNo: phoneNo || "",
   });
 
   useEffect(() => {
@@ -57,6 +58,8 @@ export default function EditProfile() {
   };
 
   return (
+    <div>
+      <NavBarBasic/>
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
@@ -101,6 +104,8 @@ export default function EditProfile() {
           Save Changes
         </button>
       </form>
+    </div>
+    <Footer/>
     </div>
   );
 }
