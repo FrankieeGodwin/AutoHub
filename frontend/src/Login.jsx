@@ -15,11 +15,11 @@ export default function Login() {
     });
 
     if (response.status === 200) {
-      const { token, userId, emailId, fullName } = response.data;
+      const { token, userId, emailId, fullName ,phoneNo } = response.data;
       // Save both token and user info
       localStorage.setItem(
         "user",
-        JSON.stringify({ userId, emailId, fullName , token })
+        JSON.stringify({ userId, emailId, fullName , phoneNo , token })
       );
 
       // Optionally save token separately for quick access

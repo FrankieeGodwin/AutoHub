@@ -9,12 +9,14 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Logo + About */}
+        <Link to="/" className="text-sm text-gray-600 hover:text-gray-900">
         <div>
           <img src={logo} alt="AutoHub Logo" className="h-12 mb-4" />
           <p className="text-sm text-gray-600">
             AutoHub – your trusted platform for buying, selling, and discovering cars with ease.
           </p>
         </div>
+        </Link>
 
         {/* Quick Links */}
         <div>

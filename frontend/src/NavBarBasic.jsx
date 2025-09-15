@@ -8,7 +8,7 @@ import axios from "axios";
 // import Carview from './Carview.jsx';
 
 
-function NavBar() {
+function NavBarBasic() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("All"); // category filter
   const navigate=useNavigate();
@@ -131,39 +131,6 @@ function NavBar() {
           <img className="h-12 w-auto" src={logo} alt="logoimg" />
         </div>
         </Link>
-        <div className="flex items-center w-[40%] border border-gray-300 rounded-full overflow-hidden bg-white shadow-sm">
-          
-          {/* Custom Styled Category Dropdown */}
-          <div className="relative flex items-center  px-3 cursor-pointer category-dropdown">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="appearance-none bg-transparent pr-6 focus:outline-none text-gray-700 font-medium cursor-pointer"
-            >
-              <option value="All">All</option>
-              <option value="Used">Used</option>
-              <option value="New">New</option>
-            </select>
-            <ChevronDown className="absolute right-1 w-4 h-4 text-gray-500 pointer-events-none" />
-          </div>
-
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search"
-            className="flex-1 h-10 px-4 focus:outline-none text-gray-700"
-          />
-        </div>
-        {username && (
-          <div className="w-[10%]">
-            <button
-              onClick={handleAddCar}
-              className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
-            >
-              Add Car
-            </button>
-          </div>
-        )}
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
@@ -237,4 +204,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBarBasic;

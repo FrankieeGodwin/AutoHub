@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import NavBarBasic from "./NavBarBasic";
+import Footer from "./Footer";
 export default function YourCars() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export default function YourCars() {
 
   return (
     <div className="min-h-screen bg-purple-50 py-10 px-4">
+      <NavBarBasic/>
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-purple-800 mb-8 text-center">
           Your Cars
@@ -104,6 +106,7 @@ export default function YourCars() {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

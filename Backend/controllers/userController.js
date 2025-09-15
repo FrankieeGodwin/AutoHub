@@ -39,6 +39,7 @@ export const login = async (req, res) => {
         userId: user._id,
         emailId: user.emailId,
         fullName: user.fullName,
+        phoneNo: user.phoneNo,
       });
     } else {
       return res.status(401).json({ message: "Wrong Password" });
