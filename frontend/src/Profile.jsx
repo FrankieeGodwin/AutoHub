@@ -55,10 +55,13 @@ export default function Profile() {
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-purple-50 py-10 px-4">
       <div className="max-w-md mx-auto bg-white shadow-2xl rounded-2xl p-8 mt-[10%]">
         <h1 className="text-3xl font-bold text-purple-800 text-center mb-6">
-          {user.fullName}'s Profile
+          Profile
         </h1>
 
         <div className="space-y-4">
+          <p className="bg-purple-50 p-3 rounded-lg shadow-sm">
+            <strong>Full Name:</strong> {user.fullName}
+          </p>
           <p className="bg-purple-50 p-3 rounded-lg shadow-sm">
             <strong>Email:</strong> {user.emailId}
           </p>

@@ -44,3 +44,38 @@ export const addCarToBought = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+export const addToFavorites = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { carId } = req.body;
+
+    if (!carId) {
+      return res.status(400).json({ message: "carId is required." });
+    }
+
+    // Find the user's details
+    const userDetails = await UserDetails.findOne({ userId });
+
+    if (!userDetails) {
+      return res.status(404).json({ message: "User details not found." });
+    }
+
+    // Check if the car is already in favorites
+    if (userDetails.favorites.includes(carId)) {
+      return res.status(400).json({ message: "Car already in favorites." });
+    }
+
+    // Add to favorites
+    userDetails.favorites.push(carId);
+    await userDetails.save();
+
+    return res.status(200).json({
+      message: "Car added to favorites successfully.",
+      favorites: userDetails.favorites,
+    });
+  } catch (error) {
+    console.error("Error adding to favorites:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
