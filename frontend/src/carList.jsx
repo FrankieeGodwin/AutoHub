@@ -49,9 +49,10 @@ export default function CarList(){
   
       if (filters.color) {
         updatedCars = updatedCars.filter((car) =>
-          car.color?.toLowerCase().includes(filters.color.toLowerCase())
+          car.features?.color?.toLowerCase() === filters.color.toLowerCase()
         );
       }
+
   
       setFilteredCars(updatedCars);
     }, [filters, cars]);
@@ -61,43 +62,63 @@ export default function CarList(){
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Filter Panel */}
-        <div className="w-1/4 p-6 bg-white mt-[5%] rounded-lg shadow-md fixed top-[5%] left-0 max-h-[85vh] overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-4">Filters</h2>
-          <div className="mb-4">
-            <label
-              htmlFor="make"
-              className="block text-gray-700 font-medium mb-1"
-            >
-              Make
-            </label>
-            <input
-              type="text"
-              id="make"
-              name="make"
-              value={filters.make}
-              onChange={handleFilterChange}
-              placeholder="e.g., Toyota"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="color"
-              className="block text-gray-700 font-medium mb-1"
-            >
-              Color
-            </label>
-            <input
-              type="text"
-              id="color"
-              name="color"
-              value={filters.color}
-              onChange={handleFilterChange}
-              placeholder="e.g., red"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </div>
+       <div className="w-1/4 p-6 bg-white mt-[5%] rounded-xl shadow-md fixed top-[5%] left-0 max-h-[85vh] overflow-y-auto border border-gray-100">
+  <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
+
+  {/* Make Filter */}
+  <div className="mb-6">
+    <label
+      htmlFor="make"
+      className="block text-gray-600 font-medium mb-2"
+    >
+      Make
+    </label>
+    <input
+      type="text"
+      id="make"
+      name="make"
+      value={filters.make}
+      onChange={handleFilterChange}
+      placeholder="e.g., Toyota"
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
+  </div>
+
+  {/* Color Filter */}
+  <div className="mb-6">
+    <label
+      htmlFor="color"
+      className="block text-gray-600 font-medium mb-2"
+    >
+      Color
+    </label>
+    <select
+      id="color"
+      name="color"
+      value={filters.color}
+      onChange={handleFilterChange}
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    >
+      <option value="">All</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="black">Black</option>
+      <option value="white">White</option>
+      <option value="silver">Silver</option>
+      <option value="gray">Gray</option>
+    </select>
+  </div>
+
+  {/* Reset Button */}
+  <button
+    onClick={() => setFilters({ make: "", color: "" })}
+    className="w-full bg-indigo-600 text-white py-2 rounded-lg shadow hover:bg-indigo-700 transition"
+  >
+    Reset Filters
+  </button>
+</div>
+
+
 
         {/* Right Side: Car View */}
         <div className="w-full lg:w-3/4 ml-[25%]">
@@ -121,7 +142,7 @@ export default function CarList(){
                     <p className="text-gray-600">Color: {car.features.color}</p>
                     <p className="text-gray-600">Price: ₹{car.price}</p>
                     <p className="text-gray-600">Status: {car.status}</p>
-                    <p className="text-gray-600">Reg No: {car.regno}</p>
+                    {/* <p className="text-gray-600">Reg No: {car.regno}</p> */}
                   </div>
                 ) : null
               ))}

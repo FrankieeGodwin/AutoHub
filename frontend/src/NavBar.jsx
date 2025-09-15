@@ -49,7 +49,7 @@ function NavBar() {
     }
   };
   const handleAddCar = ()=>{
-    navigate("/addCar");
+    navigate("/Subscription");
   }
 
   useEffect(() => {
