@@ -9,6 +9,7 @@ import userRouter from "./routes/userRouter.js";
 import carRouter from "./routes/carRouter.js";
 import otpRouter from "./routes/otpRouter.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import contactRouter from './routes/contactRouter.js'
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use("/users", userRouter);
 app.use("/cars", carRouter);
 app.use("/otp", otpRouter);
 app.use("/uploadApi", uploadRoutes);
+app.use("/contact", contactRouter);
 
 
 // 🔹 Razorpay instance
