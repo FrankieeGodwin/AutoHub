@@ -2,10 +2,12 @@ import { useState } from "react";
 import NavBarBasic from "./NavBarBasic";
 import Footer from "./Footer";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_BASE; // e.g. http://localhost:5000
 
 function Contact() {
+  const navigate=useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -21,10 +23,12 @@ function Contact() {
       });
 
       if (response.data.success) {
-        setStatus("✅ Message sent! We will get back to you soon.");
+        // setStatus("✅ Message sent! We will get back to you soon.");
+        alert("Message sent! We will get back to you soon.")
         setName("");
         setEmail("");
         setMessage("");
+        navigate("/");
       } else {
         setStatus("❌ Failed to send message. Try again.");
       }

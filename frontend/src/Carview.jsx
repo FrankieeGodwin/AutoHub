@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import NavBarBasic from "./NavBarBasic";
+import Footer from "./Footer";
 function CarView() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -101,17 +102,11 @@ function CarView() {
       <p className="text-center mt-10 text-lg">Loading car details...</p>
     );
 
-    function handleBack(){
-      navigate("/");
-    }
-
   return (
+    <div>
+      <NavBarBasic/>
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 py-10 px-4">
-      <button onClick={handleBack}
-        className="absolute top-6 left-6 px-5 py-2 bg-white/80 text-gray-700 rounded-full shadow-md hover:bg-purple-100 transition">
-        ← Back to Home
-      </button>
-      <div className="max-w-6xl mx-auto bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden p-6 md:p-10 border border-purple-100">
+      <div className="max-w-6xl mx-auto bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden p-6 md:p-10 border border-purple-100 mt-[10%]">
         {/* Title */}
         <h1 className="text-4xl font-extrabold text-purple-900 mb-10 text-center tracking-wide drop-shadow">
           {car.make} {car.model}
@@ -266,6 +261,8 @@ function CarView() {
           </div>
         </div>
       </div>
+    </div>
+    <Footer />
     </div>
   );
 }
