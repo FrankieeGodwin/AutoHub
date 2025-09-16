@@ -15,6 +15,7 @@ import PrivacyPolicy from "./PrivacyPolicy.jsx"
 import About from "./About.jsx";
 import Contact from "./Contact.jsx";
 import TermsConditions from "./TermsConditions.jsx";
+import Subscription from "./Subscription.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -37,6 +38,7 @@ function App() {
         <Route path="/About" element={<About />}/>
         <Route path="/Contact" element={<Contact />}/>
         <Route path="TermsConditions" element={<TermsConditions />}/>
+        <Route path="/Subscription" element={<Subscription/>}/>
       </Routes>
   </Router>
   );

@@ -106,14 +106,14 @@ function CarView() {
     }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-purple-50 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 py-10 px-4">
       <button onClick={handleBack}
-        className="absolute top-6 left-6 px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow hover:bg-gray-300 transition">
+        className="absolute top-6 left-6 px-5 py-2 bg-white/80 text-gray-700 rounded-full shadow-md hover:bg-purple-100 transition">
         ← Back to Home
       </button>
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden p-6 md:p-10">
+      <div className="max-w-6xl mx-auto bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden p-6 md:p-10 border border-purple-100">
         {/* Title */}
-        <h1 className="text-3xl font-extrabold text-purple-800 mb-8 text-center">
+        <h1 className="text-4xl font-extrabold text-purple-900 mb-10 text-center tracking-wide drop-shadow">
           {car.make} {car.model}
         </h1>
 
@@ -125,7 +125,7 @@ function CarView() {
               <img
                 src={images[currentIndex].imageURL}
                 alt="Car Preview"
-                className="w-full h-80 object-cover rounded-2xl shadow-lg mb-4 transition duration-700 ease-in-out"
+                className="w-full h-96 object-cover rounded-3xl shadow-xl mb-6 transition duration-700 ease-in-out"
               />
             ) : (
               <p className="text-gray-500">No images available</p>
@@ -133,14 +133,14 @@ function CarView() {
 
             {/* Thumbnail Gallery */}
             {images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2">
+              <div className="flex gap-4 overflow-x-auto pb-2">
                 {images.map((img, index) => (
                   <img
                     key={index}
                     src={img.imageURL}
                     alt={`Thumbnail ${index + 1}`}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-28 h-20 object-cover rounded-lg shadow cursor-pointer transition hover:scale-105 ${
+                    className={`w-28 h-20 object-cover rounded-xl shadow cursor-pointer transition hover:scale-110 ${
                       currentIndex === index
                         ? "ring-4 ring-purple-500"
                         : ""
@@ -151,14 +151,14 @@ function CarView() {
             )}
 
             {/* Price & Status */}
-            <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mt-6 shadow-inner">
-              <p className="text-gray-800 text-lg">
-                <strong>Price:</strong> ₹{car.price}
+            <div className="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-2xl p-6 mt-6 shadow-inner">
+              <p className="text-gray-800 text-lg mb-2">
+                <strong>Price:</strong> <span className="text-purple-700 font-bold">₹{car.price}</span>
               </p>
               <p className="text-gray-700">
                 <strong>Status:</strong>{" "}
                 <span
-                  className={`px-3 py-1 rounded-full text-sm ${
+                  className={`px-4 py-1 rounded-full text-sm font-semibold shadow-sm ${
                     car.status === "Available"
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
@@ -167,116 +167,84 @@ function CarView() {
                   {car.status}
                 </span>
               </p>
-              <p className="text-gray-700">
-                <strong>Registration No:</strong> {car.regno}
-              </p>
             </div>
 
             {/* Features */}
             {features && (
-              <div className="mt-6">
-                <h2 className="text-xl font-semibold text-purple-700 mb-3">
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-purple-800 mb-4 border-b border-purple-200 pb-2">
                   Features
                 </h2>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Engine: {features.engine}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Mileage: {features.mileage}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Fuel: {features.fuelType}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Transmission: {features.transmission}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Seats: {features.seatingCapacity}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Body: {features.bodyType}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Color: {features.color}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Year: {features.yearOfManufacture}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Drive: {features.driveType}
-                  </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Engine: {features.engine}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Mileage: {features.mileage}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Fuel: {features.fuelType}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Transmission: {features.transmission}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Seats: {features.seatingCapacity}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Body: {features.bodyType}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Color: {features.color}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Year: {features.yearOfManufacture}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Drive: {features.driveType}</div>
                 </div>
               </div>
             )}
 
             {/* Car Details */}
             {details && (
-              <div className="mt-6">
-                <h2 className="text-xl font-semibold text-purple-700 mb-3">
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-purple-800 mb-4 border-b border-purple-200 pb-2">
                   Car Details
                 </h2>
-                <div className="flex flex-col gap-2">
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Age: {details.age} years
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Distance: {details.distanceTravelled} km
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Owners: {details.numberOfOwners}
-                  </div>
+                <div className="flex flex-col gap-3">
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Age: {details.age} years</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Distance: {details.distanceTravelled} km</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Owners: {details.numberOfOwners}</div>
                 </div>
               </div>
             )}
 
             {/* Location */}
             {locationData && (
-              <div className="mt-6">
-                <h2 className="text-xl font-semibold text-purple-700 mb-3">
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-purple-800 mb-4 border-b border-purple-200 pb-2">
                   Location
                 </h2>
-                <div className="flex flex-col gap-2">
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    Country: {locationData.country}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    State: {locationData.state}
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg shadow-sm">
-                    City: {locationData.city}
-                  </div>
+                <div className="flex flex-col gap-3">
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">Country: {locationData.country}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">State: {locationData.state}</div>
+                  <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">City: {locationData.city}</div>
                 </div>
               </div>
             )}
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl shadow-lg flex flex-col justify-between">
+          <div className="p-8 bg-gradient-to-br from-purple-50 to-purple-200 rounded-3xl shadow-xl flex flex-col justify-between border border-purple-100">
             <div>
-              <h2 className="text-2xl font-bold text-purple-800 mb-4">
+              <h2 className="text-3xl font-bold text-purple-900 mb-4">
                 Seller Information
               </h2>
               <p className="text-gray-600 mb-6">
-                Contact the seller for more details about this car.
+                Make the payment to unlock full seller contact details and connect directly.
               </p>
 
+              {!paymentDone &&
               <button onClick={() => handlepayment()}
-                className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800 mb-4">
-                Payment
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-3 rounded-xl shadow-lg transition transform hover:scale-105 hover:opacity-90 mb-5 font-semibold">
+                Make Payment 💳
               </button>
-          
+              }
 
               {paymentDone &&  ( 
                 <button onClick={() => {setShowDetails(!showDetails)}}
-                className="w-full bg-purple-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:bg-purple-800">
-                Contact Seller
+                className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-3 rounded-xl shadow-lg transition transform hover:scale-105 hover:opacity-90 font-semibold">
+                {showDetails ? "Hide Details" : "Contact Seller 📞"}
               </button>
               )}
 
               {showDetails && user && (
-                <div className="mt-6 bg-white rounded-xl shadow-md p-5 border border-purple-200 transition-all duration-300">
-                  <h3 className="text-lg font-semibold text-purple-700 mb-3">
+                <div className="mt-8 bg-white rounded-2xl shadow-md p-6 border border-purple-200 animate-fadeIn">
+                  <h3 className="text-xl font-semibold text-purple-800 mb-4">
                     Seller Contact Details
                   </h3>
                   <p className="text-gray-800 mb-2">
@@ -292,7 +260,7 @@ function CarView() {
               )}
 
             </div>
-            <p className="text-sm text-gray-400 mt-8 text-center">
+            <p className="text-sm text-gray-400 mt-8 text-center italic">
               User ID: {car.userId}
             </p>
           </div>
