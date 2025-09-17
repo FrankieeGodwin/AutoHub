@@ -47,8 +47,7 @@ export const addCarToBought = async (req, res) => {
 
 export const addToFavorites = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { carId } = req.body;
+    const { userId , carId } = req.body;
 
     if (!carId) {
       return res.status(400).json({ message: "carId is required." });

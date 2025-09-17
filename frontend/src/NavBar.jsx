@@ -19,7 +19,7 @@ function NavBar() {
   const fullName = user?.fullName;
   const token = user?.token;
   const API_BASE = import.meta.env.VITE_API_BASE;
-
+  console.log(token);
   useEffect(() => {
     if (user && token) {
       axios
