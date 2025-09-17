@@ -41,7 +41,7 @@ function Contact() {
   return (
     <div>
       <NavBarBasic />
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-12 px-6 relative">
+      <div className="min-h-screen bg-[#FAFAFA] py-12 px-6 relative">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-10 mt-12">
           <h1 className="text-3xl font-bold mb-6 text-purple-700">Contact Us</h1>
           <p className="text-gray-700 mb-4">

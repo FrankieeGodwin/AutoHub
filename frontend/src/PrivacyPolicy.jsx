@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
   return (
     <div>
     <NavBarBasic/>
-    <div className="min-h-screen text-gray-800 bg-white px-6 py-12 lg:px-24 lg:py-16">
+    <div className="min-h-screen text-gray-800 bg-[#FAFAFA] px-6 py-12 lg:px-24 lg:py-16">
       <div className="mb-8">
       </div>
 

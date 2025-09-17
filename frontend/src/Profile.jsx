@@ -52,7 +52,7 @@ export default function Profile() {
   return (
     <div>
       <NavBarBasic/>
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-purple-50 py-10 px-4">
+    <div className="min-h-screen bg-[#FAFAFA] py-10 px-4">
       <div className="max-w-md mx-auto bg-white shadow-2xl rounded-2xl p-8 mt-[10%]">
         <h1 className="text-3xl font-bold text-purple-800 text-center mb-6">
           Profile

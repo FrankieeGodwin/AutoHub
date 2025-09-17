@@ -37,7 +37,7 @@ export default function YourCars() {
     return <p className="text-center mt-10 text-lg">No cars found for you.</p>;
 
   return (
-    <div className="min-h-screen bg-purple-50 py-10 px-4">
+    <div className="min-h-screen bg-[#FAFAFA] py-10 px-4">
       <NavBarBasic/>
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-purple-800 mb-8 text-center">

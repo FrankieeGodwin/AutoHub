@@ -60,7 +60,7 @@ export default function EditProfile() {
   return (
     <div>
       <NavBarBasic/>
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-[#FAFAFA]">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-xl p-6 w-96"

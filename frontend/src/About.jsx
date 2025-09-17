@@ -7,7 +7,7 @@ export default function About() {
   return (
     <div>
       <NavBarBasic />
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-20 px-6 relative">
+      <div className="min-h-screen bg-[#FAFAFA] py-20 px-6 relative">
         
         {/* Main Content */}
         <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-10 mt-12 border border-gray-100">

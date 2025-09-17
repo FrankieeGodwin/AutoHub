@@ -11,7 +11,7 @@ export default function TermsConditions() {
         
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-10 mt-12 border border-gray-100">
+        <div className="max-w-4xl mx-auto bg-[#FAFAFA] shadow-xl rounded-2xl p-10 mt-12 border border-gray-100">
           <h1 className="text-4xl font-extrabold text-purple-700 mb-6 text-center">
             Terms & Conditions
           </h1>

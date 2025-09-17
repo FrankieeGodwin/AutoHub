@@ -110,7 +110,7 @@ function CarView() {
   return (
     <div>
       <NavBarBasic/>
-    <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-100 to-yellow-100 py-10 px-4">
+    <div className="min-h-screen bg-[#FAFAFA] py-10 px-4">
       <div className="max-w-6xl mx-auto bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden p-6 md:p-10 border border-purple-100 mt-[10%]">
         {/* Title */}
         <h1 className="text-4xl font-extrabold text-purple-900 mb-10 text-center tracking-wide drop-shadow">
@@ -219,7 +219,7 @@ function CarView() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="p-8 bg-gradient-to-br from-purple-50 to-purple-200 rounded-3xl shadow-xl flex flex-col justify-between border border-purple-100">
+          <div className="p-8 rounded-3xl shadow-xl flex flex-col justify-between border border-purple-100">
             <div>
               <h2 className="text-3xl font-bold text-purple-900 mb-4">
                 Seller Information
