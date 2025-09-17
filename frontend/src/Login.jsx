@@ -65,7 +65,7 @@ export default function Login() {
         </div>
 
         {/* Password */}
-        <div className="mb-6">
+        <div className="mb-0">
           <input
             type="password"
             value={password}
@@ -76,6 +76,12 @@ export default function Login() {
           />
         </div>
 
+
+        <p className="text-right text-purple-700 py-4">
+              <Link to="/ForgotPassword" className="hover:underline">
+              Forgot Password?
+              </Link>
+        </p>
         {/* Submit Button */}
         <button
           onClick={handleSubmit}

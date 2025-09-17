@@ -6,10 +6,10 @@ import Footer from "./Footer";
 function CarView() {
   const location = useLocation();
   const navigate = useNavigate();
-  const users = JSON.parse(localStorage.getItem("user")||{});  
-  const userId = users?.userId;
-  const email = users?.emailId;
-  const token = users?.token;
+  const users = JSON.parse(localStorage.getItem("user")||"null");  
+  const userId = users?.userId || "null";
+  const email = users?.emailId || "null";
+  const token = users?.token || "null";
   const carId = location.state?.carId;
   const paymentId = location.state?.paymentId;
 
@@ -27,6 +27,11 @@ function CarView() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   function handlepayment(){
+    if(userId==="null" || email==="null" || token==="null"){
+      alert("Please login to make payment");
+      navigate("/Login");
+      return;
+    }
     navigate("/Payment", { state: { carId:carId} })
   }
 
@@ -150,7 +155,7 @@ function CarView() {
               <p className="text-gray-800 text-lg mb-2">
                 <strong>Price:</strong> <span className="text-purple-700 font-bold">₹{car.price}</span>
               </p>
-              <p className="text-gray-700">
+              {/* <p className="text-gray-700">
                 <strong>Status:</strong>{" "}
                 <span
                   className={`px-4 py-1 rounded-full text-sm font-semibold shadow-sm ${
@@ -161,7 +166,7 @@ function CarView() {
                 >
                   {car.status}
                 </span>
-              </p>
+              </p> */}
             </div>
 
             {/* Features */}

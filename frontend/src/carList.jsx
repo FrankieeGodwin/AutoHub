@@ -295,7 +295,7 @@ export default function CarList(){
                     />
                     <p className="text-gray-600">Color: {car.features.color}</p>
                     <p className="text-gray-600">Price: ₹{car.price}</p>
-                    <p className="text-gray-600">Status: {car.status}</p>
+                    {/* <p className="text-gray-600">Status: {car.status}</p> */}
                     {/* <p className="text-gray-600">Reg No: {car.regno}</p> */}
                   </div>
                 ) : null
