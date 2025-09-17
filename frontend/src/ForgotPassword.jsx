@@ -95,12 +95,12 @@ export default function ForgotPassword() {
     }
 
     try {
-      const response = await axios.post(`${API_BASE}/users/reset-password`, {
-        email,
-        newPassword,
+      const response = await axios.patch(`${API_BASE}/users/changePassword`, {
+        emailId:email,
+        newPassword:newPassword,
       });
 
-      if (response.data.success) {
+      if (response.status === 200) {
         setMessage("Password updated successfully!");
         setTimeout(() => navigate("/login"), 2000);
       } else {
