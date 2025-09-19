@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { StarIcon } from "@heroicons/react/24/solid";
 export default function CarList() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
   const email = user?.emailId;
   const userId = user?.userId;
+  const token = user?.token;
   const API_BASE = import.meta.env.VITE_API_BASE;
 
+  const [userDetails , setUserDetails] = useState({});
   const [cars, setCars] = useState([]);
   const [filters, setFilters] = useState({
     make: "",
@@ -40,6 +42,14 @@ export default function CarList() {
         const res = await axios.get(`${API_BASE}/cars/`);
         setCars(res.data);
         setFilteredCars(res.data);
+
+        const response = await axios.get(`${API_BASE}/users/userDetails/${userId}`,{
+          headers: {
+    Authorization: `Bearer ${token}`
+  }
+        });
+        setUserDetails(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching cars:", error);
       } finally {
@@ -114,6 +124,23 @@ export default function CarList() {
     </div>
   );
 
+  const handleAddToFavorites = async (carId) =>{
+    try{
+      const res= await axios.patch(`${API_BASE}/users/addToFavorites/`,{
+        userId: userId, // pass your userId here
+        carId: carId
+      },
+      {
+        headers: {
+        Authorization: `Bearer ${token}`
+        }
+      });
+      alert("car added to favorites");
+    }
+    catch(err){
+      console.error("Error Adding To Favorites:",error);
+    }
+  }
   return (
     <div className="mx-auto p-4 mt-[5%] z-50 bg-[#FAFAFA]">
       <h1 className="text-center text-black-500 text-2xl font-bold mb-6">
@@ -334,12 +361,8 @@ export default function CarList() {
                 car.userId !== userId ? (
                   <div
                     key={car._id}
-                    onClick={() => handleClickCar(car.carId, car.model)}
-                    className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
+                    className="bg-white rounded-2xl shadow-lg overflow-hiddentransform transition-transform duration-200 ease-in-out hover:scale-105"
                   >
-                    <h3 className="text-lg font-semibold mb-1">
-                      {car.make} {car.model}
-                    </h3>
                     <img
                       src={
                         car.images && car.images.length > 0
@@ -347,12 +370,32 @@ export default function CarList() {
                           : "/placeholder.jpg"
                       }
                       alt="Car"
-                      className="w-full h-48 object-cover rounded-md"
+                      className="w-full h-48 object-cover rounded-2xl"
                     />
+                    <div className="p-6">
+                    <div className="flex justify-between"> 
+                    <h3 className="text-lg font-semibold mb-1">
+                      {car.features.yearOfManufacture} {car.make} {car.model} {car.features.engine} 
+                    </h3>
+                    <StarIcon
+                      className={`h-6 w-6 cursor-pointer ${
+                        userDetails?.data?.favorites?.some(fav => fav._id === car.carId)
+                          ? "text-yellow-500"
+                          : "text-gray-400"
+                      }`} onClick={() => handleAddToFavorites(car.carId)}
+
+                    />
+                    </div>
                     <p className="text-gray-600">
-                      Color: {car.features.color}
+                      {car.carDetails.distanceTravelled} kms - {car.features.fuelType} - {car.features.transmission}
                     </p>
-                    <p className="text-gray-600">Price: ₹{car.price}</p>
+
+                    <p className="text-xl font-bold mb-1">₹{car.price/100000} Lakhs</p>
+                    <br />
+                    <hr className="border-t-2 border-gray-300 my-4" />
+                    <br />
+                    <button onClick={() => handleClickCar(car.carId, car.model)} className="bg-purple-600 hover:bg-purple-700 p-2 w-full rounded-xl text-white">View Car Details</button>
+                    </div>
                   </div>
                 ) : null
               )}

@@ -158,9 +158,9 @@ function NavBar() {
           <div className="w-[10%]">
             <button
               onClick={handleAddCar}
-              className="bg-purple-700 text-white hover:bg-purple-800 p-[4%] rounded w-[80%]"
+              className="bg-purple-600 text-white hover:bg-purple-700 p-[4%] rounded w-[80%]"
             >
-              Add Car
+              Sell Your Car
             </button>
           </div>
         )}

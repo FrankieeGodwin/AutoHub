@@ -1,6 +1,6 @@
 import express from 'express';
 import { createUser, getAllUsers, getUserById, deleteUser, login , updateUser , updatePassword} from '../controllers/userController.js';
-import { addToFavorites } from '../controllers/userDetailsController.js';
+import { addToFavorites , getUserDetailsById } from '../controllers/userDetailsController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -16,4 +16,5 @@ router.patch('/update',authMiddleware, updateUser);
 router.delete('/:id', authMiddleware, deleteUser);
 router.patch('/changePassword',updatePassword);
 router.patch('/addToFavorites',authMiddleware, addToFavorites);
+router.get('/userDetails/:userId',authMiddleware, getUserDetailsById);
 export default router;

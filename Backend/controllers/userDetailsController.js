@@ -53,19 +53,16 @@ export const addToFavorites = async (req, res) => {
       return res.status(400).json({ message: "carId is required." });
     }
 
-    // Find the user's details
     const userDetails = await UserDetails.findOne({ userId });
 
     if (!userDetails) {
       return res.status(404).json({ message: "User details not found." });
     }
 
-    // Check if the car is already in favorites
     if (userDetails.favorites.includes(carId)) {
       return res.status(400).json({ message: "Car already in favorites." });
     }
 
-    // Add to favorites
     userDetails.favorites.push(carId);
     await userDetails.save();
 
@@ -76,5 +73,25 @@ export const addToFavorites = async (req, res) => {
   } catch (error) {
     console.error("Error adding to favorites:", error);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getUserDetailsById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const userDetails = await UserDetails.findOne({ userId })
+      .populate("carsBought")
+      .populate("carsSold")
+      .populate("favorites");
+
+    if (!userDetails) {
+      return res.status(404).json({ success: false, message: "User details not found" });
+    }
+
+    res.json({ success: true, data: userDetails });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
