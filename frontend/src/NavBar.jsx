@@ -17,9 +17,38 @@ function NavBar() {
   const userId = user?.userId;
   const username = user?.emailId;
   const fullName = user?.fullName;
-  const token = user?.token;
+  // const token = user?.token;
+  const token = localStorage.getItem("token");
   const API_BASE = import.meta.env.VITE_API_BASE;
   console.log(token);
+  console.log(userId)
+//   useEffect(() => {
+//   if (!token) {
+//     // if no token/user → redirect immediately
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+//     navigate("/login");
+//   }
+// }, [token, navigate]);
+
+//   useEffect(() => {
+
+//   axios
+//     .get(`${API_BASE}/users/${userId}`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     })
+//     .then((res) => {
+//       console.log("User still logged in:", username, userId);
+//       // token is valid → do nothing
+//     })
+//     .catch((err) => {
+//       console.error("Token invalid or expired:", err);
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("token");
+//       navigate("/login"); // ✅ now redirect works
+//     });
+// }, [userId, username, API_BASE, navigate]);
+
   useEffect(() => {
     if (user && token) {
       axios
@@ -39,7 +68,6 @@ function NavBar() {
         });
     }
   }, []);
-
   const handleClickOutside = (e) => {
     if (
       !e.target.closest('.dropdown-container') && 
@@ -48,14 +76,16 @@ function NavBar() {
       setDropdownOpen(false);
     }
   };
-  const handleAddCar = ()=>{
-    navigate("/Subscription");
-  }
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
+
+  const handleAddCar = ()=>{
+    navigate("/Subscription");
+  }
+
 
 
   // const [filters, setFilters] = useState({
@@ -207,6 +237,8 @@ function NavBar() {
       <li
         onClick={() => {
           localStorage.removeItem("user");
+          localStorage.removeItem("token");
+
           navigate("/");
         }}
         className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"

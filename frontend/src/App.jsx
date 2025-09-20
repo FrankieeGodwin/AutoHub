@@ -34,11 +34,11 @@ function App() {
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/YourCars" element={<YourCars/>}/>
         <Route path="/Payment" element={<Payment/>}/>
-        <Route path="EditProfile" element={<EditProfile/>}/>
+        <Route path="/EditProfile" element={<EditProfile/>}/>
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>}/>
         <Route path="/About" element={<About />}/>
         <Route path="/Contact" element={<Contact />}/>
-        <Route path="TermsConditions" element={<TermsConditions />}/>
+        <Route path="/TermsConditions" element={<TermsConditions />}/>
         <Route path="/Subscription" element={<Subscription/>}/>
         <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
       </Routes>

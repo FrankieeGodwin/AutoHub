@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
+
 export default function CarList() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -123,6 +124,7 @@ export default function CarList() {
       <div className="h-4 bg-gray-300 rounded w-1/3"></div>
     </div>
   );
+
 
   const handleAddToFavorites = async (carId) =>{
     try{
@@ -361,8 +363,13 @@ export default function CarList() {
                 car.userId !== userId ? (
                   <div
                     key={car._id}
-                    className="bg-white rounded-2xl shadow-lg overflow-hiddentransform transition-transform duration-200 ease-in-out hover:scale-105"
+                    onClick={() => handleClickCar(car.carId, car.model)}
+                    className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
                   >
+                    <h3 className="text-lg font-semibold mb-1">
+                      {car.make} {car.model}
+                    </h3>
+
                     <img
                       src={
                         car.images && car.images.length > 0
