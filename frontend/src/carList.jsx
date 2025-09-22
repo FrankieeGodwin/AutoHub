@@ -14,6 +14,7 @@ export default function CarList() {
   const API_BASE = import.meta.env.VITE_API_BASE;
 
   const [userDetails , setUserDetails] = useState({});
+  const [favorites, setFavorites] = useState([]);
   const [cars, setCars] = useState([]);
   const [filters, setFilters] = useState({
     make: "",
@@ -50,7 +51,9 @@ export default function CarList() {
   }
         });
         setUserDetails(response.data);
-        console.log(response.data)
+        setFavorites(response.data?.data?.favorites || []);
+        console.log(response.data);
+        console.log(favorites);
       } catch (error) {
         console.error("Error fetching cars:", error);
       } finally {
@@ -126,23 +129,43 @@ export default function CarList() {
   );
 
 
-  const handleAddToFavorites = async (carId) =>{
-    try{
-      const res= await axios.patch(`${API_BASE}/users/addToFavorites/`,{
-        userId: userId, // pass your userId here
-        carId: carId
-      },
-      {
-        headers: {
-        Authorization: `Bearer ${token}`
-        }
+  const handleAddToFavorites = async (carId) => {
+    try {
+      // Optimistically update UI
+      setFavorites((prev) => [...prev, { _id: carId }]);
+
+      await axios.patch(`${API_BASE}/users/addToFavorites/`, {
+        userId,
+        carId,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      alert("car added to favorites");
+
+      console.log("car added to favorites");
+    } catch (error) {
+      console.error("Error Adding To Favorites:", error);
+      // rollback if failed
+      setFavorites((prev) => prev.filter((fav) => fav._id !== carId));
     }
-    catch(err){
-      console.error("Error Adding To Favorites:",error);
-    }
-  }
+  };
+    const handleRemoveFromFavorites = async (carId) => {
+      try {
+        // Optimistically update UI
+        setFavorites((prev) => prev.filter((fav) => fav._id !== carId));
+
+        await axios.patch(`${API_BASE}/users/removeFromFavorites/`, {
+          userId,
+          carId,
+        }, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log("car removed from favorites");
+      } catch (error) {
+        console.error("Error Removing From Favorites:", error);
+        // rollback if failed
+        setFavorites((prev) => [...prev, { _id: carId }]);
+      }
+    };
   return (
     <div className="mx-auto p-4 mt-[5%] z-50 bg-[#FAFAFA]">
       <h1 className="text-center text-black-500 text-2xl font-bold mb-6">
@@ -384,14 +407,22 @@ export default function CarList() {
                     <h3 className="text-lg font-semibold mb-1">
                       {car.features.yearOfManufacture} {car.make} {car.model} {car.features.engine} 
                     </h3>
-                    <StarIcon
-                      className={`h-6 w-6 cursor-pointer ${
-                        userDetails?.data?.favorites?.some(fav => fav._id === car.carId)
-                          ? "text-yellow-500"
-                          : "text-gray-400"
-                      }`} onClick={() => handleAddToFavorites(car.carId)}
+                        <StarIcon
+                          className={`h-6 w-6 cursor-pointer ${
+                            favorites.some(fav => fav._id === car.carId)
+                              ? "text-yellow-500"
+                              : "text-gray-400"
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation(); // prevent card click
+                            if (favorites.some(fav => fav._id === car.carId)) {
+                              handleRemoveFromFavorites(car.carId);
+                            } else {
+                              handleAddToFavorites(car.carId);
+                            }
+                          }}
+                        />
 
-                    />
                     </div>
                     <p className="text-gray-600">
                       {car.carDetails.distanceTravelled} kms - {car.features.fuelType} - {car.features.transmission}

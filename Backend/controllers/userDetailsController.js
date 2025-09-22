@@ -76,6 +76,41 @@ export const addToFavorites = async (req, res) => {
   }
 };
 
+export const removeFromFavorites = async (req, res) => {
+  try {
+    const { userId, carId } = req.body;
+
+    if (!carId) {
+      return res.status(400).json({ message: "carId is required." });
+    }
+
+    const userDetails = await UserDetails.findOne({ userId });
+
+    if (!userDetails) {
+      return res.status(404).json({ message: "User details not found." });
+    }
+
+    if (!userDetails.favorites.includes(carId)) {
+      return res.status(400).json({ message: "Car not found in favorites." });
+    }
+
+    userDetails.favorites = userDetails.favorites.filter(
+      (fav) => fav.toString() !== carId
+    );
+
+    await userDetails.save();
+
+    return res.status(200).json({
+      message: "Car removed from favorites successfully.",
+      favorites: userDetails.favorites,
+    });
+  } catch (error) {
+    console.error("Error removing from favorites:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
 export const getUserDetailsById = async (req, res) => {
   try {
     const { userId } = req.params;
