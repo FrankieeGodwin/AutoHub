@@ -13,47 +13,71 @@ export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all cars + filter using favorites carIds
+  // Fetch favorites directly (no need to fetch all cars)
   useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        // 1. Get user details with favorites (carIds)
-        const userRes = await axios.get(`${API_BASE}/users/userDetails/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  const fetchFavorites = async () => {
+    try {
+      // 1. Get user favorites
+      const userRes = await axios.get(
+        `${API_BASE}/users/userDetails/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-        const favoriteIds = userRes.data?.data?.favorites || [];
-        console.log("Favorite IDs:", favoriteIds);
+      const favoriteCars = userRes.data?.data?.favorites || [];
+      console.log("Favorite Cars (initial):", favoriteCars);
 
-        if (favoriteIds.length === 0) {
-          setFavorites([]);
-          return;
-        }
+      // 2. Fetch details for each car
+      const enrichedCars = await Promise.all(
+        favoriteCars.map(async (car) => {
+          try {
+            const carId = car._id;
 
-        // 2. Fetch ALL cars
-        const carsRes = await axios.get(`${API_BASE}/cars`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+            const [mainRes, featuresRes, detailsRes, imagesRes, locationRes] =
+              await Promise.all([
+                axios.get(`${API_BASE}/cars/main/${carId}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                }),
+                axios.get(`${API_BASE}/cars/features/${carId}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                }),
+                axios.get(`${API_BASE}/cars/details/${carId}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                }),
+                axios.get(`${API_BASE}/cars/images/${carId}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                }),
+                axios.get(`${API_BASE}/cars/location/${carId}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                }),
+              ]);
 
-        const allCars = carsRes.data || [];
-        console.log("All Cars:", allCars);
+            return {
+              ...car, // keep the existing fields
+              ...mainRes.data, // merge main info
+              features: featuresRes.data,
+              carDetails: detailsRes.data,
+              images: imagesRes.data,
+              location: locationRes.data,
+            };
+          } catch (error) {
+            console.error(`Error fetching details for car ${car._id}:`, error);
+            return car; // fallback to the base car object
+          }
+        })
+      );
 
-        // 3. Filter cars that are in favoriteIds
-        const favCars = allCars.filter((car) =>
-          favoriteIds.includes(car._id)
-        );
+      console.log("Enriched Favorite Cars:", enrichedCars);
+      setFavorites(enrichedCars);
+    } catch (err) {
+      console.error("Error fetching favorites:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        console.log("Filtered Favorite Cars:", favCars);
-        setFavorites(favCars);
-      } catch (err) {
-        console.error("Error fetching favorites:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  fetchFavorites();
+}, [userId, token]);
 
-    fetchFavorites();
-  }, [userId, token]);
 
   const handleRemoveFromFavorites = async (carId) => {
     try {
@@ -67,8 +91,6 @@ export default function Favorites() {
       console.log("Removed from favorites:", carId);
     } catch (err) {
       console.error("Error removing favorite:", err);
-      // rollback UI
-      setFavorites((prev) => [...prev, { _id: carId }]);
     }
   };
 
@@ -78,28 +100,32 @@ export default function Favorites() {
 
   if (loading) {
     return (
-      <div className="text-center mt-10 text-gray-500">Loading favorite cars...</div>
+      <div className="text-center mt-10 text-gray-500">
+        Loading favorite cars...
+      </div>
     );
   }
 
   if (!favorites.length) {
     return (
-      <div className="text-center mt-10 text-gray-500">No favorite cars found.</div>
+      <div className="text-center mt-10 text-gray-500">
+        No favorite cars found.
+      </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {favorites.map((favoritesIds) => (
+        {favorites.map((car) => (
           <div
             key={car._id}
             onClick={() => handleClickCar(car._id, car.model)}
             className="bg-white rounded-2xl shadow-md transform transition-transform duration-200 hover:scale-105"
           >
             <img
-              src={favoritesIds.images?.[0]?.imageURL || "/placeholder.jpg"}
-              alt={favoritesIds.model}
+              src={car.images?.[0]?.imageURL || "/placeholder.jpg"}
+              alt={car.model}
               className="w-full h-48 object-cover rounded-2xl"
             />
             <div className="p-6">
@@ -117,10 +143,12 @@ export default function Favorites() {
                 />
               </div>
               <p className="text-gray-600">
-                {car.carDetails?.distanceTravelled} kms - {car.features?.fuelType} -{" "}
-                {car.features?.transmission}
+                {car.carDetails?.distanceTravelled} kms -{" "}
+                {car.features?.fuelType} - {car.features?.transmission}
               </p>
-              <p className="text-xl font-bold mb-1">₹{car.price / 100000} Lakhs</p>
+              <p className="text-xl font-bold mb-1">
+                ₹{car.price / 100000} Lakhs
+              </p>
               <hr className="border-t-2 border-gray-300 my-4" />
               <button
                 onClick={() => handleClickCar(car._id, car.model)}
