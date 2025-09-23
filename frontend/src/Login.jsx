@@ -88,7 +88,6 @@ export default function Login() {
 
         <div className="mb-6">
           <input
-            ref={(input) => input && input.focus()}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -99,7 +98,6 @@ export default function Login() {
 
         <div className="mb-0">
           <input
-          ref={(input) => input && input.focus()}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

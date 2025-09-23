@@ -106,7 +106,6 @@ export default function YourCars() {
           ))}
         </div>
       </div>
-      <Footer/>
     </div>
   );
 }

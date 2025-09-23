@@ -17,6 +17,7 @@ import Contact from "./Contact.jsx";
 import TermsConditions from "./TermsConditions.jsx";
 import Subscription from "./Subscription.jsx";
 import ForgotPassword from "./ForgotPassword.jsx";
+import Favorites from "./Favorites.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/TermsConditions" element={<TermsConditions />}/>
         <Route path="/Subscription" element={<Subscription/>}/>
         <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
+        <Route path="/Favorites" element={<Favorites/>}/>
       </Routes>
   </Router>
   );

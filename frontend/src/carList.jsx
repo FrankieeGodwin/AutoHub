@@ -53,7 +53,6 @@ export default function CarList() {
         setUserDetails(response.data);
         setFavorites(response.data?.data?.favorites || []);
         console.log(response.data);
-        console.log(favorites);
       } catch (error) {
         console.error("Error fetching cars:", error);
       } finally {
@@ -142,6 +141,7 @@ export default function CarList() {
       });
 
       console.log("car added to favorites");
+      console.log(favorites);
     } catch (error) {
       console.error("Error Adding To Favorites:", error);
       // rollback if failed
@@ -387,11 +387,8 @@ export default function CarList() {
                   <div
                     key={car._id}
                     onClick={() => handleClickCar(car.carId, car.model)}
-                    className="p-6 bg-white rounded-lg shadow-md text-center transform transition-transform duration-200 ease-in-out hover:scale-105"
+                    className=" bg-white rounded-2xl shadow-md transform transition-transform duration-200 ease-in-out hover:scale-105"
                   >
-                    <h3 className="text-lg font-semibold mb-1">
-                      {car.make} {car.model}
-                    </h3>
 
                     <img
                       src={
