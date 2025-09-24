@@ -45,6 +45,8 @@ function App() {
         <Route path="/Favorites" element={<Favorites/>}/>
       </Routes>
   </Router>
+
+  
   );
 }
 
