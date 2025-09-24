@@ -19,6 +19,9 @@ function CarView() {
   const [details, setDetails] = useState(null);
   const [images, setImages] = useState([]);
   const [locationData, setLocationData] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
+const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+
 
   const [user, setUser] = useState(null);
   const [paymentDone, setPaymentDone] = useState(false);
@@ -100,6 +103,28 @@ function CarView() {
     };
     fetchUser();
   }, [car, API_BASE]);
+
+
+// fetch recommendations after car is loaded
+useEffect(() => {
+  if (!carId) return;
+
+  const fetchRecommendations = async () => {
+    try {
+      setLoadingRecommendations(true);
+      const recRes = await axios.get(`${API_BASE}/cars/recommendations/${carId}`);
+      setRecommendations(recRes.data || []);
+    } catch (err) {
+      console.error("Error fetching recommendations:", err);
+    } finally {
+      setLoadingRecommendations(false);
+    }
+  };
+
+  fetchRecommendations();
+}, [carId, API_BASE]);
+
+
 
   const SkeletonLoader = () => (
     <div className="min-h-screen bg-gray-50 py-12 px-4 animate-pulse">
@@ -245,6 +270,39 @@ function CarView() {
             </div>
           )}
         </div>
+{/* Recommendations Section */}
+<div className="mt-10">
+  <h2 className="text-2xl font-bold text-gray-800 mb-4">
+    Similar Cars You May Like
+  </h2>
+
+  {loadingRecommendations ? (
+    <p className="text-gray-500">Loading recommendations...</p>
+  ) : recommendations.length === 0 ? (
+    <p className="text-gray-500">No similar cars found.</p>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {recommendations.map((rec) => (
+        <div
+          key={rec._id || rec.carId} // make sure key matches backend id
+          onClick={() => navigate("/carView", { state: { carId: rec._id || rec.carId } })}
+          className="cursor-pointer bg-gray-50 rounded-xl shadow hover:scale-105 transition p-4"
+        >
+          <img
+            src={rec.images?.[0]?.imageURL || "/placeholder.jpg"}
+            alt={rec.model}
+            className="w-full h-40 object-cover rounded-lg mb-3"
+          />
+          <h3 className="text-lg font-semibold">{rec.make} {rec.model}</h3>
+          <p className="text-gray-600 text-sm">
+            ₹{rec.price} • {rec.features?.fuelType} • {rec.features?.transmission}
+          </p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
       </div>
       <Footer />
     </div>

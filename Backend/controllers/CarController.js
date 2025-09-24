@@ -186,3 +186,78 @@ export const getCarsByUserId = async (req , res) => {
     res.status(500).json({ error: err.message });
   }
 }
+export const getRecommendedCars = async (req, res) => {
+  try {
+    const { carId } = req.params;
+
+    const car = await Car.findById(carId);
+    if (!car) return res.status(404).json({ msg: "Car not found" });
+
+    // Looser matching: same make OR same model OR similar price
+    const cars = await Car.find({
+  _id: { $ne: carId },
+  $and: [
+    { $or: [{ make: car.make }, { model: car.model }] },
+    { $or: [
+        { color: car.color },
+        { engine: car.engine },
+        { price: { $gte: car.price * 0.8, $lte: car.price * 1.5 } }
+    ]},
+  ]
+}).limit(5);
+
+
+    const recommendedRecords = await Promise.all(
+      cars.map(async (c) => {
+        const features = await Features.findOne({ carId: c._id });
+        const carDetails = await CarDetails.findOne({ carId: c._id });
+        const images = await Images.find({ carId: c._id });
+        const location = await Location.findOne({ carId: c._id });
+
+        return {
+          carId: c._id,
+          userId: c.userId,
+          status: c.status,
+          make: c.make,
+          model: c.model,
+          price: c.price,
+          type: c.type,
+          regno: c.regno,
+          images: images.map((img) => ({ imageURL: img.imageURL })),
+          features: features
+            ? {
+                engine: features.engine,
+                mileage: features.mileage,
+                fuelType: features.fuelType,
+                transmission: features.transmission,
+                seatingCapacity: features.seatingCapacity,
+                bodyType: features.bodyType,
+                color: features.color,
+                yearOfManufacture: features.yearOfManufacture,
+                driveType: features.driveType,
+              }
+            : null,
+          carDetails: carDetails
+            ? {
+                age: carDetails.age,
+                distanceTravelled: carDetails.distanceTravelled,
+                numberOfOwners: carDetails.numberOfOwners,
+              }
+            : null,
+          location: location
+            ? {
+                country: location.country,
+                state: location.state,
+                city: location.city,
+              }
+            : null,
+        };
+      })
+    );
+
+    res.status(200).json(recommendedRecords);
+  } catch (err) {
+    console.error("Error fetching recommendations:", err);
+    res.status(500).json({ msg: "Error fetching recommendations", error: err.message });
+  }
+};

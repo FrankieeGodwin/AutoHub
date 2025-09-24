@@ -4,6 +4,7 @@ import { getFeaturesByCarId } from '../controllers/FeaturesController.js';
 import { getCarDetailsByCarId } from '../controllers/CarDetailsController.js';
 import { getImagesByCarId } from '../controllers/ImagesController.js';
 import { getLocationByCarId } from '../controllers/LocationController.js';
+import { getRecommendedCars } from '../controllers/CarController.js';
 const router = express.Router();
 
 router.post('/',createCar);
@@ -15,5 +16,7 @@ router.get('/images/:id',getImagesByCarId);
 router.get('/location/:id',getLocationByCarId);
 router.delete('/:id', deleteCar);
 router.get('/getByUserId/:userId',getCarsByUserId);
+router.get("/recommendations/:carId", getRecommendedCars);
+
 
 export default router;
