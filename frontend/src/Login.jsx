@@ -1,8 +1,11 @@
+
 // Login.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // fixed import
+import loginimage from "./assets/login image.png";
+import logo from "./assets/logo.png" // make sure logo is inside src/assets
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -11,13 +14,13 @@ export default function Login() {
   const location = useLocation();
   const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
-  // ---------------- Handle Google JWT token from backend redirect ----------------
+  // ---------------- Handle Google JWT token ----------------
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const token = query.get("token");
     const error = query.get("error");
 
-    if(error==="UserNotFound"){
+    if (error === "UserNotFound") {
       alert("User not registered. Please sign up first.");
       navigate("/Register");
       return;
@@ -31,16 +34,19 @@ export default function Login() {
           userId: user.id,
           emailId: user.emailId,
           fullName: user.fullName,
-          phoneNo: user.phoneNo, // fallback if not provided
-          token 
+          phoneNo: user.phoneNo,
+          token,
         };
-        alert("Login Successful! Welcome, " + userObj.fullName + userObj.emailId + userObj.userId + userObj.phoneNo + userObj.token);
+
+        alert(`Login Successful! Welcome, ${userObj.fullName}`);
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userObj)); // save user info
+        localStorage.setItem("user", JSON.stringify(userObj));
+
         console.log("Google login success:", userObj);
-         window.history.replaceState({}, document.title, window.location.pathname);
-       // navigate("/", { replace: true });
-      navigate("/", { replace: true });
+        console.log("Google login success:", userObj);
+        // Remove token from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        navigate("/", { replace: true });
       } catch (err) {
         console.error("Failed to decode token:", err);
       }
@@ -48,6 +54,32 @@ export default function Login() {
   }, [location.search, navigate]);
 
   // ---------------- Traditional login ----------------
+  // const handleSubmit = async () => {
+  //   try {
+  //     const response = await axios.post(`${API_BASE}/users/login`, {
+  //       emailId: username,
+  //       passwordHash: password,
+  //     });
+
+  //     if (response.status === 200) {
+  //       const { token, userId, emailId, fullName, phoneNo } = response.data;
+  //       const userObj = { userId, emailId, fullName, phoneNo, token };
+  //       localStorage.setItem("token", token);
+  //       localStorage.setItem("user", JSON.stringify(userObj));
+  //       navigate("/");
+  //     }
+  //   } catch (err) {
+  //     if (err.response) {
+  //       if (err.response.status === 401) alert("Invalid Email or Password");
+  //       else if (err.response.status === 404) alert("User not found");
+  //       else alert("Unexpected error: " + err.response.data.message);
+  //     } else {
+  //       alert("Some Internal Server Error");
+  //     }
+  //   }
+  // };
+
+    // ---------------- Traditional login ----------------
   const handleSubmit = async () => {
     try {
       const response = await axios.post(`${API_BASE}/users/login`, {
@@ -73,73 +105,85 @@ export default function Login() {
     }
   };
 
+
   // ---------------- Google Login ----------------
   const handleGoogleLogin = () => {
     window.location.href = `${API_BASE}/auth/google`;
   };
 
-
   return (
-    <div className="w-full h-screen bg-[#FAFAFA] flex items-center justify-center">
-      <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md border border-gray-200">
-        <h2 className="text-3xl font-bold text-purple-700 mb-8 text-center">
-          Login
-        </h2>
+    <div className="w-full h-screen flex">
+      
 
-        <div className="mb-6">
+      <div className="hidden md:flex w-1/2 flex-col ">
+        <img src={loginimage} alt="AutoHub Logo"/>
+      </div>
+
+
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center bg-white">
+        <div className="w-full max-w-md p-8">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+            Log in
+          </h2>
+
+          {/* Google Login */}
+          <div className="mb-4">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-2 py-3 border rounded-lg hover:bg-gray-50 transition"
+            >
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                alt="Google"
+                className="w-5 h-5"
+              />
+              Continue with Google
+            </button>
+          </div>
+
+          <div className="flex items-center my-4">
+            <hr className="flex-grow border-gray-300" />
+            <span className="px-3 text-gray-500 text-sm">Or with email</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          {/* Email & Password */}
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter email"
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder="Email address"
+            className="w-full px-4 py-3 mb-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
           />
-        </div>
-
-        <div className="mb-0">
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 
-                       focus:outline-none focus:ring-2 focus:ring-purple-400"
+            placeholder="Password"
+            className="w-full px-4 py-3 mb-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
           />
-        </div>
 
-
-        <p className="text-right text-purple-700 py-4">
-              <Link to="/ForgotPassword" className="hover:underline">
+          <p className="text-right text-purple-700 py-4">
+            <Link to="/ForgotPassword" className="text-purple-900 hover:underline">
               Forgot Password?
-              </Link>
-        </p>
-        {/* Submit Button */}
-        <button
-          onClick={handleSubmit}
-          className="w-full py-3 bg-purple-600 text-white font-semibold 
-                     rounded-xl hover:bg-purple-700 transition duration-300"
-        >
-          Submit
-        </button>
+            </Link>
+          </p>
 
-        {/* Continue with Google */}
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full mt-4 py-3 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-600 transition duration-300"
-        >
-          Continue with Google
-        </button>
+          <button
+            onClick={handleSubmit}
+            className="w-full py-3 bg-purple-800 text-white font-medium rounded-lg hover:bg-purple-900 transition"
+          >
+            Log in
+          </button>
 
-        {/* Register */}
-        {/* Extra Links */}
-        <p className="text-center text-gray-600 mt-6">
-          Don’t have an account?{" "}
-          <Link to="/Register">
-          <button className="text-purple-600 font-semibold hover:underline">Register</button>
-          </Link>
-        </p>
+          <p className="text-center text-gray-600 mt-6">
+            Don’t have an account?{" "}
+            <Link to="/Register" className="text-purple-800 font-semibold hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
-
