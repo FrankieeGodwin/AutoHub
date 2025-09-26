@@ -1,5 +1,6 @@
 import Dealer from "../models/Dealer.model.js"
 import DealerStats from "../models/dealerStats.model.js";
+import jwt from "jsonwebtoken";
 
 export const createDealer = async (req, res) => {
   try {
@@ -19,6 +20,52 @@ export const createDealer = async (req, res) => {
       dealer: savedDealer,
       dealerStats: savedDealerStats
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const dealerLogin = async (req, res) => {
+  try {
+    const { Email, PasswordHash } = req.body;
+    const dealer = await Dealer.findOne({ Email });
+
+    if (!dealer) {
+      return res.status(404).json({ message: "Dealer Not Found" });
+    }
+
+    if (dealer.PasswordHash === PasswordHash) {
+      const token = jwt.sign(
+        { id: dealer._id, role: "dealer" },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      return res.status(200).json({
+        token,
+        dealerId: dealer._id,
+        dealerName: dealer.DealerName,
+        email: dealer.Email,
+        phone: dealer.PhoneNumber,
+      });
+    } else {
+      return res.status(401).json({ message: "Wrong Password" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAllDealers = async (req, res) => {
+  try {
+    const dealers = await Dealer.find().select("-PasswordHash"); 
+    // exclude password hash for security
+
+    if (!dealers || dealers.length === 0) {
+      return res.status(404).json({ message: "No dealers found" });
+    }
+
+    res.status(200).json(dealers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

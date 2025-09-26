@@ -192,7 +192,7 @@ export default function CarList() {
               value={filters.make}
               onChange={handleFilterChange}
               placeholder="e.g., Toyota"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             />
           </div>
 
@@ -209,7 +209,7 @@ export default function CarList() {
               name="color"
               value={filters.color}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               <option value="White">White</option>
@@ -239,7 +239,7 @@ export default function CarList() {
               name="engine"
               value={filters.engine}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               <option value="800 cc">800 cc</option>
@@ -268,7 +268,7 @@ export default function CarList() {
               name="price"
               value={filters.price}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               <option value="0-500000">Below ₹5L</option>
@@ -291,7 +291,7 @@ export default function CarList() {
               name="year"
               value={filters.year}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               {Array.from({ length: 26 }, (_, i) =>
@@ -317,7 +317,7 @@ export default function CarList() {
               name="transmission"
               value={filters.transmission}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               <option value="Manual">Manual</option>
@@ -340,7 +340,7 @@ export default function CarList() {
               name="fuel"
               value={filters.fuel}
               onChange={handleFilterChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-800"
             >
               <option value="">All</option>
               <option value="Petrol">Petrol</option>
@@ -365,7 +365,7 @@ export default function CarList() {
                 fuel: "",
               })
             }
-            className="w-full bg-purple-600 text-white py-2 rounded-lg shadow hover:bg-purple-700 transition"
+            className="w-full bg-purple-800 text-white py-2 rounded-lg shadow hover:bg-purple-900 transition"
           >
             Reset Filters
           </button>
@@ -429,7 +429,7 @@ export default function CarList() {
                     <br />
                     <hr className="border-t-2 border-gray-300 my-4" />
                     <br />
-                    <button onClick={() => handleClickCar(car.carId, car.model)} className="bg-purple-600 hover:bg-purple-700 p-2 w-full rounded-xl text-white">View Car Details</button>
+                    <button onClick={() => handleClickCar(car.carId, car.model)} className="bg-purple-800 hover:bg-purple-900 p-2 w-full rounded-xl text-white">View Car Details</button>
                     </div>
                   </div>
                 ) : null

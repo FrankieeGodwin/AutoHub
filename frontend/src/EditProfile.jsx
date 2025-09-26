@@ -105,7 +105,6 @@ export default function EditProfile() {
         </button>
       </form>
     </div>
-    <Footer/>
     </div>
   );
 }

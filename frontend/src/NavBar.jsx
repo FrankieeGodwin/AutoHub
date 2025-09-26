@@ -188,7 +188,7 @@ function NavBar() {
           <div className="w-[10%]">
             <button
               onClick={handleAddCar}
-              className="bg-purple-600 text-white hover:bg-purple-700 p-[4%] rounded w-[80%]"
+              className="bg-purple-800 text-white hover:bg-purple-900 p-[4%] rounded w-[80%]"
             >
               Sell Your Car
             </button>
@@ -203,11 +203,11 @@ function NavBar() {
         ) : (
           <>
           <Link to="login">
-            <button className="text-gray-700 hover:text-purple-700 font-medium">Login</button>
+            <button className="text-gray-700 hover:text-purple-800 font-medium">Login</button>
           </Link>
           <span className="text-gray-400">/</span>
           <Link to="Register">
-            <button className="text-gray-700 hover:text-purple-700 font-medium">Register</button>
+            <button className="text-gray-700 hover:text-purple-800 font-medium">Register</button>
           </Link> </>)}
          
 
@@ -224,13 +224,13 @@ function NavBar() {
     <ul className="py-2 mx-5">
       <li
         onClick={() => navigate("/Profile")}
-        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
+        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-800 cursor-pointer transition-colors duration-200"
       >
         Profile
       </li>
       <li
         onClick={() => navigate("/Settings")}
-        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
+        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-800 cursor-pointer transition-colors duration-200"
       >
         Settings
       </li>
@@ -241,7 +241,7 @@ function NavBar() {
 
           navigate("/");
         }}
-        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors duration-200"
+        className="px-3 py-3 hover:bg-purple-50 hover:text-purple-800 cursor-pointer transition-colors duration-200"
       >
         Logout
       </li>
