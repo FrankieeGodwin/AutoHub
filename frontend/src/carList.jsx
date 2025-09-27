@@ -29,6 +29,11 @@ export default function CarList() {
   const [loading, setLoading] = useState(true); // 🔥 NEW state
 
   const handleClickCar = (carId, model) => {
+    axios.post(`${API_BASE}/activity/`,{
+      userId:userId,
+      carId:carId,
+      role:"User"
+    })
     navigate("/carView", { state: { carId: carId, model: model } });
   };
 

@@ -12,6 +12,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import contactRouter from "./routes/contactRouter.js";
 import User from "./models/user.model.js";
 import dealerRouter from "./routes/dealerRouter.js";
+import UserActivityRouter from "./routes/UserActivityRouter.js"
 // Google login imports
 import session from "express-session";
 import passport from "passport";
@@ -53,6 +54,7 @@ app.use("/otp", otpRouter);
 app.use("/uploadApi", uploadRoutes);
 app.use("/contact", contactRouter);
 app.use("/dealers", dealerRouter);
+app.use("/activity",UserActivityRouter);
 
 passport.use(
   new GoogleStrategy(
