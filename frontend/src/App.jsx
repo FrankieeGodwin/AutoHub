@@ -18,6 +18,7 @@ import TermsConditions from "./TermsConditions.jsx";
 import Subscription from "./Subscription.jsx";
 import ForgotPassword from "./ForgotPassword.jsx";
 import Favorites from "./Favorites.jsx";
+import APIcheck from "./APIcheck.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -43,6 +44,7 @@ function App() {
         <Route path="/Subscription" element={<Subscription/>}/>
         <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
         <Route path="/Favorites" element={<Favorites/>}/>
+        <Route path="/APIcheck" element={<APIcheck/>}/>
       </Routes>
   </Router>
 

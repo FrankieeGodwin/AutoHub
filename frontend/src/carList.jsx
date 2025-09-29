@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
 
@@ -47,6 +47,7 @@ export default function CarList() {
     const fetchCars = async () => {
       try {
         const res = await axios.get(`${API_BASE}/cars/`);
+        console.log(res.data);
         setCars(res.data);
         setFilteredCars(res.data);
 
@@ -430,6 +431,10 @@ export default function CarList() {
                       {car.carDetails.distanceTravelled} kms - {car.features.fuelType} - {car.features.transmission}
                     </p>
 
+                    <p className="text-gray-600">
+                      {new Date(car.createdAt).toLocaleString()}
+                    </p>
+
                     <p className="text-xl font-bold mb-1">₹{car.price/100000} Lakhs</p>
                     <br />
                     <hr className="border-t-2 border-gray-300 my-4" />
@@ -447,6 +452,105 @@ export default function CarList() {
           )}
         </div>
       </div>
+ <div className="w-full mt-20">
+  {/* Heading */}
+  <p className="text-gray-900 text-4xl font-extrabold text-center mb-8 tracking-wide">
+    Latest Cars
+  </p>
+
+  {loading ? (
+  <div className="flex gap-6 overflow-x-auto p-6">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <SkeletonCard key={i} />
+    ))}
+  </div>
+) : filteredCars.length > 0 ? (
+  <div
+    className="flex gap-6 overflow-x-auto p-4 scroll-smooth scrollbar-hide"
+    onMouseEnter={(e) => {
+      e.currentTarget.style.scrollBehavior = "smooth";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.scrollBehavior = "auto";
+    }}
+  >
+    {filteredCars
+      .slice() // create a shallow copy to prevent mutating filteredCars
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .map(
+        (car) =>
+          car.userId !== userId && (
+            <div
+              key={car._id}
+              onClick={() => handleClickCar(car.carId, car.model)}
+              className="min-w-[320px] bg-gradient-to-br from-white/90 to-purple-50/50 backdrop-blur-md rounded-3xl shadow-xl hover:shadow-2xl transform transition duration-300 hover:scale-105 cursor-pointer border border-gray-100"
+            >
+              <div className="relative">
+                <img
+                  src={
+                    car.images && car.images.length > 0
+                      ? car.images[0].imageURL
+                      : "/placeholder.jpg"
+                  }
+                  alt="Car"
+                  className="w-full h-52 object-cover rounded-t-3xl"
+                />
+                <div className="absolute top-3 right-3 bg-white/70 backdrop-blur-md p-1 rounded-full shadow">
+                  <StarIcon
+                    className={`h-6 w-6 ${
+                      favorites.some((fav) => fav._id === car.carId)
+                        ? "text-yellow-500"
+                        : "text-gray-400"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (favorites.some((fav) => fav._id === car.carId)) {
+                        handleRemoveFromFavorites(car.carId);
+                      } else {
+                        handleAddToFavorites(car.carId);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="p-5 flex flex-col gap-2">
+                <h3 className="text-lg font-bold text-gray-900 line-clamp-1">
+                  {car.features.yearOfManufacture} {car.make} {car.model}{" "}
+                  {car.features.engine}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {car.carDetails.distanceTravelled} kms -{" "}
+                  {car.features.fuelType} - {car.features.transmission}
+                </p>
+                <p className="text-gray-500 text-xs">
+                  {new Date(car.createdAt).toLocaleString()}
+                </p>
+                <p className="text-xl font-extrabold text-purple-800 mt-2">
+                  ₹{car.price / 100000} Lakhs
+                </p>
+                <button
+                  onClick={() => handleClickCar(car.carId, car.model)}
+                  className="mt-4 w-full bg-purple-800 hover:bg-purple-900 text-white font-semibold py-2 rounded-2xl shadow-md transition"
+                >
+                  View Car Details
+                </button>
+              </div>
+            </div>
+          )
+      )}
+  </div>
+) : (
+  <p className="text-center text-gray-500 text-lg">
+    No cars found matching your filters.
+  </p>
+)}
+
+</div>
+
     </div>
   );
 }
