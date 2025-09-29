@@ -4,7 +4,8 @@ import { getFeaturesByCarId } from '../controllers/FeaturesController.js';
 import { getCarDetailsByCarId } from '../controllers/CarDetailsController.js';
 import { getImagesByCarId } from '../controllers/ImagesController.js';
 import { getLocationByCarId } from '../controllers/LocationController.js';
-import { getRecommendedCars } from '../controllers/CarController.js';
+import { getRecommendedCars , getCarFAQs } from '../controllers/CarController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.post('/',createCar);
@@ -14,9 +15,9 @@ router.get('/features/:id',getFeaturesByCarId);
 router.get('/details/:id',getCarDetailsByCarId);
 router.get('/images/:id',getImagesByCarId);
 router.get('/location/:id',getLocationByCarId);
-router.delete('/:id', deleteCar);
-router.get('/getByUserId/:userId',getCarsByUserId);
+router.delete('/:id',authMiddleware, deleteCar);
+router.get('/getByUserId/:userId',authMiddleware,getCarsByUserId);
 router.get("/recommendations/:carId", getRecommendedCars);
-
+router.get("/getFAQs/:carId",getCarFAQs);
 
 export default router;

@@ -70,7 +70,7 @@ const Subscription = () => {
 
         {/* Info paragraph */}
         <p className="text-gray-600 text-center mb-6 leading-relaxed">
-          🚗 To <span className="font-semibold text-purple-700">add your car</span> and enjoy all AutoHub
+           To <span className="font-semibold text-purple-800">add your car</span> and enjoy all AutoHub
           services, please complete a one-time payment of just <b>₹500</b>. Unlock
           access to add, manage, and showcase your cars effortlessly.
         </p>
@@ -78,14 +78,14 @@ const Subscription = () => {
         {/* Pay Button */}
         <button
           onClick={handlePayment}
-          className="w-full bg-gradient-to-r from-purple-700 via-pink-600 to-red-500 text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:opacity-90 transition"
+          className="w-full bg-purple-800 text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:opacity-90 transition"
         >
-          Pay ₹500 & Add Your Car 🚘
+          Pay ₹500 & Add Your Car 
         </button>
 
         {/* Extra note */}
         <p className="text-xs text-center mt-4 text-gray-500 italic">
-          Secure payment powered by Razorpay 🔒
+          Secure payment powered by Razorpay 
         </p>
       </div>
     </div>

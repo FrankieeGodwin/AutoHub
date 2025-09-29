@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBarBasic from "./NavBarBasic";
 import Footer from "./Footer";
+import CarFAQs from "./FAQs";
 
 function CarView() {
   const location = useLocation();
@@ -150,10 +151,10 @@ useEffect(() => {
   return (
     <div>
       <NavBarBasic />
-      <div className="min-h-screen bg-gray-50 py-10 px-4">
-        <div className="max-w-6xl mx-auto">
+      <div className="min-h-screen bg-gray-50 py-10 px-4 mt-20">
+        <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+          <div className="overflow-hidden">
             <div className="grid md:grid-cols-2 gap-6">
               {/* LEFT - Car Images */}
               <div className="p-6">
@@ -177,7 +178,7 @@ useEffect(() => {
                         onClick={() => setCurrentIndex(index)}
                         className={`w-28 h-20 object-cover rounded-xl shadow cursor-pointer transition hover:scale-110 ${
                           currentIndex === index
-                            ? "ring-4 ring-indigo-500"
+                            ? "ring-4 ring-purple-800"
                             : ""
                         }`}
                       />
@@ -193,8 +194,8 @@ useEffect(() => {
                     {car.make} {car.model}
                   </h1>
                   <p className="text-gray-600 mb-6">{features?.yearOfManufacture} • {features?.fuelType} • {features?.transmission}</p>
-                  <p className="text-4xl font-extrabold text-indigo-700 mb-6">
-                    ₹{car.price}
+                  <p className="text-4xl font-extrabold text-gray-800 mb-6">
+                    ₹{car.price/100000} Lakhs
                   </p>
                   {details && (
                     <div className="grid grid-cols-2 gap-4 text-sm">
@@ -209,9 +210,9 @@ useEffect(() => {
                 {!paymentDone && (
                   <button
                     onClick={handlepayment}
-                    className="mt-8 w-full bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-3 rounded-xl shadow-md hover:scale-105 transition"
+                    className="mt-8 w-full bg-purple-800 text-white py-3 rounded-xl shadow-md hover:scale-105 transition"
                   >
-                    Make Payment 💳
+                    Buy Seller Details
                   </button>
                 )}
 
@@ -220,7 +221,7 @@ useEffect(() => {
                     onClick={() => setShowDetails(!showDetails)}
                     className="mt-8 w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-3 rounded-xl shadow-md hover:scale-105 transition"
                   >
-                    {showDetails ? "Hide Details" : "Contact Seller 📞"}
+                    {showDetails ? "Hide Details" : "Contact Seller "}
                   </button>
                 )}
               </div>
@@ -270,8 +271,12 @@ useEffect(() => {
             </div>
           )}
         </div>
+
+        
+  {/* FAQ Section */}
+  <CarFAQs carId={car._id} />
 {/* Recommendations Section */}
-<div className="mt-10">
+<div className="mt-10 max-w-7xl mx-auto">
   <h2 className="text-2xl font-bold text-gray-800 mb-4">
     Similar Cars You May Like
   </h2>
@@ -291,7 +296,7 @@ useEffect(() => {
           <img
             src={rec.images?.[0]?.imageURL || "/placeholder.jpg"}
             alt={rec.model}
-            className="w-full h-40 object-cover rounded-lg mb-3"
+            className="w-full h-50 object-cover rounded-lg mb-3"
           />
           <h3 className="text-lg font-semibold">{rec.make} {rec.model}</h3>
           <p className="text-gray-600 text-sm">

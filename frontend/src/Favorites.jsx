@@ -83,9 +83,11 @@ export default function Favorites() {
     try {
       setFavorites((prev) => prev.filter((fav) => fav._id !== carId));
 
-      await axios.post(
-        `${API_BASE}/users/removeFavorite`,
-        { carId },
+      await axios.patch(
+        `${API_BASE}/users/removeFromFavorites`,
+        { userId: userId,
+          carId : carId
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log("Removed from favorites:", carId);
