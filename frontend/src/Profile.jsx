@@ -6,7 +6,7 @@ import EditProfile from "./EditProfile";
 import YourCars from "./YourCars";
 import Favorites from "./Favorites";
 import { Cog6ToothIcon , ChevronRightIcon , StarIcon , TruckIcon , ClockIcon , EnvelopeIcon , PhoneIcon , UserIcon } from '@heroicons/react/24/outline'; 
-
+import YourActivity from "./YourActivity";
 export default function Profile() {
   const users = JSON.parse(localStorage.getItem("user"));
   const userId = users?.userId;
@@ -116,9 +116,7 @@ export default function Profile() {
           {activeTab === "cars" && <YourCars />}
           {activeTab === "favorites" && <Favorites />}
           {activeTab === "activity" && (
-            <div className="text-gray-500 text-lg text-center mt-20">
-              Your recent activity will appear here...
-            </div>
+            <YourActivity />
           )}
           {!activeTab && (
             <div className="text-gray-400 text-center mt-20 text-lg">
