@@ -431,10 +431,6 @@ export default function CarList() {
                       {car.carDetails.distanceTravelled} kms - {car.features.fuelType} - {car.features.transmission}
                     </p>
 
-                    <p className="text-gray-600">
-                      {new Date(car.createdAt).toLocaleString()}
-                    </p>
-
                     <p className="text-xl font-bold mb-1">₹{car.price/100000} Lakhs</p>
                     <br />
                     <hr className="border-t-2 border-gray-300 my-4" />
