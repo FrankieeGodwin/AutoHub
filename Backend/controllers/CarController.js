@@ -261,3 +261,125 @@ export const getRecommendedCars = async (req, res) => {
     res.status(500).json({ msg: "Error fetching recommendations", error: err.message });
   }
 };
+
+
+export const getCarFAQs = async (req, res) => {
+  try {
+    const { carId } = req.params;
+    if (!carId) {
+      return res.status(400).json({ message: "Car ID is required" });
+    }
+
+    // Fetch the car and related collections
+    const car = await Car.findById(carId);
+    if (!car) return res.status(404).json({ message: "Car not found" });
+
+    const features = await Features.findOne({ carId: car._id });
+    const carDetails = await CarDetails.findOne({ carId: car._id });
+    const images = await Images.find({ carId: car._id });
+    const location = await Location.findOne({ carId: car._id });
+
+    // Generate FAQs dynamically
+    const faqs = [];
+
+    // Q1 - Long drive suitability
+    if (carDetails?.distanceTravelled < 50000 && carDetails?.age < 5) {
+      faqs.push({
+        q: `Is the ${car.make} ${car.model} good for long drives?`,
+        a: `Yes, with only ${carDetails.distanceTravelled} kms driven and a ${features?.fuelType} engine, this ${car.model} is reliable for long trips.`,
+      });
+    } else {
+      faqs.push({
+        q: `Is the ${car.make} ${car.model} suitable for long drives?`,
+        a: `This ${car.model} has ${carDetails?.distanceTravelled || "many"} kms and is ${carDetails?.age || "several"} years old, so it’s better for city drives.`,
+      });
+    }
+
+    // Q2 - Maintenance cost
+    if (features?.transmission === "Automatic") {
+      faqs.push({
+        q: `Does the automatic ${car.model} require high maintenance?`,
+        a: `Automatic cars like this ${car.model} may require slightly higher service costs than manuals, but provide excellent driving comfort.`,
+      });
+    } else {
+      faqs.push({
+        q: `Is the manual ${car.model} expensive to maintain?`,
+        a: `Manual cars like this ${car.model} generally have lower servicing costs and simpler repairs compared to automatics.`,
+      });
+    }
+
+    // Q3 - Mileage
+    faqs.push({
+      q: `What is the mileage of the ${car.model}?`,
+      a: `This ${features?.fuelType} ${car.model} delivers an average mileage of ${features?.mileage || "N/A"} km/l, based on driving conditions.`,
+    });
+
+    // Q4 - Fuel type
+    faqs.push({
+      q: `Is the ${car.model} fuel efficient?`,
+      a: `The ${car.model} runs on ${features?.fuelType}, making it ideal for ${features?.fuelType === "Diesel" ? "long distance drives" : "city commutes"}.`,
+    });
+
+    // Q5 - Seating
+    if (features?.seatingCapacity >= 6) {
+      faqs.push({
+        q: `Is the ${car.model} suitable for families?`,
+        a: `Yes, with ${features.seatingCapacity} seats, it’s spacious and ideal for family use.`,
+      });
+    } else {
+      faqs.push({
+        q: `Is the ${car.model} suitable for small families?`,
+        a: `With ${features?.seatingCapacity || "N/A"} seats, it comfortably fits a small family.`,
+      });
+    }
+
+    // Q6 - Age
+    faqs.push({
+      q: `How old is this ${car.model}?`,
+      a: `This ${car.model} is ${carDetails?.age || "N/A"} years old, manufactured in ${features?.yearOfManufacture || "N/A"}.`,
+    });
+
+    // Q7 - Owners
+    faqs.push({
+      q: `How many owners has this ${car.model} had?`,
+      a: `This car has had ${carDetails?.numberOfOwners || "N/A"} previous owner(s).`,
+    });
+
+    // Q8 - Price value
+    faqs.push({
+      q: `Is ₹${car.price.toLocaleString()} a fair price for the ${car.model}?`,
+      a: `Considering it’s a ${features?.yearOfManufacture} model with ${carDetails?.distanceTravelled} kms driven, the price is competitive.`,
+    });
+
+    // Q9 - Body type suitability
+    faqs.push({
+      q: `Is the ${car.model} a good choice as a ${features?.bodyType}?`,
+      a: `Yes, its ${features?.bodyType} design offers ${features?.bodyType === "SUV" ? "better ground clearance and space" : "compact comfort for city driving"}.`,
+    });
+
+    // Q10 - Location
+    faqs.push({
+      q: `Where is this ${car.model} available?`,
+      a: `This car is available in ${location?.city}, ${location?.state}, ${location?.country}.`,
+    });
+
+    // Q11 - Performance (engine)
+    faqs.push({
+      q: `What kind of performance does the ${car.model} offer?`,
+      a: `The ${car.model} is powered by a ${features?.engine || "N/A"} engine, delivering balanced performance for its class.`,
+    });
+
+    // Q12 - Resale value
+    faqs.push({
+      q: `Does the ${car.model} have good resale value?`,
+      a: `Cars like the ${car.model} are known to retain value well, especially when maintained properly.`,
+    });
+
+    // Randomize order to avoid static feel
+    const shuffledFAQs = faqs.sort(() => 0.5 - Math.random());
+
+    res.status(200).json({ carId: car._id, faqs: shuffledFAQs });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
