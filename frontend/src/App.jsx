@@ -23,6 +23,7 @@ import DealerDashboard from "./dealerDashboard.jsx";
 import DealerRegister from "./dealerRegister.jsx";
 import DealerSendOtp from "./dealerSendOtp.jsx";
 import APIcheck from "./APIcheck.jsx";
+import YourActivity from "./YourActivity.jsx";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -53,6 +54,8 @@ function App() {
         <Route path="/dealerRegister" element={<DealerRegister/>}/>
         <Route path="/dealerOtp" element={<DealerSendOtp/>}/>
         <Route path="/APIcheck" element={<APIcheck/>}/>
+        <Route path="/YourActivity" element={<YourActivity/>}/>
+        
 
       </Routes>
   </Router>

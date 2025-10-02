@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import NavBarBasic from "./NavBarBasic";
+import Footer from "./Footer";
 
 export default function Favorites() {
   const navigate = useNavigate();
@@ -118,6 +120,9 @@ export default function Favorites() {
 
   return (
     <div className="container mx-auto p-6">
+      <NavBarBasic />
+      <div className="container mx-auto p-6 mt-20">
+      <h2 className="text-2xl font-bold text-center mb-5">Your Favorite Cars</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {favorites.map((car) => (
           <div
@@ -162,6 +167,8 @@ export default function Favorites() {
           </div>
         ))}
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }
