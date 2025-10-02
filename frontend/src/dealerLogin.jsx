@@ -15,43 +15,43 @@ export default function Login() {
   const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
   // ---------------- Handle Google JWT token ----------------
-//   useEffect(() => {
-//     const query = new URLSearchParams(location.search);
-//     const token = query.get("token");
-//     const error = query.get("error");
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+    const error = query.get("error");
 
-//     if (error === "UserNotFound") {
-//       alert("User not registered. Please sign up first.");
-//       navigate("/Register");
-//       return;
-//     }
+    if (error === "UserNotFound") {
+      alert("User not registered. Please sign up first.");
+      navigate("/Register");
+      return;
+    }
 
-//     if (token) {
-//       try {
-//         const user = jwtDecode(token);
+    if (token) {
+      try {
+        const dealer = jwtDecode(token);
 
-//         const userObj = {
-//           userId: user.id,
-//           emailId: user.emailId,
-//           fullName: user.fullName,
-//           phoneNo: user.phoneNo,
-//           token,
-//         };
+        const userObj = {
+          _id: dealer.id,
+          emailId: user.emailId,
+          fullName: user.fullName,
+          phoneNo: user.phoneNo,
+          token,
+        };
 
-//         alert(`Login Successful! Welcome, ${userObj.fullName}`);
-//         localStorage.setItem("token", token);
-//         localStorage.setItem("user", JSON.stringify(userObj));
+        alert(`Login Successful! Welcome, ${userObj.fullName}`);
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userObj));
 
-//         console.log("Google login success:", userObj);
-//         console.log("Google login success:", userObj);
-//         // Remove token from URL
-//         window.history.replaceState({}, document.title, window.location.pathname);
-//         navigate("/", { replace: true });
-//       } catch (err) {
-//         console.error("Failed to decode token:", err);
-//       }
-//     }
-//   }, [location.search, navigate]);
+        console.log("Google login success:", userObj);
+        console.log("Google login success:", userObj);
+        // Remove token from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        navigate("/", { replace: true });
+      } catch (err) {
+        console.error("Failed to decode token:", err);
+      }
+    }
+  }, [location.search, navigate]);
 
   // ---------------- Traditional login ----------------
   // const handleSubmit = async () => {
@@ -83,21 +83,20 @@ export default function Login() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(`${API_BASE}/dealers/dealerLogin`, {
-        emailId: username,
-        passwordHash: password,
+        Email: username,
+        PasswordHash: password,
       });
 
       if (response.status === 200) {
-        const { token, userId, emailId, fullName, phoneNo } = response.data;
-        const userObj = { userId, emailId, fullName, phoneNo, token };
+        const { token, dealer } = response.data;
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userObj)); // save user info
-        navigate("/");
+        localStorage.setItem("dealer", JSON.stringify(dealer)); // save user info
+        navigate("/dealerDashboard");
       }
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) alert("Invalid Email or Password");
-        else if (err.response.status === 404) alert("User not found");
+        else if (err.response.status === 404) alert("Dealer not found");
         else alert("Unexpected error: " + err.response.data.message);
       } else {
         alert("Some Internal Server Error");

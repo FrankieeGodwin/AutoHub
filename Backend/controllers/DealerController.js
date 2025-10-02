@@ -43,10 +43,7 @@ export const dealerLogin = async (req, res) => {
 
       return res.status(200).json({
         token,
-        dealerId: dealer._id,
-        dealerName: dealer.DealerName,
-        email: dealer.Email,
-        phone: dealer.PhoneNumber,
+        dealer
       });
     } else {
       return res.status(401).json({ message: "Wrong Password" });

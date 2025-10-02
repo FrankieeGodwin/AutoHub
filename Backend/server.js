@@ -11,6 +11,7 @@ import otpRouter from "./routes/otpRouter.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import contactRouter from "./routes/contactRouter.js";
 import User from "./models/user.model.js";
+import Dealer from "./models/Dealer.model.js";
 import dealerRouter from "./routes/dealerRouter.js";
 import UserActivityRouter from "./routes/UserActivityRouter.js"
 // Google login imports
@@ -89,9 +90,26 @@ app.get(
       const user = await User.findOne({ emailId: email });
       if (!user) {
         // ❌ Not found → redirect with error
-        return res.redirect(
-          `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=UserNotFound`
+        const dealer = await Dealer.findOne({Email : email});
+        if(!dealer)
+        {
+            return res.redirect(
+              `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=UserNotFound`
+            );
+        }
+        const { PasswordHash, _id, ...rest } = dealer.toObject();
+
+        const token = jwt.sign(
+          {
+            id: _id.toString(),  // 👈 top-level field
+            ...rest,
+            role: "dealer"
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
         );
+
+        res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/dealerLogin?token=${encodeURIComponent(token)}`);
       }
 
       const token = jwt.sign(

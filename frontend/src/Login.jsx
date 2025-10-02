@@ -182,6 +182,12 @@ export default function Login() {
               Sign Up
             </Link>
           </p>
+          <p className="text-center text-gray-600 mt-6">
+            Are you a Dealer?{" "}
+            <Link to="/dealerLogin" className="text-purple-800 font-semibold hover:underline">
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
     </div>
