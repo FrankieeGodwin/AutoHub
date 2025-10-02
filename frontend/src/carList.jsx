@@ -172,6 +172,8 @@ export default function CarList() {
         setFavorites((prev) => [...prev, { _id: carId }]);
       }
     };
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   return (
     <div className="mx-auto p-4 mt-[5%] z-50 bg-[#FAFAFA]">
       <h1 className="text-center text-black-500 text-2xl font-bold mb-6">
@@ -180,8 +182,27 @@ export default function CarList() {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Filter Panel */}
-        <div className="hidden lg:block w-1/4 p-6 bg-white rounded-xl shadow-md max-h-[85vh] overflow-y-auto border border-gray-100 sticky top-[6rem]">
-          <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
+        <div className="fixed top-20 left-5 z-50">
+  <button
+    onClick={() => setIsFilterOpen(true)}
+    className="p-2 rounded-md bg-purple-900 text-white"
+  >
+    &#9776; Filters
+  </button>
+</div>
+        <div
+  className={`fixed inset-0 bg-black bg-opacity-50 flex justify-start z-50 transition-transform duration-300 ${
+    isFilterOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
+          <div className="bg-white w-3/4 max-w-sm p-6 h-full overflow-y-auto relative">
+      <button
+        onClick={() => setIsFilterOpen(false)}
+        className="absolute top-4 right-4 text-gray-600 text-xl font-bold"
+      >
+        ×
+      </button>
+         <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
 
           {/* Make Filter */}
           <div className="mb-6">
@@ -376,9 +397,9 @@ export default function CarList() {
             Reset Filters
           </button>
         </div>
-
+       </div>
         {/* Right Side: Car View */}
-        <div className="w-full lg:w-3/4">
+        <div className="w-full">
           {loading ? (
             // 🔥 Show skeletons while loading
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -387,7 +408,7 @@ export default function CarList() {
               ))}
             </div>
           ) : filteredCars.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {filteredCars.map((car) =>
                 car.userId !== userId ? (
                   <div
