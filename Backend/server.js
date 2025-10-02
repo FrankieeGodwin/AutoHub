@@ -109,7 +109,7 @@ app.get(
           { expiresIn: "1h" }
         );
 
-        res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/dealerLogin?token=${encodeURIComponent(token)}`);
+        return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/dealerLogin?token=${encodeURIComponent(token)}`);
       }
 
       const token = jwt.sign(

@@ -82,3 +82,19 @@ export async function deleteDealer(req, res) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export const getDealerById = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const dealer = await Dealer.findById(id);
+
+    if (!dealer) {
+      return res.status(404).json({ message: "Dealer not found" });
+    }
+
+    res.status(200).json(dealer);
+  } catch (error) {
+    console.error("Error retrieving dealer by id:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

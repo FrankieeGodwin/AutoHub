@@ -28,25 +28,24 @@ export default function Login() {
 
     if (token) {
       try {
-        const dealer = jwtDecode(token);
+        const fetchDealer = async () => {
 
-        const userObj = {
-          _id: dealer.id,
-          emailId: user.emailId,
-          fullName: user.fullName,
-          phoneNo: user.phoneNo,
-          token,
-        };
-
-        alert(`Login Successful! Welcome, ${userObj.fullName}`);
+        
+        const res = jwtDecode(token);
+        const { data: dealer } = await axios.get(`${API_BASE}/dealers/${res.id}`);
+        console.log(dealer.data);
+        alert(`Login Successful! Welcome, ${dealer.DealerName} , ${res.role}`);
+        
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem("dealer", JSON.stringify(dealer));
 
-        console.log("Google login success:", userObj);
-        console.log("Google login success:", userObj);
+        console.log("Google login success:", dealer);
+        console.log("Google login success:", dealer);
         // Remove token from URL
         window.history.replaceState({}, document.title, window.location.pathname);
-        navigate("/", { replace: true });
+        navigate("/dealerDashboard", { replace: true });
+        }
+        fetchDealer();
       } catch (err) {
         console.error("Failed to decode token:", err);
       }
