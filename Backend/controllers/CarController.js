@@ -62,6 +62,8 @@ export const getAllCars = async (req, res) => {
           price: car.price,
           type: car.type,
           regno: car.regno,
+          createdAt: car.createdAt,
+          updatedAt: car.updatedAt,
 
           images: images.map((img) => ({ imageURL: img.imageURL })),
 
@@ -197,14 +199,13 @@ export const getRecommendedCars = async (req, res) => {
     const cars = await Car.find({
   _id: { $ne: carId },
   $and: [
-    { $or: [{ make: car.make }, { model: car.model }] },
+    { $or: [{ make: car.make }, { model: car.model }, { engine: car.engine }] },
     { $or: [
         { color: car.color },
-        { engine: car.engine },
-        { price: { $gte: car.price * 0.8, $lte: car.price * 1.5 } }
+        { price: { $gte: car.price * 5.0, $lte: car.price * 5.0 } }
     ]},
   ]
-}).limit(5);
+}).limit(6);
 
 
     const recommendedRecords = await Promise.all(

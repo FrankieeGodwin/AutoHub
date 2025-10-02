@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { StarIcon } from "@heroicons/react/24/solid";
 
@@ -47,6 +47,7 @@ export default function CarList() {
     const fetchCars = async () => {
       try {
         const res = await axios.get(`${API_BASE}/cars/`);
+        console.log(res.data);
         setCars(res.data);
         setFilteredCars(res.data);
 
@@ -171,6 +172,8 @@ export default function CarList() {
         setFavorites((prev) => [...prev, { _id: carId }]);
       }
     };
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   return (
     <div className="mx-auto p-4 mt-[5%] z-50 bg-[#FAFAFA]">
       <h1 className="text-center text-black-500 text-2xl font-bold mb-6">
@@ -179,8 +182,27 @@ export default function CarList() {
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Filter Panel */}
-        <div className="hidden lg:block w-1/4 p-6 bg-white rounded-xl shadow-md max-h-[85vh] overflow-y-auto border border-gray-100 sticky top-[6rem]">
-          <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
+        <div className="fixed top-20 left-5 z-50">
+  <button
+    onClick={() => setIsFilterOpen(true)}
+    className="p-2 rounded-md bg-purple-900 text-white"
+  >
+    &#9776; Filters
+  </button>
+</div>
+        <div
+  className={`fixed inset-0 bg-black bg-opacity-50 flex justify-start z-50 transition-transform duration-300 ${
+    isFilterOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
+          <div className="bg-white w-3/4 max-w-sm p-6 h-full overflow-y-auto relative">
+      <button
+        onClick={() => setIsFilterOpen(false)}
+        className="absolute top-4 right-4 text-gray-600 text-xl font-bold"
+      >
+        ×
+      </button>
+         <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
 
           {/* Make Filter */}
           <div className="mb-6">
@@ -375,9 +397,9 @@ export default function CarList() {
             Reset Filters
           </button>
         </div>
-
+       </div>
         {/* Right Side: Car View */}
-        <div className="w-full lg:w-3/4">
+        <div className="w-full">
           {loading ? (
             // 🔥 Show skeletons while loading
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -386,7 +408,7 @@ export default function CarList() {
               ))}
             </div>
           ) : filteredCars.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {filteredCars.map((car) =>
                 car.userId !== userId ? (
                   <div
@@ -447,6 +469,105 @@ export default function CarList() {
           )}
         </div>
       </div>
+ <div className="w-full mt-20">
+  {/* Heading */}
+  <p className="text-gray-900 text-4xl font-extrabold text-center mb-8 tracking-wide">
+    Latest Cars
+  </p>
+
+  {loading ? (
+  <div className="flex gap-6 overflow-x-auto p-6">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <SkeletonCard key={i} />
+    ))}
+  </div>
+) : filteredCars.length > 0 ? (
+  <div
+    className="flex gap-6 overflow-x-auto p-4 scroll-smooth scrollbar-hide"
+    onMouseEnter={(e) => {
+      e.currentTarget.style.scrollBehavior = "smooth";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.scrollBehavior = "auto";
+    }}
+  >
+    {filteredCars
+      .slice() // create a shallow copy to prevent mutating filteredCars
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .map(
+        (car) =>
+          car.userId !== userId && (
+            <div
+              key={car._id}
+              onClick={() => handleClickCar(car.carId, car.model)}
+              className="min-w-[320px] bg-gradient-to-br from-white/90 to-purple-50/50 backdrop-blur-md rounded-3xl shadow-xl hover:shadow-2xl transform transition duration-300 hover:scale-105 cursor-pointer border border-gray-100"
+            >
+              <div className="relative">
+                <img
+                  src={
+                    car.images && car.images.length > 0
+                      ? car.images[0].imageURL
+                      : "/placeholder.jpg"
+                  }
+                  alt="Car"
+                  className="w-full h-52 object-cover rounded-t-3xl"
+                />
+                <div className="absolute top-3 right-3 bg-white/70 backdrop-blur-md p-1 rounded-full shadow">
+                  <StarIcon
+                    className={`h-6 w-6 ${
+                      favorites.some((fav) => fav._id === car.carId)
+                        ? "text-yellow-500"
+                        : "text-gray-400"
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (favorites.some((fav) => fav._id === car.carId)) {
+                        handleRemoveFromFavorites(car.carId);
+                      } else {
+                        handleAddToFavorites(car.carId);
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="p-5 flex flex-col gap-2">
+                <h3 className="text-lg font-bold text-gray-900 line-clamp-1">
+                  {car.features.yearOfManufacture} {car.make} {car.model}{" "}
+                  {car.features.engine}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {car.carDetails.distanceTravelled} kms -{" "}
+                  {car.features.fuelType} - {car.features.transmission}
+                </p>
+                <p className="text-gray-500 text-xs">
+                  {new Date(car.createdAt).toLocaleString()}
+                </p>
+                <p className="text-xl font-extrabold text-purple-800 mt-2">
+                  ₹{car.price / 100000} Lakhs
+                </p>
+                <button
+                  onClick={() => handleClickCar(car.carId, car.model)}
+                  className="mt-4 w-full bg-purple-800 hover:bg-purple-900 text-white font-semibold py-2 rounded-2xl shadow-md transition"
+                >
+                  View Car Details
+                </button>
+              </div>
+            </div>
+          )
+      )}
+  </div>
+) : (
+  <p className="text-center text-gray-500 text-lg">
+    No cars found matching your filters.
+  </p>
+)}
+
+</div>
+
     </div>
   );
 }
