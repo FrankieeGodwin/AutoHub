@@ -20,8 +20,9 @@ import ForgotPassword from "./ForgotPassword.jsx";
 import Favorites from "./Favorites.jsx";
 import DealerLogin from "./dealerLogin.jsx";
 import DealerDashboard from "./dealerDashboard.jsx";
+import DealerRegister from "./dealerRegister.jsx";
+import DealerSendOtp from "./dealerSendOtp.jsx";
 import APIcheck from "./APIcheck.jsx";
-
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -49,6 +50,8 @@ function App() {
         <Route path="/Favorites" element={<Favorites/>}/>
         <Route path="/dealerLogin" element={<DealerLogin/>}/>
         <Route path="/dealerDashboard" element={<DealerDashboard/>}/>
+        <Route path="/dealerRegister" element={<DealerRegister/>}/>
+        <Route path="/dealerOtp" element={<DealerSendOtp/>}/>
         <Route path="/APIcheck" element={<APIcheck/>}/>
 
       </Routes>
