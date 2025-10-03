@@ -14,6 +14,7 @@ import User from "./models/user.model.js";
 import Dealer from "./models/Dealer.model.js";
 import dealerRouter from "./routes/dealerRouter.js";
 import UserActivityRouter from "./routes/UserActivityRouter.js"
+import SellerNotificationRouter from "./routes/SellerNotificationRouter.js";
 // Google login imports
 import session from "express-session";
 import passport from "passport";
@@ -56,6 +57,7 @@ app.use("/uploadApi", uploadRoutes);
 app.use("/contact", contactRouter);
 app.use("/dealers", dealerRouter);
 app.use("/activity",UserActivityRouter);
+app.use("/SellerNotification", SellerNotificationRouter);
 
 passport.use(
   new GoogleStrategy(

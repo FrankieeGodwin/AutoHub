@@ -127,21 +127,50 @@ useEffect(() => {
 
 
 
+ useEffect(() => {
+  const saveSeller = async () => {
+    if (!paymentDone || !user || !car) return;
+
+    try {
+      // optional: check if this notification already exists to avoid duplicates
+      const res = await axios.get(`${API_BASE}/SellerNotification/check/${userId}/${carId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.data.exists) { // backend returns { exists: true/false }
+        await axios.post(`${API_BASE}/SellerNotification/`, {
+          buyerId: userId,
+          carId: carId,
+          sellerId: car.userId,
+          sellerName: user.fullName,
+          sellerEmail: user.emailId,
+          sellerPhone: user.phoneNo
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+    } catch (err) {
+      console.error("Error saving seller notification:", err);
+    }
+  };
+
+  saveSeller();
+}, [paymentDone, user, car]);
+
+
+
   const SkeletonLoader = () => (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 animate-pulse">
-      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden p-8">
-        <div className="h-10 bg-gray-200 rounded-xl w-1/2 mx-auto mb-10"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="w-full h-96 bg-gray-200 rounded-3xl"></div>
-          <div className="flex flex-col gap-6">
-            <div className="h-8 bg-gray-200 rounded-lg w-2/3"></div>
-            <div className="h-6 bg-gray-200 rounded-lg w-full"></div>
-            <div className="h-12 bg-gray-200 rounded-xl"></div>
-            <div className="h-32 bg-gray-200 rounded-xl"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+  <div className="w-full h-96 bg-gray-200 rounded-3xl"></div>
+  <div className="flex flex-col gap-6">
+    <div className="h-8 bg-gray-200 rounded-lg w-2/3"></div>
+    <div className="h-6 bg-gray-200 rounded-lg w-full"></div>
+    <div className="h-12 bg-gray-200 rounded-xl"></div>
+    <div className="h-32 bg-gray-200 rounded-xl"></div>
+  </div>
+  <div className="w-full h-96 bg-gray-200 rounded-3xl"></div>
+  <div className="w-full h-96 bg-gray-200 rounded-3xl"></div>
+</div>
   );
 
   if (!car) {
@@ -272,7 +301,6 @@ useEffect(() => {
           )}
         </div>
 
-        
   {/* FAQ Section */}
   <CarFAQs carId={car._id} />
 {/* Recommendations Section */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown } from "lucide-react"; // modern icon
+import { ChevronDown,Bell } from "lucide-react"; // modern icon
 import {useLocation} from "react-router-dom";
 import logo from './assets/logo.png';
 // import login from "./Login.jsx";
@@ -17,6 +17,7 @@ function NavBar() {
   const userId = user?.userId;
   const username = user?.emailId;
   const fullName = user?.fullName;
+  const [unreadCount, setUnreadCount] = useState(0);
   // const token = user?.token;
   const token = localStorage.getItem("token");
   const API_BASE = import.meta.env.VITE_API_BASE;
@@ -153,6 +154,22 @@ function NavBar() {
   }, [filters, cars]);
 
 
+  useEffect(() => {
+    if (!userId) return;
+  const fetchUnread = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/SellerNotification/checkview/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUnreadCount(res.data.count || 0);
+      } catch (err) {
+        console.error("Error fetching unread notifications:", err);
+      }
+    };
+
+    fetchUnread();
+  }, [userId]);
+
   return (
     <div className="fixed top-0 left-0 w-full h-[10%] bg-[#FAFAFA] border-b border-gray-200 z-50">
       <div className="flex justify-between items-center w-[90%] mx-auto h-full">
@@ -194,6 +211,31 @@ function NavBar() {
             </button>
           </div>
         )}
+
+<div className="relative">
+  <button 
+    className="p-2 rounded relative" 
+    onClick={() => navigate("/Notifications")}
+  >
+    <Bell className="w-5 h-5 text-gray-600 hover:text-purple-800 cursor-pointer" />
+
+    {/* 🔴 Red dot */}
+    {unreadCount > 0 && (
+      <span className="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full"></span>
+    )}
+  </button>
+
+  {/* 🟣 Tooltip below the bell */}
+  {unreadCount > 0 && (
+    <div className="absolute top-8 right-0 bg-purple-800 text-white text-xs px-3 py-1 rounded-lg shadow-lg">
+      New Notification
+      {/* Arrow made with rotated square */}
+      <div className="absolute -top-1 right-3 w-2 h-2 bg-purple-800 rotate-45"></div>
+    </div>
+  )}
+</div>
+
+
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">
