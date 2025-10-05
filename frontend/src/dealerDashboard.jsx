@@ -53,6 +53,7 @@ const DealerDashboard = () => {
         <h1 className="text-3xl font-bold text-purple-800">{dealer.DealerName}</h1>
       </div>
 
+
       {loading ? (
         <p className="text-center">Loading cars...</p>
       ) : cars.length === 0 ? (
@@ -243,4 +244,5 @@ const CarCard = ({ car }) => {
   );
 };
 
+  
 export default DealerDashboard;
