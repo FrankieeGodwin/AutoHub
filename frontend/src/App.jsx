@@ -27,6 +27,8 @@ import YourActivity from "./YourActivity.jsx";
 import Notifications from "./Notifications.jsx";
 import ChatPage from "./ChatPage"; // buyer-seller chat
 import SellerChats from "./SellerChats"; // seller view all chats
+import UploadCars from "./UploadCars.jsx";
+import { Upload } from "lucide-react";
 function App() {
   useEffect(() => {
   console.log("ENV Test:", import.meta.env.VITE_API_BASE);
@@ -59,6 +61,7 @@ function App() {
         <Route path="/APIcheck" element={<APIcheck/>}/>
         <Route path="/YourActivity" element={<YourActivity/>}/>
         <Route path="/Notifications" element={<Notifications/>}/>
+        <Route path="/dealerUploadCars" element={<UploadCars/>}/>
 
 
          <Route path="/chat/:sellerId" element={<ChatPage />} />
