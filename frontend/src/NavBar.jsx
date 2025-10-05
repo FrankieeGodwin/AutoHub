@@ -236,6 +236,26 @@ function NavBar() {
 </div>
 
 
+    {/* Chat Icon Button */}
+<div className="ml-4 relative">
+  <button 
+    className="p-2 rounded relative"
+    onClick={() => navigate("/seller-chats")}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5 text-gray-600 hover:text-purple-800 cursor-pointer"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8-1.85 0-3.573-.5-5.01-1.356L3 20l1.356-3.99C3.5 14.573 3 12.85 3 11c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+  </button>
+</div>
+
+
 
         {/* Links + More Dropdown */}
         <div className="flex items-center space-x-4">

@@ -7,6 +7,8 @@ const SellerIformationNotificationSchema = new mongoose.Schema({
     sellerName : {type:String},
     sellerEmail : {type:String},
     sellerPhone : {type:String},
+    chatId: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" }, // link to chat
+    type: { type: String, default: "interested" }, // can have values like 'interested', 'message'
     createdAt : {type: Date, default: Date.now},
     viewed : {type: Boolean, default: false}
 
