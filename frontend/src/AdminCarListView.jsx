@@ -69,7 +69,7 @@ function AdminCarListView() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 py-12 px-4 mt-20">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-            🚘 Admin — All Listed Cars
+            Admin — All Listed Cars
           </h1>
 
           {loading ? (
