@@ -59,10 +59,6 @@ function App() {
         <Route path="/APIcheck" element={<APIcheck/>}/>
         <Route path="/YourActivity" element={<YourActivity/>}/>
         <Route path="/Notifications" element={<Notifications/>}/>
-
-
-         <Route path="/chat/:sellerId" element={<ChatPage />} />
-
             {/* Seller chat overview */}
             <Route path="/seller-chats" element={<SellerChats />} />
         

@@ -17,11 +17,13 @@ import UserActivityRouter from "./routes/UserActivityRouter.js"
 import SellerNotificationRouter from "./routes/SellerNotificationRouter.js";
 import newCarRoutes from "./routes/NewCarRoutes.js";
 import ChatRoutes from "./routes/ChatRouter.js";
+import AdminRouter from "./routes/AdminRouter.js";
 // Google login imports
 import session from "express-session";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const app = express();
 app.use(express.json());
@@ -62,6 +64,7 @@ app.use("/activity",UserActivityRouter);
 app.use("/SellerNotification", SellerNotificationRouter);
 app.use("/api/newcars", newCarRoutes);
 app.use("/chats",ChatRoutes);
+app.use("/admin",AdminRouter);
 passport.use(
   new GoogleStrategy(
     {
@@ -193,6 +196,29 @@ app.use((err, req, res, next) => {
   console.error("Error:", err.message);
   res.status(500).json({ error: err.message });
 });
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD; // This should be a hashed password
+const JWT_SECRET = process.env.JWT_SECRET;
+
+app.post("/admin-login", async (req,res) => {
+  const {email,password} = req.body;
+
+  if(email !== ADMIN_EMAIL) {
+    return res.status(401).json({message : "Invalis mail"});
+  }
+
+  const pass= await bcrypt.compare(password,ADMIN_PASSWORD);
+  if(!pass){
+    return res.status(401).json({message : "Invalid password"})
+  }
+  const token = jwt.sign (
+    {email},
+    JWT_SECRET,
+    {expiresIn:"1h"}
+  );
+  return res.status(200).json({email,token});
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
