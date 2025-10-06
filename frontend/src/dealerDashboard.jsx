@@ -7,6 +7,7 @@ const DealerDashboard = () => {
   const dealerData = localStorage.getItem("dealer");
   const dealer = dealerData ? JSON.parse(dealerData) : null;
   const token = localStorage.getItem("token");
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const DealerDashboard = () => {
       const fetchCars = async () => {
         try {
           const res = await axios.get(
-            `http://localhost:5000/api/newcars/dealer-cars/${dealer._id}`,
+            `${API_BASE}/api/newcars/dealer-cars/${dealer._id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setCars(res.data);

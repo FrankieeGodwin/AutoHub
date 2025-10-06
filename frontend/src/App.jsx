@@ -65,13 +65,10 @@ function App() {
         <Route path="/YourActivity" element={<YourActivity/>}/>
         <Route path="/Notifications" element={<Notifications/>}/>
         <Route path="/dealerUploadCars" element={<UploadCars/>}/>
-        <Route path="/chat/:sellerId" element={<ChatPage />} />
+        <Route path="/chat/:userId" element={<ChatPage />} />
         <Route path="/AdminLogin" element={<AdminLogin/> } />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/AdminCarListView" element={<AdminCarListView />} />
-
-         <Route path="/chat/:sellerId" element={<ChatPage />} />
-
             {/* Seller chat overview */}
             <Route path="/seller-chats" element={<SellerChats />} />
         

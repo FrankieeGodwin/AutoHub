@@ -240,7 +240,7 @@ function NavBar() {
 <div className="ml-4 relative">
   <button 
     className="p-2 rounded relative"
-    onClick={() => navigate("/seller-chats")}
+    onClick={() => navigate(`/chat/${userId}`)}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

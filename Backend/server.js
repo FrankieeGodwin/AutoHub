@@ -24,7 +24,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import MessageRouter from "./routes/messageRouter.js";
 const app = express();
 app.use(express.json());
 app.use(cors(
@@ -65,6 +65,7 @@ app.use("/SellerNotification", SellerNotificationRouter);
 app.use("/api/newcars", newCarRoutes);
 app.use("/chats",ChatRoutes);
 app.use("/admin",AdminRouter);
+app.use("/messages",MessageRouter);
 passport.use(
   new GoogleStrategy(
     {
