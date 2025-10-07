@@ -25,7 +25,38 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import MessageRouter from "./routes/messageRouter.js";
+import {Server} from "socket.io";
+import http from "http";
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors:{
+    origin: "http://localhost:5173", // or your React port
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  // Join room based on user ID
+  socket.on("join", (userId) => {
+    socket.join(userId); // Each user has their own room
+    console.log(`User ${userId} joined their room`);
+  });
+
+  // Listen for typing event
+  socket.on("typing", ({ senderId, receiverId, isTyping }) => {
+    // Emit to receiver
+    socket.to(receiverId).emit("typing", { senderId, isTyping });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected", socket.id);
+  });
+});
+
 app.use(express.json());
 app.use(cors(
     {
@@ -222,4 +253,4 @@ app.post("/admin-login", async (req,res) => {
 })
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
+const socket = io("http://localhost:5000", { transports: ["websocket"] }); 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 const user = JSON.parse(localStorage.getItem("user"));
 const currentUserId = user?.userId;
@@ -16,11 +18,23 @@ const ChatPage = () => {
   const messagesContainerRef = useRef(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
 
+  const [partnerTyping, setPartnerTyping] = useState(false);
+
+useEffect(() => {
+  socket.on("typing", ({ senderId, isTyping }) => {
+    if (senderId === selectedPartner) {
+      setPartnerTyping(isTyping);
+    }
+  });
+}, [selectedPartner]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+  if (currentUserId) socket.emit("join", currentUserId);
+}, []);
 
 
   const formatTime = (timestamp) => {
@@ -60,6 +74,7 @@ const ChatPage = () => {
 
   const fetchPartners = async () => {
     try {
+      if(!currentUserId) return;  
       const res = await axios.get(
         `${API_BASE}/messages/getChatPartners/${currentUserId}`
       );
@@ -120,7 +135,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     fetchPartners();
-  }, []);
+  }, [currentUserId]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -183,6 +198,12 @@ const ChatPage = () => {
               </span>
             </div>
           ))}
+          {partnerTyping && (
+  <div className="text-gray-500 italic px-4 py-1">
+    {partners.find(p => p.id === selectedPartner)?.name} is typing...
+  </div>
+)}
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -201,15 +222,25 @@ const ChatPage = () => {
         {/* Input Box */}
         <div className="flex p-4 border-t border-gray-300 bg-white">
           <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") sendMessage();
-            }}
-            placeholder="Type a message..."
-            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+  type="text"
+  value={newMessage}
+  onChange={(e) => {
+    setNewMessage(e.target.value);
+    if (selectedPartner) {
+      socket.emit("typing", {
+        senderId: currentUserId,
+        receiverId: selectedPartner,
+        isTyping: e.target.value.length > 0, // true if typing
+      });
+    }
+  }}
+  className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+  onKeyDown={(e) => {
+    if (e.key === "Enter") sendMessage();
+  }}
+  placeholder="Type a message..."
+/>
+
           <button
             onClick={sendMessage}
             className="ml-3 px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-800 transition-colors"
