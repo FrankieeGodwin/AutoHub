@@ -1,132 +1,218 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
-const user=JSON.parse(localStorage.getItem("user"));
-const currentUserId = user?.userId; // example current user ID
+const user = JSON.parse(localStorage.getItem("user"));
+const currentUserId = user?.userId;
 
 const ChatPage = () => {
   const [partners, setPartners] = useState([]);
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const token = user?.token; // JWT token
+  const messagesEndRef = useRef(null);
+  const [shouldScroll, setShouldScroll] = useState(false);
+  const messagesContainerRef = useRef(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
-  // --- Fetch chat partners ---
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+
+
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedhours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedhours}:${formattedMinutes} ${ampm}`;
+  };
+
+//   const updateTyping = async (isTyping) => {
+//   try {
+//     await axios.post(`${API_BASE}/messages/typing`, {
+//       sender: currentUserId,
+//       receiver: selectedPartner,
+//       typing: isTyping,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+
+  const fetchUserById = async (userId) => {
+    try {
+      const res = await axios.get(`${API_BASE}/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
+
   const fetchPartners = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/messages/getChatPartners/${currentUserId}`);
-      setPartners(res.data.partners);
+      const res = await axios.get(
+        `${API_BASE}/messages/getChatPartners/${currentUserId}`
+      );
+      const partnerIds = res.data.partners;
+
+      const partnersData = await Promise.all(
+        partnerIds.map(async (id) => {
+          const user = await fetchUserById(id);
+          return { id, name: user?.fullName || "Unknown" };
+        })
+      );
+      setPartners(partnersData);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // --- Fetch messages between current user and selected partner ---
   const fetchMessages = async (partnerId) => {
+    if(!partnerId) return;
     try {
-      const res = await axios.get(`${API_BASE}/messages/getMessagesBetween/${currentUserId}/${partnerId}`);
+      const res = await axios.get(
+        `${API_BASE}/messages/getMessagesBetween/${currentUserId}/${partnerId}`
+      );
       setMessages(res.data.messages);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // --- Send a new message ---
   const sendMessage = async () => {
-    if (!newMessage || !selectedPartner) return;
-
+    if (!newMessage && !selectedPartner) return;
     try {
-      // Normally encrypt here on frontend before sending
       await axios.post(`${API_BASE}/messages/send`, {
         sender: currentUserId,
         receiver: selectedPartner,
-        text: newMessage
+        text: newMessage,
       });
-
       setNewMessage("");
-      fetchMessages(selectedPartner); // refresh messages
+      setShouldScroll(true);
+      await fetchMessages(selectedPartner);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // --- Select a partner ---
+  useEffect(() => {
+    if (shouldScroll || isAtBottom) {
+      scrollToBottom();
+      setShouldScroll(false); // reset the flag
+    }
+  }, [messages]);
+
+
   const selectPartner = (partnerId) => {
     setSelectedPartner(partnerId);
     fetchMessages(partnerId);
   };
 
-  // --- Polling for new messages every second ---
   useEffect(() => {
     fetchPartners();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (selectedPartner) fetchMessages(selectedPartner);
     }, 1000);
-
     return () => clearInterval(interval);
   }, [selectedPartner]);
 
   return (
-    <div style={{ display: "flex", height: "80vh", border: "1px solid #ccc" }}>
+    <div className="flex h-[80vh] border border-gray-300 rounded-lg overflow-hidden shadow-lg">
       {/* Chat Partners */}
-      <div style={{ width: "25%", borderRight: "1px solid #ccc", overflowY: "auto" }}>
-        <h3 style={{ textAlign: "center" }}>Chat Partners</h3>
-        <ul style={{ listStyle: "none", padding: 0 }}>
+      <div className="w-1/4 bg-gray-100 border-r border-gray-300 overflow-y-auto">
+        <h3 className="text-center py-4 bg-purple-600 text-white font-semibold">
+          Chat Partners
+        </h3>
+        <ul className="list-none p-0 m-0">
           {partners.map((partner) => (
             <li
-              key={partner}
-              style={{
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: selectedPartner === partner ? "#e0e0e0" : "white"
-              }}
-              onClick={() => selectPartner(partner)}
+              key={partner.id}
+              className={`px-4 py-3 cursor-pointer border-b border-gray-200 hover:bg-gray-200 transition-colors ${
+                selectedPartner === partner.id ? "bg-gray-300" : ""
+              }`}
+              onClick={() => selectPartner(partner.id)}
             >
-              {partner}
+              {partner.name}
             </li>
           ))}
         </ul>
       </div>
 
       {/* Chat Box */}
-      <div style={{ width: "75%", display: "flex", flexDirection: "column", padding: "10px" }}>
-        <div style={{ flex: 1, overflowY: "auto", marginBottom: "10px" }}>
+      <div className="w-3/4 flex flex-col bg-white relative">
+        {/* Messages */}
+        <div
+  ref={messagesContainerRef}
+  className="flex-1 p-5 overflow-y-auto flex flex-col gap-3 bg-gray-50"
+  onScroll={() => {
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 20); // 20px threshold
+  }}
+>
           {messages.map((msg) => (
             <div
               key={msg._id}
-              style={{
-                display: "flex",
-                justifyContent: msg.sender === currentUserId ? "flex-end" : "flex-start",
-                marginBottom: "5px"
-              }}
+              className={`flex flex-col ${
+                msg.sender === currentUserId ? "items-end" : "items-start"
+              }`}
             >
               <div
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: "15px",
-                  backgroundColor: msg.sender === currentUserId ? "#007bff" : "#e5e5ea",
-                  color: msg.sender === currentUserId ? "white" : "black",
-                  maxWidth: "60%"
-                }}
+                className={`px-4 py-2 rounded-2xl max-w-[60%] break-words shadow ${
+                  msg.sender === currentUserId
+                    ? "bg-purple-600 text-white"
+                    : "bg-gray-200 text-black"
+                }`}
               >
                 {msg.text}
               </div>
+              <span className="text-xs text-gray-500 mt-1">
+                {formatTime(msg.createdAt)}
+              </span>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
 
+        {/* Scroll to Bottom Button */}
+{!isAtBottom && (
+  <button
+    onClick={scrollToBottom}
+    className="absolute bottom-20 right-10 bg-purple-600 text-white rounded-full p-3 shadow-lg hover:bg-purple-700 transition-all"
+    title="Scroll to Bottom"
+  >
+    ⬇️
+  </button>
+)}
+
+
         {/* Input Box */}
-        <div style={{ display: "flex" }}>
+        <div className="flex p-4 border-t border-gray-300 bg-white">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") sendMessage();
+            }}
             placeholder="Type a message..."
-            style={{ flex: 1, padding: "10px", borderRadius: "20px", border: "1px solid #ccc" }}
+            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={sendMessage}
-            style={{ marginLeft: "10px", padding: "10px 20px", borderRadius: "20px" }}
+            className="ml-3 px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-800 transition-colors"
           >
             Send
           </button>
