@@ -8,9 +8,10 @@ import axios from "axios";
 // import Carview from './Carview.jsx';
 
 
-function NavBar() {
+const NavBar = ({ category, setCategory }) => {
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [category, setCategory] = useState("All"); // category filter
+  // const [category, setCategory] = useState("All"); // category filter
   const navigate=useNavigate();
   const location = useLocation();
   const user=JSON.parse(localStorage.getItem("user"));
@@ -170,6 +171,11 @@ function NavBar() {
     fetchUnread();
   }, [userId]);
 
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setCategory(value);
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-[10%] bg-[#FAFAFA] border-b border-gray-200 z-50">
       <div className="flex justify-between items-center w-[90%] mx-auto h-full">
@@ -184,7 +190,7 @@ function NavBar() {
           <div className="relative flex items-center  px-3 cursor-pointer category-dropdown">
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={handleCategoryChange}
               className="appearance-none bg-transparent pr-6 focus:outline-none text-gray-700 font-medium cursor-pointer"
             >
               <option value="All">All</option>

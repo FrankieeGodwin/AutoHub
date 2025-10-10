@@ -10,6 +10,7 @@ function AdminDashBoard() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [activeUsers, setActiveUsers] = useState(0);
   const [totalCars, setTotalCars] = useState(0);
+  const [NewCars, setNewCars] = useState(0);
   const [activeUserPercentage, setActiveUserPercentage] = useState(0);
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
@@ -25,10 +26,11 @@ function AdminDashBoard() {
         },
       });
 
-      const { totalUsers, activeUsers, totalCars } = res.data;
+      const { totalUsers, activeUsers, totalCars, NewCars } = res.data;
       setTotalUsers(totalUsers);
       setActiveUsers(activeUsers);
       setTotalCars(totalCars);
+      setNewCars(NewCars);
       setActiveUserPercentage(((activeUsers / totalUsers) * 100).toFixed(2));
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
@@ -63,6 +65,31 @@ function AdminDashBoard() {
     ],
   };
 
+  const carsBarData = {
+  labels: ["Total Cars", "New Cars"],
+  datasets: [
+    {
+      label: "Cars",
+      data: [totalCars, NewCars],
+      backgroundColor: ["#3B82F6", "#FACC15"],
+    },
+  ],
+};
+
+
+  // ✅ New Bar chart for Total Cars vs New Cars
+// ✅ Pie chart for Total Cars vs New Cars
+// const carsPieData = {
+//   labels: ["New Cars", "Existing Cars"],
+//   datasets: [
+//     {
+//       label: "Car Distribution",
+//       data: [NewCars, totalCars],
+//       backgroundColor: ["#FACC15", "#3B82F6"],
+//     },
+//   ],
+// };
+
   return (
     <>
       <NavBarAdmin />
@@ -82,9 +109,9 @@ function AdminDashBoard() {
           </div>
           <div className="bg-blue-50 p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
             <h3 className="text-lg font-medium text-gray-700">Total Cars</h3>
-            <p className="text-4xl font-bold text-blue-700 mt-4">{totalCars}</p>
+            <p className="text-4xl font-bold text-blue-700 mt-4">{totalCars+NewCars}</p>
             <button
-              onClick = {() => navigate("/AdminCarListView ")}
+              onClick={() => navigate("/AdminCarListView")}
                className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
             >
               View Cars
@@ -93,7 +120,7 @@ function AdminDashBoard() {
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
   <div className="bg-white p-6 rounded-xl shadow-md">
     <h3 className="text-xl font-semibold mb-4 text-gray-700">Active vs Inactive Users</h3>
     <div className="w-64 h-64 mx-auto">
@@ -110,6 +137,39 @@ function AdminDashBoard() {
     </p>
   </div>
 </div>
+{/* ✅ Pie chart for Cars */}
+{/* <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition">
+  <h3 className="text-lg font-medium text-gray-700 mb-4">Cars Overview</h3>
+  <div className="w-48 h-48">
+    <Pie
+      data={carsPieData}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+      }}
+    />
+  </div>
+</div> */}
+
+      {/* ✅ Bar Chart for Cars */}
+<div className="bg-white p-6 rounded-xl shadow-md">
+  <h3 className="text-xl font-semibold mb-4 text-gray-700">
+    Total Cars vs New Cars
+  </h3>
+  <div className="w-full h-64">
+    <Bar
+      data={carsBarData}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true },
+        },
+      }}
+    />
+  </div>
+</div>
+  
 
 
       </div>

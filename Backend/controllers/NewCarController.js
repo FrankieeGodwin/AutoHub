@@ -106,3 +106,28 @@ export const getAllCars = async (req,res) => {
   }
 
 }
+
+export const getCarById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find car by ID and populate dealer details (if needed)
+    const car = await NewCar.findById(id).populate("dealer", "DealerName email phone");
+
+    if (!car) {
+      return res.status(404).json({ success: false, message: "Car not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      car,
+    });
+  } catch (error) {
+    console.error("Error fetching car by ID:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching car details",
+      error: error.message,
+    });
+  }
+};

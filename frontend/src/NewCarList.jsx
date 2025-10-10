@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // 👈 Add this
 
 const NewCarList = () => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // 👈 Add this
 
   useEffect(() => {
     const fetchCars = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/newcars/all-cars");
-        setCars(res.data.car || []); // backend sends { success, totalCars, cars }
+        setCars(res.data.car || []);
       } catch (err) {
         console.error("Error fetching cars:", err);
         setError("Failed to load cars");
@@ -25,7 +27,7 @@ const NewCarList = () => {
   if (error) return <p className="text-center mt-5 text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 mt-20">
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">All New Cars</h2>
 
       {cars.length === 0 ? (
@@ -35,9 +37,9 @@ const NewCarList = () => {
           {cars.map((car) => (
             <div
               key={car._id}
-              className="bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-all"
+              onClick={() => navigate(`/car/${car._id}`)} // 👈 Navigate to details page
+              className="bg-white rounded-2xl shadow-md p-4 hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
             >
-              {/* Car Image */}
               {car.media?.images?.length > 0 && (
                 <img
                   src={car.media.images[0]}
@@ -46,7 +48,6 @@ const NewCarList = () => {
                 />
               )}
 
-              {/* Car Details */}
               <h3 className="text-lg font-semibold text-gray-800">
                 {car.brand} {car.modelName}
               </h3>
@@ -56,12 +57,10 @@ const NewCarList = () => {
                 Fuel: {car.fuelTypes?.join(", ") || "N/A"}
               </p>
 
-              {/* Price Range */}
               <p className="font-bold text-blue-600">
                 ₹{car.priceRange?.min?.toLocaleString()} - ₹{car.priceRange?.max?.toLocaleString()}
               </p>
 
-              {/* Stock */}
               <p className="text-sm text-gray-500 mt-1">Stock: {car.stock}</p>
             </div>
           ))}

@@ -32,6 +32,7 @@ import AdminLogin from "./AdminLogin.jsx";
 import AdminCarListView from "./AdminCarListView.jsx";
 import AdminDashboard from "./AdminDashboard.jsx";
 import NewCarList from "./NewCarList.jsx";
+import CarViewPage from "./carViewPage.jsx";
 import { Upload } from "lucide-react";
 function App() {
   useEffect(() => {
@@ -74,7 +75,7 @@ function App() {
         <Route path="/NewCarList" element={<NewCarList />} />
             {/* Seller chat overview */}
             <Route path="/seller-chats" element={<SellerChats />} />
-        
+        <Route path="/car/:newcarid" element={<CarViewPage />} /> 
 
       </Routes>
   </Router>

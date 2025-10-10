@@ -1,5 +1,5 @@
 import express from "express";
-import { uploadCSV , getDealerCars, getAllCars } from "../controllers/NewCarController.js";
+import { uploadCSV , getDealerCars, getAllCars , getCarById } from "../controllers/NewCarController.js";
 
 const router = express.Router();
 
@@ -7,4 +7,5 @@ const router = express.Router();
 router.post("/upload-newcars/:dealerId", uploadCSV);
 router.get("/dealer-cars/:dealerId", getDealerCars);
 router.get("/all-cars", getAllCars);
+router.get("/car/:id", getCarById);
 export default router;
