@@ -35,6 +35,14 @@ const Payment = () => {
           });
 
           if (verifyRes.data.success) {
+            const paymentStore = await axios.post(`${API_BASE}/payment/create`, {
+              userId : userId,
+              carId : carId,
+              paymentId : response.razorpay_payment_id,
+              amount : 500,
+              type : "Seller-Details",
+              status : "Completed"
+            })
             navigate("/carView", { state: { userId : userId , carId: carId, paymentId: response.razorpay_payment_id, }, });
             // alert("✅ Payment successful!");
           } else {

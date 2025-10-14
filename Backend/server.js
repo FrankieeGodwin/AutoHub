@@ -18,6 +18,7 @@ import SellerNotificationRouter from "./routes/SellerNotificationRouter.js";
 import newCarRoutes from "./routes/NewCarRoutes.js";
 import ChatRoutes from "./routes/ChatRouter.js";
 import AdminRouter from "./routes/AdminRouter.js";
+import PaymentRouter from "./routes/PaymentRouter.js ";
 // Google login imports
 import session from "express-session";
 import passport from "passport";
@@ -97,6 +98,7 @@ app.use("/api/newcars", newCarRoutes);
 app.use("/chats",ChatRoutes);
 app.use("/admin",AdminRouter);
 app.use("/messages",MessageRouter);
+app.use("/payment",PaymentRouter);
 passport.use(
   new GoogleStrategy(
     {

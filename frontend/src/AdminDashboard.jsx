@@ -66,15 +66,18 @@ function AdminDashBoard() {
   };
 
   const carsBarData = {
-  labels: ["Total Cars", "New Cars"],
+  labels: ["Used Cars", "New Cars", "Total Cars"],
   datasets: [
     {
-      label: "Cars",
-      data: [totalCars, NewCars],
-      backgroundColor: ["#3B82F6", "#FACC15"],
+      label: "Cars Count",
+      data: [totalCars - NewCars, NewCars, totalCars],
+      backgroundColor: ["#3B82F6", "#FACC15", "#8B5CF6"], // Blue, Yellow, Purple
+      borderRadius: 8,
     },
   ],
 };
+
+
 
 
   // ✅ New Bar chart for Total Cars vs New Cars
@@ -158,15 +161,40 @@ function AdminDashBoard() {
   </h3>
   <div className="w-full h-64">
     <Bar
-      data={carsBarData}
-      options={{
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: { beginAtZero: true },
+  data={carsBarData}
+  options={{
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false, // Hide legend for single dataset
+      },
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function(context) {
+            return `${context.dataset.label}: ${context.parsed.y}`;
+          },
         },
-      }}
-    />
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  }}
+/>
+
+
   </div>
 </div>
   
