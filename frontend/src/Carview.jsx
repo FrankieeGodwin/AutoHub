@@ -41,10 +41,30 @@ const [loadingRecommendations, setLoadingRecommendations] = useState(false);
   }
 
   useEffect(() => {
-    if (paymentId) {
-      setPaymentDone(true);
+  const fetchPaymentStatus = async () => {
+    try {
+      if (!userId || userId === "null") return;
+
+      // ✅ Fetch all payments for this user
+      const res = await axios.get(`${API_BASE}/payment/payments/${userId}`);
+      const payments = res.data?.payments || [];
+
+      // ✅ Check if user has made a payment for this specific car
+      const userPayment = payments.find(p => p.carId === carId);
+
+      if (userPayment) {
+        setPaymentDone(true);
+        // Optional: store paymentId if you want to use it later
+        // setPaymentId(userPayment._id);
+      }
+    } catch (err) {
+      console.error("Error fetching payment info:", err);
     }
-  }, [paymentId]);
+  };
+
+  fetchPaymentStatus();
+}, [userId, carId, API_BASE]);
+
 
   useEffect(() => {
     if (!carId) return;

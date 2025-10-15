@@ -32,3 +32,37 @@ export const AllPaymentsByUserId = async (req,res) => {
         res.status(500).json({message:'error'});
     }
 }
+
+export const AllpaymentsForAdmin = async (req,res) => {
+    try {
+    const payments = await Payment.find()
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(payments);
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+export const PaymentMonthlySummary = async (req,res) => {
+    try {
+    const summary = await Payment.aggregate([
+      {
+        $group: {
+          _id: {
+            month: { $month: "$createdAt" },
+            year: { $year: "$createdAt" },
+          },
+          totalEarnings: { $sum: "$amount" },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+    ]);
+    res.status(200).json(summary);
+  } catch (error) {
+    console.error("Error getting monthly summary:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}

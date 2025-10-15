@@ -2,6 +2,7 @@
 import User from "../models/user.model.js";
 import Car from "../models/Car.model.js";  // adjust import if file name differs
 import NewCar from "../models/NewCar.model.js";  // adjust import if file name differs
+import Dealer from "../models/Dealer.model.js";
 import jwt from "jsonwebtoken";
 // import { BetaAnalyticsDataClient } from '@google-analytics/data';
 
@@ -26,12 +27,16 @@ export const dashboarddata = async (req, res) => {
     const activeUsers = await User.countDocuments(); // Assuming you store an `isActive` flag
     const totalCars = await Car.countDocuments();
     const NewCars = await NewCar.countDocuments();
+    const userCount = await User.countDocuments();
+    const dealerCount = await Dealer.countDocuments();
 
     res.status(200).json({
       totalUsers,
       activeUsers,
       totalCars,
       NewCars,
+      userCount,
+      dealerCount
     });
   } catch (err) {
     console.error("Error fetching dashboard stats:", err);

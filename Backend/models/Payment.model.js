@@ -7,6 +7,6 @@ const paymentSchema = new mongoose.Schema({
     amount: {type: Number, required: true},
     type : {type: String, enum :['Seller-Details','Add-cars'],required:true},
     status: {type: String, enum: ['Pending', 'Completed'], default: 'Pending'},
-});
+},{ timestamps:true });
 
 export default mongoose.model('Payment', paymentSchema);
