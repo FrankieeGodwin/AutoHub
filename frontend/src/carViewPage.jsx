@@ -8,11 +8,11 @@ const CarViewPage = () => {
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const API_BASE = import.meta.env.VITE_API_BASE;
 useEffect(() => {
   const fetchCarDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/newcars/car/${newcarid}`);
+      const res = await axios.get(`${API_BASE}/api/newcars/car/${newcarid}`);
       setCar(res.data.car); // ✅ FIXED
     } catch (err) {
       console.error("Error fetching car details:", err);
