@@ -53,6 +53,13 @@ io.on("connection", (socket) => {
     socket.to(receiverId).emit("typing", { senderId, isTyping });
   });
 
+  socket.on("messageSent", ({ senderId, receiverId }) => {
+    // Notify receiver to refresh
+    socket.to(receiverId).emit("refreshMessages", { senderId });
+    // Optionally, notify sender too
+    socket.emit("refreshMessages", { senderId });
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
   });
