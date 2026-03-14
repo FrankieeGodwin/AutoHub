@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "./assets/logo.png";
+import logo from "../assets/logo.png";
 
 const DealerNavBar = ({ isHomeDashboard }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

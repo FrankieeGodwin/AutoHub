@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBarBasic from "./NavBarBasic";
-import Footer from "./Footer";
-import CarFAQs from "./FAQs";
+import NavBarBasic from "../NavBarBasic";
+import Footer from "../Footer";
+import CarFAQs from "../FAQs";
 
 function CarView() {
   const location = useLocation();

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FooterForDealer from "./FooterForDealer.jsx";
-import DealerNavBar from "./DealerNavBar.jsx";
+import DealerNavBar from "./Dealer/DealerNavBar.jsx";
 const UploadCars = () => {
   const dealerData = localStorage.getItem("dealer");
   const dealer = dealerData ? JSON.parse(dealerData) : null;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavBarAdmin from "./NavBarAdmin.jsx";
+import NavBarAdmin from "../NavBarAdmin.jsx";
 import axios from "axios";
 import { Bar, Pie } from "react-chartjs-2";
 import {
@@ -44,22 +44,24 @@ function AdminDashBoard() {
     }
   };
 
-  const fetchMonthlySummary = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/payment/Admin/monthly`);
-      const formatted = res.data.map((item) => ({
-        month: `${new Date(item._id.year, item._id.month - 1).toLocaleString("default", {
-          month: "short",
-        })} ${item._id.year}`,
-        total: item.totalEarnings,
-        count: item.count,
-      }));
-      setMonthlyData(formatted);
-    } catch (err) {
-      console.error("Error fetching monthly summary:", err);
-      alert("Failed to load monthly summary");
-    }
-  };
+const fetchMonthlySummary = async () => {
+  try {
+    const res = await axios.get(`${API_BASE}/payment/Admin/monthly`);
+    console.log("Monthly ",res.data);
+    const formatted = res.data.map((item) => ({
+      month: `${new Date(item._id.year, item._id.month - 1).toLocaleString("default", {
+        month: "short",
+      })} ${item._id.year} (${item._id.range})`,
+      total: item.totalEarnings,
+      count: item.count,
+    }));
+    setMonthlyData(formatted);
+  } catch (err) {
+    console.error("Error fetching monthly summary:", err);
+    alert("Failed to load monthly summary");
+  }
+};
+
 
     const fetchDashboardData = async () => {
       try {
@@ -90,18 +92,18 @@ function AdminDashBoard() {
     datasets: [
       {
         label: "User Activity",
-        data: [activeUsers, totalUsers - activeUsers],
+        data: [totalUsers, 1],
         backgroundColor: ["#10B981", "#F87171"],
       },
     ],
   };
 
   const carsBarData = {
-    labels: ["Used Cars", "New Cars", "Total Cars"],
+    labels: ["Used Cars", "New Cars"],
     datasets: [
       {
         label: "Cars Count",
-        data: [totalCars - NewCars, NewCars, totalCars],
+        data: [totalCars - NewCars, NewCars],
         backgroundColor: ["#3B82F6", "#FACC15", "#8B5CF6"], // Blue, Yellow, Purple
         borderRadius: 8,
       },
@@ -119,17 +121,19 @@ function AdminDashBoard() {
     ],
   };
 
-    const paymentsMonthlyData = {
-    labels: monthlyData.map((item) => item.month),
-    datasets: [
-      {
-        label: "Monthly Earnings",
-        data: monthlyData.map((item) => item.total),
-        backgroundColor: "#FBBF24",
-        borderRadius: 8,
-      },
-    ],
-  };
+const colors = ["#F59E0B", "#FBBF24", "#FCD34D"];
+const paymentsMonthlyData = {
+  labels: monthlyData.map((item) => item.month),
+  datasets: [
+    {
+      label: "Earnings by Date Range",
+      data: monthlyData.map((item) => item.total),
+      backgroundColor: monthlyData.map((item, i) => colors[i % 3]),
+      borderRadius: 8,
+    },
+  ],
+};
+
 
   // Total earnings
   const totalEarnings = payments.reduce((acc, item) => acc + item.amount, 0);
@@ -150,24 +154,22 @@ function AdminDashBoard() {
             <p className="text-5xl font-bold text-purple-700 mt-3">{totalUsers}</p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-100 to-green-50 p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all transform hover:scale-105">
+          {/* <div className="bg-gradient-to-br from-green-100 to-green-50 p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all transform hover:scale-105">
             <h3 className="text-lg font-medium text-gray-700">Active Users</h3>
             <p className="text-5xl font-bold text-green-700 mt-3">{activeUsers}</p>
             <p className="text-sm text-gray-600 mt-2">
               {activeUserPercentage}% of users are active
             </p>
-          </div>
+          </div> */}
 
-          <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all transform hover:scale-105">
-            <h3 className="text-lg font-medium text-gray-700">Total Cars</h3>
-            <p className="text-5xl font-bold text-blue-700 mt-3">{totalCars + NewCars}</p>
-            <button
-              onClick={() => navigate("/AdminCarListView")}
-              className="mt-5 px-5 py-2 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 transition-all"
-            >
-              View Cars
-            </button>
-          </div>
+          <div  
+          className="bg-gradient-to-br from-blue-100 to-blue-50 p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all transform hover:scale-105 cursor-pointer"
+          onClick={() => navigate("/AdminCarListView")}
+        >
+          <h3 className="text-lg font-medium text-gray-700">Total Cars</h3>
+          <p className="text-5xl font-bold text-blue-700 mt-3">{totalCars + NewCars}</p>
+        </div>
+
           <div className="bg-gradient-to-br from-yellow-100 to-yellow-50 p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all transform hover:scale-105">
             <h3 className="text-lg font-medium text-gray-700">Total Earnings</h3>
             <p className="text-5xl font-bold text-yellow-700 mt-3">₹{totalEarnings}</p>
@@ -217,7 +219,7 @@ function AdminDashBoard() {
           {/* Cars Chart */}
           <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all">
             <h3 className="text-xl font-semibold mb-4 text-gray-700 text-center">
-              Total Cars vs New Cars
+              New Cars vs Used Cars
             </h3>
             <div className="w-full h-64">
               <Bar

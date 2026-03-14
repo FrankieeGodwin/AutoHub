@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NavBarBasic from "./NavBarBasic";
-import Footer from "./Footer";
+import NavBarBasic from "../NavBarBasic";
+import Footer from "../Footer";
 
 export default function About() {
   return (

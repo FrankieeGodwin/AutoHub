@@ -1,38 +1,38 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
-import Login from "./Login.jsx";
-import Register from "./Register.jsx";
-import SendOtp  from "./SendOtp.jsx";
+import Login from "../Login.jsx";
+import Register from "../Register.jsx";
+import SendOtp  from "../SendOtp.jsx";
 import AddCar from "./addCar.jsx";
-import CarView from "./Carview.jsx";
-import Home from "./Home";
-import Profile from "./Profile.jsx";
-import YourCars from "./YourCars.jsx";
-import Payment from "./Payment.jsx";
-import EditProfile from "./EditProfile.jsx";
-import PrivacyPolicy from "./PrivacyPolicy.jsx"
-import About from "./About.jsx";
-import Contact from "./Contact.jsx";
-import TermsConditions from "./TermsConditions.jsx";
-import Subscription from "./Subscription.jsx";
-import ForgotPassword from "./ForgotPassword.jsx";
-import Favorites from "./Favorites.jsx";
-import DealerLogin from "./dealerLogin.jsx";
-import DealerDashboard from "./dealerDashboard.jsx";
-import DealerRegister from "./dealerRegister.jsx";
-import DealerSendOtp from "./dealerSendOtp.jsx";
-import APIcheck from "./APIcheck.jsx";
-import YourActivity from "./YourActivity.jsx";
-import Notifications from "./Notifications.jsx";
-import ChatPage from "./ChatPage"; // buyer-seller chat
-import SellerChats from "./SellerChats"; // seller view all chats
-import UploadCars from "./UploadCars.jsx";
-import AdminLogin from "./AdminLogin.jsx";  
-import AdminCarListView from "./AdminCarListView.jsx";
-import AdminDashboard from "./AdminDashboard.jsx";
-import NewCarList from "./NewCarList.jsx";
-import CarViewPage from "./carViewPage.jsx";
+import CarView from "../user/Carview.jsx";
+import Home from "../Home.jsx";
+import Profile from "../Profile.jsx";
+import YourCars from "../YourCars.jsx";
+import Payment from "../Payment/Payment.jsx";
+import EditProfile from "../EditProfile.jsx";
+import PrivacyPolicy from "../PrivacyPolicy.jsx"
+import About from "../Components/About.jsx";
+import Contact from "../Components/Contact.jsx";
+import TermsConditions from "../TermsConditions.jsx";
+import Subscription from "../Subscription.jsx";
+import ForgotPassword from "../ForgotPassword.jsx";
+import Favorites from "../Favorites.jsx";
+import DealerLogin from "../Dealer/dealerLogin.jsx";
+import DealerDashboard from "../Dealer/dealerDashboard.jsx";
+import DealerRegister from "../dealerRegister.jsx";
+import DealerSendOtp from "../dealerSendOtp.jsx";
+import APIcheck from "../APIcheck.jsx";
+import YourActivity from "../YourActivity.jsx";
+import Notifications from "../Notifications.jsx";
+import ChatPage from "./ChatPage.jsx"; // buyer-seller chat
+import SellerChats from "../SellerChats.jsx"; // seller view all chats
+import UploadCars from "../UploadCars.jsx";
+import AdminLogin from "../Admin/AdminLogin.jsx";  
+import AdminCarListView from "../Admin/AdminCarListView.jsx";
+import AdminDashboard from "../Admin/AdminDashboard.jsx";
+import NewCarList from "../NewCarList.jsx";
+import CarViewPage from "../user/carViewPage.jsx";
 import { Upload } from "lucide-react";
 function App() {
   useEffect(() => {

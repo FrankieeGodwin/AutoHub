@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode"; // fixed import
-import loginimage from "./assets/login image.png";
-import logo from "./assets/logo.png" // make sure logo is inside src/assets
+import loginimage from "../assets/login image.png";
+import logo from "../assets/logo.png" // make sure logo is inside src/assets
 
 export default function Login() {
   const [username, setUsername] = useState("");

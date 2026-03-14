@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
-import CarList from "./CarList";
+import CarList from "./user/carList.jsx";
 import Footer from "./Footer";
 import NewCarList from "./NewCarList.jsx";
 

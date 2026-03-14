@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import FooterForDealer from "./FooterForDealer";
+import FooterForDealer from "../FooterForDealer";
 import DealerNavBar from "./DealerNavBar";
 
 const DealerDashboard = () => {

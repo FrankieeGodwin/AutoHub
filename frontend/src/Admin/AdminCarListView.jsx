@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBarAdmin from "./NavBarAdmin.jsx";
-import Footer from "./Footer";
+import NavBarAdmin from "../NavBarAdmin.jsx";
+import Footer from "../Footer.jsx";
 
 function AdminCarListView() {
   const [userCars, setuserCars] = useState([]);

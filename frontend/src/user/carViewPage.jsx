@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import NavBarBasic from "./NavBarBasic";
-import Footer from "./FooterForDealer";
+import NavBarBasic from "../NavBarBasic";
+import Footer from "../FooterForDealer";
 const CarViewPage = () => {
   const { newcarid } = useParams();
   const [car, setCar] = useState(null);
