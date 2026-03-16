@@ -5,8 +5,8 @@ import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
 
 const SECRET_KEY = "my_super_secret_key";
-const socket = io("http://localhost:5000", { transports: ["websocket"] }); 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+const socket = io(`${API_BASE}`, { transports: ["websocket"] }); 
 const user = JSON.parse(localStorage.getItem("user"));
 const currentUserId = user?.userId;
 
